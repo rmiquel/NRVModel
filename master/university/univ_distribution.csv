@@ -1,0 +1,46 @@
+Purpose,Period,Param,Value,Description
+default,default,constraint,Production,"""Production"", ""Attraction"", or ""Doubly"""
+default,default,imp_core,da_time,name of impendance core in skim matrix
+default,default,a,5,gamma parameter
+default,default,b,4.5,gamma parameter
+default,default,c,3,gamma parameter
+HBUV_all,AM,p_field,d_HBUV_all_AM,production field name
+HBUV_all,AM,a_field,d_HBUVa_all_AM,attraction field name
+HBUV_all,MD,p_field,d_HBUV_all_MD,
+HBUV_all,MD,a_field,d_HBUVa_all_MD,CREATION: this file created manually - not by rmarkdown
+HBUV_all,PM,p_field,d_HBUV_all_PM,
+HBUV_all,PM,a_field,d_HBUVa_all_PM,
+HBUV_all,NT,p_field,d_HBUV_all_NT,
+HBUV_all,NT,a_field,d_HBUVa_all_NT,
+HBUR_all,AM,p_field,d_HBUR_all_AM,
+HBUR_all,AM,a_field,d_HBURa_all_AM,
+HBUR_all,MD,p_field,d_HBUR_all_MD,
+HBUR_all,MD,a_field,d_HBURa_all_MD,
+HBUR_all,PM,p_field,d_HBUR_all_PM,
+HBUR_all,PM,a_field,d_HBURa_all_PM,
+HBUR_all,NT,p_field,d_HBUR_all_NT,
+HBUR_all,NT,a_field,d_HBURa_all_NT,
+sHBW_all,AM,p_field,d_sHBW_all_AM,
+sHBW_all,AM,a_field,d_sHBWa_all_AM,
+sHBW_all,MD,p_field,d_sHBW_all_MD,
+sHBW_all,MD,a_field,d_sHBWa_all_MD,
+sHBW_all,PM,p_field,d_sHBW_all_PM,
+sHBW_all,PM,a_field,d_sHBWa_all_PM,
+sHBW_all,NT,p_field,d_sHBW_all_NT,
+sHBW_all,NT,a_field,d_sHBWa_all_NT,
+sHBO_all,AM,p_field,d_sHBO_all_AM,
+sHBO_all,AM,a_field,d_sHBOa_all_AM,
+sHBO_all,MD,p_field,d_sHBO_all_MD,
+sHBO_all,MD,a_field,d_sHBOa_all_MD,
+sHBO_all,PM,p_field,d_sHBO_all_PM,
+sHBO_all,PM,a_field,d_sHBOa_all_PM,
+sHBO_all,NT,p_field,d_sHBO_all_NT,
+sHBO_all,NT,a_field,d_sHBOa_all_NT,
+sNHB_all,AM,p_field,d_sNHB_all_AM,
+sNHB_all,AM,a_field,d_sNHBa_all_AM,
+sNHB_all,MD,p_field,d_sNHB_all_MD,
+sNHB_all,MD,a_field,d_sNHBa_all_MD,
+sNHB_all,PM,p_field,d_sNHB_all_PM,
+sNHB_all,PM,a_field,d_sNHBa_all_PM,
+sNHB_all,NT,p_field,d_sNHB_all_NT,
+sNHB_all,NT,a_field,d_sNHBa_all_NT,

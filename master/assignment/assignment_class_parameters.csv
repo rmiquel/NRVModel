@@ -1,0 +1,20 @@
+Class,Term,Value,Description
+default,vot,1,value of time
+default,pce,1,passenger car equivalent
+default,pce_field,None,field based pce (if it varies by link)
+default,exclusion_query,Drive = 0,query to use to exclude links
+default,toll_field,,field containing toll price of link
+default,toll_core,,matrix core name for OD-based tolls
+res_da,vot,1,CREATION: file created manually
+res_da,exclusion_query,HOV >= 2 or Drive = 0,
+res_sr2,vot,1,
+res_sr2,exclusion_query,HOV >= 3 or Drive = 0,
+res_sr3,vot,1,
+CV,vot,1,
+SUT,vot,1.5,
+SUT,pce,2,
+MUT,vot,1.5,
+MUT,pce,2.5,
+IEEI,vot,1,
+NHBNR,vot,1,
+EE,vot,1,

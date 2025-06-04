@@ -1,0 +1,5 @@
+
+20
+"STOP_ID",I,1,4,0,9,0,,"","",,"Sum",
+"dwell_on",R,5,8,0,10,2,,"","Wait time (mins) for people to get off the route|(does not affect last stop in route)|Model defaults to 15 seconds if null.",,"Sum",
+"dwell_off",R,13,8,0,10,2,,"","Wait time (mins) for people to get off the route|(does not affect first stop in route)|Model defaults to 15 seconds if null.",,"Sum",

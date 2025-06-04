@@ -1,0 +1,29 @@
+Purpose,Period,Param,Value,Description
+IEEI,AM,p_field,d_IEEI_AM,production field name
+IEEI,AM,a_field,d_IEEIa_AM,attraction field name
+IEEI,AM,constraint,Production,"""Production"", ""Attraction"", or ""Doubly"""
+IEEI,AM,imp_core,da_time,name of impendance core in skim matrix
+IEEI,AM,a,1.0689,gamma parameter
+IEEI,AM,b,0.2,gamma parameter
+IEEI,AM,c,0.1,gamma parameter
+IEEI,MD,p_field,d_IEEI_MD,etc.
+IEEI,MD,a_field,d_IEEIa_MD,CREATION: this file created manually - not by rmarkdown
+IEEI,MD,constraint,Production,
+IEEI,MD,imp_core,da_time,
+IEEI,MD,a,1.0689,
+IEEI,MD,b,3.5,
+IEEI,MD,c,0.4,
+IEEI,PM,p_field,d_IEEI_PM,
+IEEI,PM,a_field,d_IEEIa_PM,
+IEEI,PM,constraint,Production,
+IEEI,PM,imp_core,da_time,
+IEEI,PM,a,1.0689,
+IEEI,PM,b,0.2,
+IEEI,PM,c,0.1,
+IEEI,NT,p_field,d_IEEI_NT,
+IEEI,NT,a_field,d_IEEIa_NT,
+IEEI,NT,constraint,Production,
+IEEI,NT,imp_core,da_time,
+IEEI,NT,a,1.0689,
+IEEI,NT,b,3.5,
+IEEI,NT,c,0.4,

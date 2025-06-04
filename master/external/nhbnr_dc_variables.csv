@@ -1,0 +1,10 @@
+alternative,variable,type,source
+Destinations,logsum,Matrix,mc_mtx.logsums_NHB_all_ROOT
+Destinations,dist,Matrix,hwy_skim.dist_capped
+Destinations,dist_sq,Matrix,hwy_skim.dist_capped_sq
+Destinations,dist_cu,Matrix,hwy_skim.dist_capped_cu
+Destinations,dist_const,Matrix,hwy_skim.dist_const
+Destinations,intrazonal,Matrix,hwy_skim.intrazonal
+Destinations,intercounty,Matrix,hwy_skim.intercounty
+Destinations,size,Destination,zone_tbl.dc_size
+Destinations,shadow_price,Destination,zone_tbl.shadow_price

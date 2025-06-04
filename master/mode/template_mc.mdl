@@ -1,0 +1,130 @@
+model label=nrv version=1.5
+  source name=hwy_skim type=Matrix primary=True origins=True destinations=True file=Y:\projects\NRV\repo\scenarios\Base_2016\outputs\skims\highway\_hwy_skim_AM.mtx filelabel="Highway Skim AM" rowindex=Rows colindex=Columns
+  source name=trn_skim type=Matrix file=Y:\projects\NRV\repo\scenarios\Base_2016\outputs\skims\transit\_trn_skim_AM.mtx filelabel="Transit Skim AM" rowindex=Rows colindex=Columns
+  source name=zone_tbl type=Zonal view=ScenarioSE idfield=ID
+  segment name=v0 label="zero vehicle"
+    alternative name=auto
+      alternative name=da parent=auto
+      alternative name=sr parent=auto
+        alternative name=sr2 parent=sr
+        alternative name=sr3 parent=sr
+    alternative name=transit
+      alternative name=walk_acc parent=transit
+        alternative name=w_lb parent=walk_acc
+        alternative name=w_eb parent=walk_acc
+        alternative name=w_brt parent=walk_acc
+        alternative name=w_cr parent=walk_acc
+      alternative name=pnr_acc parent=transit
+        alternative name=pnr_lb parent=pnr_acc
+        alternative name=pnr_eb parent=pnr_acc
+        alternative name=pnr_brt parent=pnr_acc
+        alternative name=pnr_cr parent=pnr_acc
+      alternative name=knr_acc parent=transit
+        alternative name=knr_lb parent=knr_acc
+        alternative name=knr_eb parent=knr_acc
+        alternative name=knr_brt parent=knr_acc
+        alternative name=knr_cr parent=knr_acc
+    alternative name=nonmotorized
+      alternative name=walk parent=nonmotorized
+      alternative name=bike parent=nonmotorized
+  segment name=ilvi label="inc low; veh insufficient"
+    alternative name=auto theta=0.7
+      alternative name=da parent=auto
+      alternative name=sr parent=auto theta=0.7
+        alternative name=sr2 parent=sr
+        alternative name=sr3 parent=sr
+    alternative name=transit theta=0.7
+      alternative name=walk_acc parent=transit theta=0.7
+        alternative name=w_lb parent=walk_acc
+        alternative name=w_eb parent=walk_acc
+        alternative name=w_brt parent=walk_acc
+        alternative name=w_cr parent=walk_acc
+      alternative name=pnr_acc parent=transit theta=0.7
+        alternative name=pnr_lb parent=pnr_acc
+        alternative name=pnr_eb parent=pnr_acc
+        alternative name=pnr_brt parent=pnr_acc
+        alternative name=pnr_cr parent=pnr_acc
+      alternative name=knr_acc parent=transit theta=0.7
+        alternative name=knr_lb parent=knr_acc
+        alternative name=knr_eb parent=knr_acc
+        alternative name=knr_brt parent=knr_acc
+        alternative name=knr_cr parent=knr_acc
+    alternative name=nonmotorized theta=0.7
+      alternative name=walk parent=nonmotorized
+      alternative name=bike parent=nonmotorized
+  segment name=ilvs label="inc low; veh sufficient"
+    alternative name=auto theta=0.7
+      alternative name=da parent=auto
+      alternative name=sr parent=auto theta=0.7
+        alternative name=sr2 parent=sr
+        alternative name=sr3 parent=sr
+    alternative name=transit theta=0.7
+      alternative name=walk_acc parent=transit theta=0.7
+        alternative name=w_lb parent=walk_acc
+        alternative name=w_eb parent=walk_acc
+        alternative name=w_brt parent=walk_acc
+        alternative name=w_cr parent=walk_acc
+      alternative name=pnr_acc parent=transit theta=0.7
+        alternative name=pnr_lb parent=pnr_acc
+        alternative name=pnr_eb parent=pnr_acc
+        alternative name=pnr_brt parent=pnr_acc
+        alternative name=pnr_cr parent=pnr_acc
+      alternative name=knr_acc parent=transit theta=0.7
+        alternative name=knr_lb parent=knr_acc
+        alternative name=knr_eb parent=knr_acc
+        alternative name=knr_brt parent=knr_acc
+        alternative name=knr_cr parent=knr_acc
+    alternative name=nonmotorized theta=0.7
+      alternative name=walk parent=nonmotorized
+      alternative name=bike parent=nonmotorized
+  segment name=ihvi label="inc high; veh insufficient"
+    alternative name=auto theta=0.7
+      alternative name=da parent=auto
+      alternative name=sr parent=auto theta=0.7
+        alternative name=sr2 parent=sr
+        alternative name=sr3 parent=sr
+    alternative name=transit theta=0.7
+      alternative name=walk_acc parent=transit theta=0.7
+        alternative name=w_lb parent=walk_acc
+        alternative name=w_eb parent=walk_acc
+        alternative name=w_brt parent=walk_acc
+        alternative name=w_cr parent=walk_acc
+      alternative name=pnr_acc parent=transit theta=0.7
+        alternative name=pnr_lb parent=pnr_acc
+        alternative name=pnr_eb parent=pnr_acc
+        alternative name=pnr_brt parent=pnr_acc
+        alternative name=pnr_cr parent=pnr_acc
+      alternative name=knr_acc parent=transit theta=0.7
+        alternative name=knr_lb parent=knr_acc
+        alternative name=knr_eb parent=knr_acc
+        alternative name=knr_brt parent=knr_acc
+        alternative name=knr_cr parent=knr_acc
+    alternative name=nonmotorized theta=0.7
+      alternative name=walk parent=nonmotorized
+      alternative name=bike parent=nonmotorized
+  segment name=ihvs label="inc high; veh sufficient"
+    alternative name=auto theta=0.7
+      alternative name=da parent=auto
+      alternative name=sr parent=auto theta=0.7
+        alternative name=sr2 parent=sr
+        alternative name=sr3 parent=sr
+    alternative name=transit theta=0.7
+      alternative name=walk_acc parent=transit theta=0.7
+        alternative name=w_lb parent=walk_acc
+        alternative name=w_eb parent=walk_acc
+        alternative name=w_brt parent=walk_acc
+        alternative name=w_cr parent=walk_acc
+      alternative name=pnr_acc parent=transit theta=0.7
+        alternative name=pnr_lb parent=pnr_acc
+        alternative name=pnr_eb parent=pnr_acc
+        alternative name=pnr_brt parent=pnr_acc
+        alternative name=pnr_cr parent=pnr_acc
+      alternative name=knr_acc parent=transit theta=0.7
+        alternative name=knr_lb parent=knr_acc
+        alternative name=knr_eb parent=knr_acc
+        alternative name=knr_brt parent=knr_acc
+        alternative name=knr_cr parent=knr_acc
+    alternative name=nonmotorized theta=0.7
+      alternative name=walk parent=nonmotorized
+      alternative name=bike parent=nonmotorized
+

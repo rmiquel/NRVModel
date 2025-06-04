@@ -1,0 +1,37 @@
+to_field,to_desc,from_field,from_factor,Description
+CV,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Industry,1.024,"Used by ""Field Crosswalk"" macro"
+CV,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Retail,0.888,to_field = to_field + from_field * from_factor
+CV,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Office,0.437,The attraction rates are the same as production rates
+CV,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Service,0.437,SOURCE: QRFM. Page 3. https://ntl.bts.gov/lib/42000/42000/42066/06306_Final_Report.pdf
+CV,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Households,0.251,"CREATION: this file created manually, not by rmarkdown"
+CV,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Ammo,0.512,
+SUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Industry,0.266,
+SUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Retail,0.253,
+SUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Office,0.068,
+SUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Service,0.068,
+SUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Households,0.099,
+SUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Ammo,0.133,
+MUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Industry,0.139,
+MUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Retail,0.085,
+MUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Office,0.009,
+MUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Service,0.009,
+MUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Households,0.028,
+MUT,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Ammo,0.0695,
+CVa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Industry,1.024,
+CVa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Retail,0.888,
+CVa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Office,0.437,
+CVa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Service,0.437,
+CVa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Households,0.251,
+CVa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Ammo,0.512,
+SUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Industry,0.266,
+SUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Retail,0.253,
+SUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Office,0.068,
+SUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Service,0.068,
+SUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Households,0.099,
+SUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Ammo,0.133,
+MUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Industry,0.139,
+MUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Retail,0.085,
+MUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Office,0.009,
+MUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Service,0.009,
+MUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Households,0.028,
+MUTa,Commercial Vehicles|Productions = Attractions|See cv_generation.csv for rates,Ammo,0.0695,

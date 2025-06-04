@@ -1,0 +1,4 @@
+AreaType,Density,CCSpeed,Description
+Urban,2000,15,This file sets the density thresholds for area types.
+Suburban,500,25,It is also used to set the CC speeds in each type.
+Rural,0,35,CREATION: created manually. Not by rmarkdown.

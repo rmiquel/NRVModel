@@ -1,0 +1,7 @@
+model label="NRV test" version=1.5
+  source name=hwy_skim type=Matrix primary=True origins=True destinations=True file=Y:\projects\NRV\repo\scenarios\Base_2016\outputs\skims\highway\AM_hwy_skim.mtx filelabel="Highway Skim AM" rowindex=Rows colindex=Columns
+  source name=mc_mtx type=Matrix file=Y:\projects\NRV\repo\scenarios\Base_2016\outputs\mode\_mc_resident_AM.mtx filelabel="AM MC Results" rowindex=Rows colindex=Columns
+  source name=zone_tbl type=Zonal view=ScenarioSE idfield=ID
+  segment name=*
+    alternative name=Destinations destsource=hwy_skim destindex=Columns
+

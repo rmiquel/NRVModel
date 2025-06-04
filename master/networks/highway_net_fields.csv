@@ -1,0 +1,7 @@
+layer,net_field_name,ab_field_name,ba_field_name
+link,Length,Length,Length
+link,FFTime,FFTime,FFTime
+link,InitCongTime,InitCongTime,InitCongTime
+link,WalkTime,WalkTime,WalkTime
+link,Alpha,Alpha,Alpha
+link,Capacity,AB{period}CapE,BA{period}CapE

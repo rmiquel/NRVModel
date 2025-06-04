@@ -1,0 +1,5 @@
+to_field,field_desc,formula,description
+avg_size,HHPopulation / Households | Capped within min/max of marginal table,"round(HHPopulation / Households, 2)",This table is used to calculate zonal ratios that are then
+avg_work,Workers / Households | Capped within min/max of marginal table,"round(Workers / Households, 2)",used to determine marginal distributions in the disaggregate
+avg_veh,Vehicles / Households | Capped within min/max of marginal table,"round(Vehicles / Households, 2)",model.
+inc_ratio,MedianIncome / 45607 (the regional median income) | Capped within min/max of marginal table,"round(MedianIncome / 45607, 2)",

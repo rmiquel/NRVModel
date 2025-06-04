@@ -1,0 +1,6 @@
+to_core,formula,description
+HBO_ilvi,HBO_ilvi * 0.9731,Removes school bus trips before mode choice
+HBO_ilvs,HBO_ilvs * 0.9658,CREATION: created by MC_targets.Rmd
+HBO_ihvi,HBO_ihvi * 0.9878,
+HBO_ihvs,HBO_ihvs * 0.987,
+HBSC_all,HBSC_all * 0.4958,

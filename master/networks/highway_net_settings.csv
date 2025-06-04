@@ -1,0 +1,29 @@
+Network,Parameter,Value,Description
+default,link_query,Walk = 1 or Drive = 1,The subset of links to be included in the .net file
+default,out_file,net.net,File name of output .net file.
+default,uturn_degrees,10,Tolerance that defines a u-turn. Default is 10.
+default,through_degrees,30,Tolerance that defines a through movement. Default is 30.
+default,time_units,Minutes,
+default,distance_units,Miles,
+default,left_tp,0,Penalty for left turns (in time_units). -1 means prohibited
+default,right_tp,0,Penalty for right turns (in time_units). -1 means prohibited
+default,straight_tp,0,Penalty for straight movements (in time_units). -1 means prohibited
+default,uturn_tp,-1,Penalty for u-turns (in time_units). -1 means prohibited
+default,spec_pen_file,,Specific turn penalty file (between link IDs)
+default,def_pen_file,,Default turn penalty file (between groups of link types)
+default,xfer_pen_field,,Field name on link layer that contains penalty cost. Can't be used with spec/def pen files.
+default,xfer_line_type_field,,This field defines line types for the purpose of transit transfer penalty. The cost in 'xfer_pen_field' is paid when changing line types.
+default,centroid_query,TAZ <> null,Identifies centroid nodes
+default,od_toll_query,,Identifies links that will incur OD-based tolls
+default,toll_query,,Identifies links with fixed tolls
+da,link_query,HOV = 0 & (Walk = 1 or Drive = 1),No hov links and no only links that allow drive mode
+da,out_file,da_{period}.net,
+sr2,link_query,HOV <= 2 & (Walk = 1 or Drive = 1),No hov3+ links and no only links that allow drive mode
+sr2,out_file,sr2_{period}.net,
+sr3,link_query,Walk = 1 or Drive = 1,No hov restriction. Only links that allow drive mode
+sr3,out_file,sr3_{period}.net,
+,,,
+,,,"The ""default"" network provides default values for all networks."
+,,,Parameters listed in other networks will overwrite the default values.
+,,,This table can be used to specify any number of highway networks.
+,,,"Used by the ""Create Highway Network"" macro in gisdk_tools."

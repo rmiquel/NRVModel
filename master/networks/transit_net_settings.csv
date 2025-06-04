@@ -1,0 +1,164 @@
+Network,Parameter,Value,Description
+,,,
+#### Notes ####,,,
+,,,
+The 'default' network provides default values for all networks.,,,
+Nulls in default parameters mean they must be specified for each network,,,
+Parameters listed in specific networks will overwrite the default values.,,,
+This table can be used to specify any number of transit networks.,,,
+Used by the 'GT - Create Transit Network' macro in gisdk_tools.,,,
+"{period} is a variable, and will be set to the value of the 'period' variable passed to the macro.",,,
+,,,
+#### Default Values ####,,,
+,,,
+# General,,,
+default,route_qry,nz({period}_Headway) > 0,Which routes to include in the network? (null for all)
+default,stop_qry,,Which stops to include in the network? (null for all)
+default,centroid_query,TAZ <> null,Identifies centroid nodes
+default,stop_node_id,Node_ID,Stop layer field that contains the node ID of each stop
+default,dwell_on_field,dwell_on,Stop layer field that gives the dwell time spent boarding (minutes)
+default,dwell_off_field,dwell_off,Stop layer field that gives the dwell time spent alighting (minutes)
+default,headway_field,{period}_Headway,Name of field containing headway info
+default,fare_field,Fare,Name of field that contains flat fare information for each route
+default,time_field_t,InitCongTime,"The initial link travel time field when taking transit (often auto time adjusted by some factor). After feedback, the model uses congested MSATime."
+default,time_field_nt,WalkTime,The link travel time field when not on transit (usually walk or drive time)
+default,fare_system,Flat,Flat' 'Zonal' 'Mixed' (both) or 'Stop'. See TC help for details.
+,,,
+# Globals,,,
+default,global_walk_weight,3,Weight applied to walk time
+default,global_max_trip_time,999,Maximum trip time
+default,global_max_xfer_num,5,Maximum number of transfers
+default,global_value_of_time,0.2,Value of time (value/min). Assuming value in $.  0.2 = $12/hr
+default,global_interarrival_para,0.5,Applied to headway to determine initial weight. Random Arrival = 0.5
+default,global_logit_scale_parameter,0.1,Lower = greater preference for shortest path (see TC help for details)
+default,global_max_wacc_path,10,Max number of zonal walk access paths
+default,global_walk_path_threshold,0,Threshold for combining walk access paths (see TC help for details)
+default,global_drive_path_threshold,0,Threshold for combining drive access paths (see TC help for details)
+default,global_midblock_threshold,1,Threshold for ignoring mid block stop (see TC help for details)
+*Note: the following global variables are overwritten by values in the mode or route tables,,,
+default,global_fare_value,1,Fare paid
+default,global_xfer_fare,0.4,Transfer fare
+default,global_fare_weight,1,Weight applied for general cost calculation
+default,global_imp_weight,1,Weight applied for general cost calculation
+default,global_init_weight,1,Weight applied for general cost calculation
+default,global_xfer_weight,1,Weight applied for general cost calculation
+default,global_iwait_weight,2,Weight applied for general cost calculation
+default,global_xwait_weight,2,Weight applied for general cost calculation
+default,global_dwell_weight,2,Weight applied for general cost calculation
+default,global_headway,15,Headway
+default,global_init_time,0,Initial wait time
+default,global_xfer_time,3,Transfer wait time
+default,global_max_iwait,30,Maximum initial wait
+default,global_min_iwait,2,Minimum initial wait
+default,global_max_xwait,60,Maximum transfer wait
+default,global_min_xwait,2,Minimum transfer wait
+default,global_layover_time,5,Time spent waiting on a loop route if your path crosses the first stop
+default,global_dwell_on,0.25,Time spent boarding. This time is spent at each stop along a path.
+default,global_dwell_off,0.25,Time spent alighting. This time is spent at each stop along a path.
+default,global_max_access,45,Maximum access travel time
+default,global_max_egress,45,Maximum egress travel time
+default,global_max_transfer,20,Maximum transfer walk time
+default,global_max_imp,240,Maximum modal total link impedance/time
+default,global_path_threshold,0.1,Formerly 'combination factor'. Lower = fewer routes combined into hyperpath. See help for details.
+*Note: the following only apply to drive access networks,,,
+default,global_max_pacc,10,Maximum walk time from parking node to stop
+default,drive_time_weight,3,Factor applied to drive time when determining general cost (for shortest path only)
+default,max_acce_drive_time,30,Maximum driving time for access
+default,max_egre_drive_time,30,Maximum driving time for egress
+default,max_acce_drive_paths,10,Maximum number of drive access paths considered
+,,,
+# Mode Table,,,
+default,route_mode_field,Mode,Route layer field that contains mode integer (to link to mode table)
+default,link_mode_field,Mode,Link layer field that contains mode info
+default,mode_used_column,,The field in the transit mode table that defines which modes to include in the network
+,,,
+# Walking,,,
+default,walk_link_qry,Walk = 1,Defines which links can be walked on (eg:  all except freeways)
+default,allow_walk,Yes,If walk access links are allowed in net (Usually yes. Needed for transfer walking.)
+default,allow_walk_only,No,If paths are allowed that are walk only (usually no)
+,,,
+# Driving / Parking,,,
+default,drive_time_field,InitCongTime,Link field with drive time information
+,,,*Note: control drive/walk access/egress using the 'flip_drive_access' argument in project code.
+,,,
+#### Custom Values for Specific Networks ####,,,
+,,,
+# Walk to Local Bus,,,
+w_lb,out_file,w_lb_{period}.tnw,
+w_lb,mode_used_column,lb,
+,,,
+# KNR to Local Bus,,,
+knr_lb,drive_link_qry,Drive = 1,
+knr_lb,out_file,knr_lb_{period}.tnw,
+knr_lb,mode_used_column,lb,
+knr_lb,parking_node_qry,TAZ = null,All non-centroids
+knr_lb,access_pnr,Yes,
+knr_lb,allow_pnr_walk_egress,Yes,
+,,,
+# PNR to Local Bus,,,
+pnr_lb,drive_link_qry,Drive = 1,
+pnr_lb,out_file,pnr_lb_{period}.tnw,
+pnr_lb,mode_used_column,lb,
+pnr_lb,parking_node_qry,PNR = 1,
+pnr_lb,access_pnr,Yes,
+pnr_lb,allow_pnr_walk_egress,Yes,
+,,,
+# Walk to Express Bus,,,
+w_eb,out_file,w_eb_{period}.tnw,
+w_eb,mode_used_column,eb,
+,,,
+# KNR to Express Bus,,,
+knr_eb,drive_link_qry,Drive = 1,
+knr_eb,out_file,knr_eb_{period}.tnw,
+knr_eb,mode_used_column,eb,
+knr_eb,parking_node_qry,TAZ = null,
+knr_eb,access_pnr,Yes,
+knr_eb,allow_pnr_walk_egress,Yes,
+,,,
+# PNR to Express Bus,,,
+pnr_eb,drive_link_qry,Drive = 1,
+pnr_eb,out_file,pnr_eb_{period}.tnw,
+pnr_eb,mode_used_column,eb,
+pnr_eb,parking_node_qry,PNR = 1,
+pnr_eb,access_pnr,Yes,
+pnr_eb,allow_pnr_walk_egress,Yes,
+,,,
+# Walk to BRT,,,
+w_brt,out_file,w_brt_{period}.tnw,
+w_brt,mode_used_column,brt,
+,,,
+# KNR to BRT,,,
+knr_brt,drive_link_qry,Drive = 1,
+knr_brt,out_file,knr_brt_{period}.tnw,
+knr_brt,mode_used_column,brt,
+knr_brt,parking_node_qry,TAZ = null,
+knr_brt,access_pnr,Yes,
+knr_brt,allow_pnr_walk_egress,Yes,
+,,,
+# PNR to BRT,,,
+pnr_brt,drive_link_qry,Drive = 1,
+pnr_brt,out_file,pnr_brt_{period}.tnw,
+pnr_brt,mode_used_column,brt,
+pnr_brt,parking_node_qry,PNR = 1,
+pnr_brt,access_pnr,Yes,
+pnr_brt,allow_pnr_walk_egress,Yes,
+,,,
+# Walk to CR,,,
+w_cr,out_file,w_cr_{period}.tnw,
+w_cr,mode_used_column,cr,
+,,,
+# KNR to CR,,,
+knr_cr,drive_link_qry,Drive = 1,
+knr_cr,out_file,knr_cr_{period}.tnw,
+knr_cr,mode_used_column,cr,
+knr_cr,parking_node_qry,TAZ = null,
+knr_cr,access_pnr,Yes,
+knr_cr,allow_pnr_walk_egress,Yes,
+,,,
+# PNR to CR,,,
+pnr_cr,drive_link_qry,Drive = 1,
+pnr_cr,out_file,pnr_cr_{period}.tnw,
+pnr_cr,mode_used_column,cr,
+pnr_cr,parking_node_qry,PNR = 1,
+pnr_cr,access_pnr,Yes,
+pnr_cr,allow_pnr_walk_egress,Yes,

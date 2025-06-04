@@ -1,0 +1,5 @@
+to_field,to_desc,from_field,from_factor,Description
+TotEmp,Total Employment|Created during area type calculation,Industry,1,to_field = to_field + from_field * rate
+TotEmp,Total Employment|Created during area type calculation,Retail,1,The 'to_desc' field is what is written in the field description in the SE table.
+TotEmp,Total Employment|Created during area type calculation,Service,1,Table created manually
+TotEmp,Total Employment|Created during area type calculation,Office,1,

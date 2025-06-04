@@ -1,0 +1,11 @@
+to_field,field_desc,formula,aggregation,Description
+HBUV,University productions made by VT students,1.78 * (VTStudOff + VTEnrollOn),,"Used by ""Calculate Fields - Simple"" macro"
+HBUR,University productions made by Radford students,1.78 * (RadStudOff + RadEnrollOn),,to_field = to_field + from_field * from_factor
+HBUVa,University attractions made by VT students,2.4 * VTEnrollOff,,
+HBURa,University attractions made by Radford students,2.6 * RadEnrollOff,,Creation: Created manually with rates from University.Rmd
+sHBW,HBW productions from on-campus students,.1 * (VTEnrollOn + RadEnrollOn),,
+sHBO,HBO productions from on-campus students,2.49 * (VTEnrollOn + RadEnrollOn),,
+sNHB,NHB productions from on-campus students,2.12 * (VTEnrollOn + RadEnrollOn),,
+sHBWa,HBW attractions from on-campus students,.08 * (HBWa_ilvi + HBWa_ilvs + sHBW),,
+sHBOa,HBO attractions from on-campus students,.57 * (HBOa_ilvi + HBOa_ilvs + sHBO),,
+sNHBa,NHB attractions from on-campus students,.27 * (NHBOa + sNHB),,

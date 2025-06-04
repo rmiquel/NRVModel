@@ -1,0 +1,3 @@
+to_core,formula,description
+{net}_initial_wait1,"min({net}_initial_wait, 5)",First 5 minutes of initial wait time
+{net}_initial_wait2,"max({net}_initial_wait - {net}_initial_wait1, 0)",Initial wait time after first 5 minutes

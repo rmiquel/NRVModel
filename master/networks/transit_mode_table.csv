@@ -1,0 +1,6 @@
+mode_name,mode_id,impedance,net_defs,lb,eb,brt,cr
+Non-Transit,1,,.---->,1,1,1,1
+Local Bus,2,,.---->,2,1,1,1
+Express Bus,3,,.---->,,2,1,1
+Bus Rapid Transit,4,,.---->,,,2,1
+Commuter Rail,5,,.---->,,,,2

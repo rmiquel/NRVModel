@@ -1,0 +1,10 @@
+to_core,formula,description
+da_dist_cost,da_dist * .168,distance (miles) * operating_cost ($/mi) = dollars
+sr2_dist_cost,sr2_dist * .168 / 1.2,Cost not divided evenly. Felt mostly by driver ( / 1.2 instead of 2)
+sr3_dist_cost,sr3_dist * .168 / 1.7,
+walk_nm_time,da_dist / 3 * 60,Walk time: [miles] / [3mph] * [60min/hr]
+walk_nm_time1,"min(walk_nm_time, 5)",Short walk portion
+walk_nm_time2,"max(0, walk_nm_time - walk_nm_time1)",Long walk portion
+bike_nm_time,da_dist / 6 * 60,Bike time
+bike_nm_time1,"min(bike_nm_time, 5)",Short bike portion
+bike_nm_time2,"max(0, bike_nm_time - bike_nm_time1)",Long bike portion

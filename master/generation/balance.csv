@@ -1,0 +1,21 @@
+prod_field,attr_field,balance,description
+HBW_v0,HBWa_v0,to productions,3 options for 'balance':
+HBW_ilvi,HBWa_ilvi,to productions,to productions:
+HBW_ilvs,HBWa_ilvs,to productions,  scale attr_field to match prod_field total
+HBW_ihvi,HBWa_ihvi,to productions,to attractions:
+HBW_ihvs,HBWa_ihvs,to productions,  scale prod_field to match attr_field total
+HBO_v0,HBOa_v0,to productions,nhb:
+HBO_ilvi,HBOa_ilvi,to productions,  scale attr_field to match prod_field total
+HBO_ilvs,HBOa_ilvs,to productions,  set productions to attractions
+HBO_ihvi,HBOa_ihvi,to productions,
+HBO_ihvs,HBOa_ihvs,to productions,
+HBSC,HBSCa,to productions,
+HBSH,HBSHa,to productions,
+NHBW,NHBWa,nhb,
+NHBO,NHBOa,nhb,
+IEEI,IEEIa,to productions,
+HBUV,HBUVa,to productions,
+HBUR,HBURa,to productions,
+sHBW,sHBWa,to productions,HBW trips made by on campus students
+sHBO,sHBOa,to productions,HBO trips made by on campus students
+sNHB,sNHBa,to productions,NHB trips made by on campus students

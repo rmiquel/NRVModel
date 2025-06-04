@@ -1,0 +1,49 @@
+period,purpose,segment,section,term,value,Description
+AM,NHBNR,all,param,max_iters,1,iters to attempt double constraint.  1 for single constraint
+AM,NHBNR,all,param,dist_cap,13,cap on dist polynomial
+AM,NHBNR,all,param,prod_field,d_NHBNR_all_AM,field in SE table containing production information
+AM,NHBNR,all,param,attr_field,d_NHBNRa_all_AM,field in SE table containing attraction information
+AM,NHBNR,all,coeff,logsum,0.8,coeff on mc logsum
+AM,NHBNR,all,coeff,size,1,coeff of attraction/size term - always 1
+AM,NHBNR,all,coeff,dist_const,1.3182,coeff of dist polynomial constant
+AM,NHBNR,all,coeff,dist,-0.3249,coeff of dist
+AM,NHBNR,all,coeff,dist_sq,0,coeff of dist squared
+AM,NHBNR,all,coeff,dist_cu,0,coeff of dist cubed
+AM,NHBNR,all,coeff,intrazonal,-0.0867,coeff of intrazonal trips
+AM,NHBNR,all,coeff,shadow_price,1,coeff of shadow price - always 1
+MD,NHBNR,all,param,max_iters,1,
+MD,NHBNR,all,param,dist_cap,13,Note: the coefficients should be the same as resident NHB
+MD,NHBNR,all,param,prod_field,d_NHBNR_all_MD,
+MD,NHBNR,all,param,attr_field,d_NHBNRa_all_MD,
+MD,NHBNR,all,coeff,logsum,0.8,
+MD,NHBNR,all,coeff,size,1,
+MD,NHBNR,all,coeff,dist_const,1.3182,
+MD,NHBNR,all,coeff,dist,-0.3249,
+MD,NHBNR,all,coeff,dist_sq,0,
+MD,NHBNR,all,coeff,dist_cu,0,
+MD,NHBNR,all,coeff,intrazonal,-0.0867,
+MD,NHBNR,all,coeff,shadow_price,1,
+PM,NHBNR,all,param,max_iters,1,
+PM,NHBNR,all,param,dist_cap,13,
+PM,NHBNR,all,param,prod_field,d_NHBNR_all_PM,
+PM,NHBNR,all,param,attr_field,d_NHBNRa_all_PM,
+PM,NHBNR,all,coeff,logsum,0.8,
+PM,NHBNR,all,coeff,size,1,
+PM,NHBNR,all,coeff,dist_const,1.3182,
+PM,NHBNR,all,coeff,dist,-0.3249,
+PM,NHBNR,all,coeff,dist_sq,0,
+PM,NHBNR,all,coeff,dist_cu,0,
+PM,NHBNR,all,coeff,intrazonal,-0.0867,
+PM,NHBNR,all,coeff,shadow_price,1,
+NT,NHBNR,all,param,max_iters,1,
+NT,NHBNR,all,param,dist_cap,13,
+NT,NHBNR,all,param,prod_field,d_NHBNR_all_NT,
+NT,NHBNR,all,param,attr_field,d_NHBNRa_all_NT,
+NT,NHBNR,all,coeff,logsum,0.8,
+NT,NHBNR,all,coeff,size,1,
+NT,NHBNR,all,coeff,dist_const,1.3182,
+NT,NHBNR,all,coeff,dist,-0.3249,
+NT,NHBNR,all,coeff,dist_sq,0,
+NT,NHBNR,all,coeff,dist_cu,0,
+NT,NHBNR,all,coeff,intrazonal,-0.0867,
+NT,NHBNR,all,coeff,shadow_price,1,

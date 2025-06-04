@@ -1,0 +1,11 @@
+
+68
+"Route_ID",I,1,4,0,4,0,,"","",,"Sum",
+"Route_Name",C,5,32,0,32,0,,"","",,"Copy",
+"ProjID",I,37,4,0,4,0,,"","",,"Sum",
+"Mode",I,41,4,0,4,0,,"","Used to lookup information in the mode table|1: non-transit links (all highway links)|2: local bus|3: express bus|4: brt|5: cr",,"Sum",
+"Fare",R,45,8,0,8,2,,"","",,"Sum",
+"AM_Headway",I,53,4,0,4,0,,"","",,"Sum",
+"MD_Headway",I,57,4,0,4,0,,"","",,"Sum",
+"PM_Headway",I,61,4,0,4,0,,"","",,"Sum",
+"NT_Headway",I,65,4,0,4,0,,"","",,"Sum",

@@ -1,0 +1,7 @@
+NRV_network_11292017
+20
+"tempID",I,1,4,0,4,0,,"","",,"Sum",
+"TAZ",I,5,4,0,8,0,,"","",,"Blank",
+"External",I,9,4,0,8,0,,"","",,"Blank",
+"PNR",I,13,4,0,8,0,,"","1: node contains a park-and-ride lot|Centroids cannot be marked for PNR (crashes TC)",,"Sum",
+"Volume",I,17,4,0,8,0,,"","",,"Sum",

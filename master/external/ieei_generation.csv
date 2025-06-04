@@ -1,0 +1,8 @@
+to_field,to_desc,from_field,from_factor,Description
+IEEIa,IX attractions|See ix_generation.csv for rates,Households,1.12406,Attraction rate for households
+IEEIa,IX attractions|See ix_generation.csv for rates,Industry,0.33448,Attraction rate for industrial employment
+IEEIa,IX attractions|See ix_generation.csv for rates,Retail,0.77626,Attraction rate for retail employment
+IEEIa,IX attractions|See ix_generation.csv for rates,Service,0.77626,Attraction rate for service employment
+IEEIa,IX attractions|See ix_generation.csv for rates,Office,0.77626,Attraction rate for office employment
+IEEIa,IX attractions|See ix_generation.csv for rates,Ammo,0.33448,Attraction rate for ammo employment
+,,,,CREATION: this file created by Generation-External.Rmd
