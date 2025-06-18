@@ -32,7 +32,7 @@ Macro "Create HH Marginals"
   scen_dir = MODELARGS.scen_dir
   param_dir = scen_dir + "/inputs/generation"
   se_bin = MODELARGS.se_bin
-
+  
   // Calculate the average/ratio fields that will be used to determine
   // marginals.
   opts = null
@@ -58,8 +58,16 @@ Create the joint HH distribution for each TAZ
 Macro "Create HH Joint Distribution"
   UpdateProgressBar("Create HH Joint Distribution", 0)
 
+  //Copy se_bin to se_csv for R  06_17_2025
+  scen_dir = MODELARGS.scen_dir
+  se_trans = OpenTable("SE", "FFB", {MODELARGS.se_bin, })
+  ExportView("SE|", "CSV", scen_dir + "\\inputs\\sedata\\SE_Scenario.csv", ,{{"CSV Header", "True"}})
+//  CopyTableFiles("SE", null, null, null, scen_dir + "\\inputs\\sedata\\SE_Scenario.csv", null)
+  se_trans = null
+
   opts = null
   opts.se_bin = MODELARGS.se_bin
+  opts.se_csv = scen_dir + "\\inputs\\sedata\\SE_Scenario.csv"
   rdir = MODELARGS.scen_dir + "/../../src/R"
   opts.rscriptexe = rdir + "/R-3.5.0/bin/Rscript.exe"
   gdir = MODELARGS.scen_dir + "/../../src/gisdk"
@@ -181,11 +189,13 @@ Macro "University Productions/Attractions"
   UpdateProgressBar("University Productions/Attractions", 0)
   
   se_bin = MODELARGS.se_bin
+  se_csv = scen_dir + "\\inputs\\sedata\\SE_Scenario.csv"
   scen_dir = MODELARGS.scen_dir
   
   // Generate Ps and As
   opts = null
   opts.table = MODELARGS.se_bin
+//  opts.table = se_csv
   opts.param_file = scen_dir + "/inputs/university/univ_generation.csv"
   RunMacro("Calculate Fields", opts)
 EndMacro
