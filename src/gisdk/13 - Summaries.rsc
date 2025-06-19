@@ -174,7 +174,8 @@ Macro "Create Loaded Network"
     RunMacro("Join Table To Layer", new_dbd, "ID", temp_csv, "ID1_" + period)
     DeleteFile(temp_csv)
     DeleteFile(Substitute(temp_csv, ".csv", ".DCC", ))
-    DeleteFile(Substitute(temp_csv, ".csv", ".bx", ))
+//    DeleteFile(Substitute(temp_csv, ".csv", ".bx", ))
+    DeleteFile(Substitute(temp_csv, ".csv", ".bxu", ))
   end
   RunMacro("Close All")
 

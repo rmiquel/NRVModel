@@ -117,8 +117,8 @@ dBox "Main" location: x, y
 
     // Check software version and build number
     target_product = "TransCAD"
-    target_version = 8.0
-    target_build = 22180
+    target_version = 10.0 //8.0
+    target_build = 40640 //22180
     // reg = RunMacro("Get Registration Info")
     {, product, , build, version} = GetProgram()
     if product <> target_product or version <> target_version or

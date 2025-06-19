@@ -169,6 +169,7 @@ Macro "HH Joint Distribution" (MacroOpts)
   rscriptexe = MacroOpts.rscriptexe
   rscript = MacroOpts.rscript
   se_bin = MacroOpts.se_bin
+  se_csv = MacroOpts.se_csv
   taz_field = MacroOpts.taz_field
   internal_query = MacroOpts.internal_query
   seed_tbl = MacroOpts.seed_tbl
@@ -180,7 +181,8 @@ Macro "HH Joint Distribution" (MacroOpts)
   // "Internal" identifying internal zones (where disagg is applied). Create
   // that field if needed.
   if internal_query <> null  then do
-    view = OpenTable("view", "FFB", {se_bin})
+    view = OpenTable("view", "CSV", {se_csv, })
+    //view = OpenTable("view", "FFB", {se_bin})
     internal_query = RunMacro("Normalize Query", internal_query)
     if internal_query <> "Select * where InternalZone = 'Internal'" then do
       a_fields = {
@@ -213,7 +215,8 @@ Macro "HH Joint Distribution" (MacroOpts)
   // Prepare arguments for "Run R Script"
   rscriptexe = rscriptexe
   rscript = rscript
-  OtherArgs = {se_bin, taz_field, seed_tbl, output_dir}
+  OtherArgs = {se_csv, taz_field, seed_tbl, output_dir}
+  //OtherArgs = {se_bin, taz_field, seed_tbl, output_dir}
   RunMacro("Run R Script", rscriptexe, rscript, OtherArgs)
 EndMacro
 

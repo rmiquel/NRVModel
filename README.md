@@ -1,12 +1,12 @@
 # What this repo is
 The travel demand model for the New River Valley MPO funded by the MPO and DOT
-and developed by WSP USA.
+and developed by WRA.
 
 # User's Guide
-https://github.com/pbsag/nrv-model/wiki
+TBD
 
 # Dependencies
-  * TransCAD v8 build 22180  
+  * TransCAD v10 build 40640  
   * [gisdk_tools](https://github.com/pbsag/gisdk_tools_wiki/wiki) 
     * included in release
     * submodule in repo

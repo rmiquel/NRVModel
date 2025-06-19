@@ -10,7 +10,8 @@ library(tcadr)
 # The script is called from the command line
 # by the model. Collect arguments passed.
 args <- commandArgs(trailingOnly = TRUE)
-se_bin <- args[1]
+se_csv <- args[1]
+# se_bin <- args[1]
 taz_field <- args[2]
 seedTbl <- args[3]
 output_dir <- args[4]
@@ -29,7 +30,8 @@ for (name in margNames){
 }
 
 # read the se bin file into a data frame
-se_tbl <- read_tcad(se_bin)
+se_tbl <- read_csv(se_csv)
+# se_tbl <- read_tcad(se_bin)
 # Change any NAs to zero
 se_tbl[is.na(se_tbl)] <- 0
 
