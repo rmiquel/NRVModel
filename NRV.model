@@ -2,77 +2,18 @@
 Macro "NRV" (Args)
 Body:
     // model = FlowChart( { StartNodes } , { EndNodes } , Description)
-    model = FlowChart({"Population Synthesis"},{"Reports"},)
+    model = FlowChart({"Initial Processing"},{"Initial Processing"},)
     //
     // Nodes
     //
     // FlowChartNode(model,NodeName,MacroName,UI,Description)
     //
-    FlowChartNode(model,"Population Synthesis",,,)
-    FlowChartNode(model,"Preprocess and Build Networks",,,)
-    FlowChartNode(model,"Skims and Accessibilities",,,)
-    FlowChartNode(model,"ABM Core",,,)
-    FlowChartNode(model,"Visitor ABM",,,)
-    FlowChartNode(model,"Auto Assignments",,,)
-    FlowChartNode(model,"Convergence",,,)
-    FlowChartNode(model,"Public Transit Assignments",,,)
-    FlowChartNode(model,"Reports",,,)
-    FlowChartNode(model,"Supplementary Models",,,)
+    FlowChartNode(model,"Initial Processing",,,)
     //
     // Links
     //
     // FlowChartLink(model , FromNode , ToNode , Condition , Description , IsFeedbackLoop)
     //
-    FlowChartLink(model,"Population Synthesis","Preprocess and Build Networks",True,,)
-    FlowChartLink(model,"Preprocess and Build Networks","Skims and Accessibilities",True,,)
-    FlowChartLink(model,"Skims and Accessibilities","ABM Core",True,,)
-    FlowChartLink(model,"Auto Assignments","Convergence",True,,)
-    FlowChartLink(model,"Convergence","Skims and Accessibilities",2,,1)
-    FlowChartLink(model,"Convergence","Public Transit Assignments",True,,)
-    FlowChartLink(model,"Public Transit Assignments","Reports",True,,)
-    FlowChartLink(model,"ABM Core","Visitor ABM",True,,)
-    FlowChartLink(model,"Visitor ABM","Supplementary Models",True,,)
-    FlowChartLink(model,"Supplementary Models","Auto Assignments",True,,)
-    Return(model)
-EndMacro
-
-
-Macro "Population Synthesis" (Args,Result)
-    Attributes = {
-        {"Class", {"GISDK"}},
-        {"MacroNames", {"PopulationSynthesis Oahu"}},
-        {"Picture", "bmp\\planpeoplehouse_v3.bmp"},
-        {"PicturePosition", "CenterRight"},
-        {"TextStyle", "Left"}
-    }
-Data:
-    InSections({"Population Synthesis|Inputs"})
-    OutSections({"Population Synthesis|Outputs"})
-EndMacro
-
-
-Macro "Preprocess and Build Networks" (Args,Result)
-    Attributes = {
-        {"Picture", "bmp\\plan_config_v3.bmp"}
-    }
-Data:
-    In({ Args.[HighwayInputDatabase] })
-    In({ Args.[TransitRouteInputs] })
-    In({ Args.[TAZGeography] })
-    In({ Args.[Demographics] })
-    Out({ Args.[HighwayNetwork] })
-    Out({ Args.[HighwayDatabase] })
-    Out({ Args.[TransitRoutes] })
-    Out({ Args.[DemographicOutputs] })
-Body:
-    model = FlowChart({ "Preprocess Databases" },{ "Build Networks" },"Group steps")
-    //
-    // Nodes
-    FlowChartNode(model,"Preprocess Databases",,,)
-    FlowChartNode(model,"Build Networks",,,)
-    //
-    // Links
-    FlowChartLink(model,"Preprocess Databases","Build Networks",False,,)
     Return(model)
 EndMacro
 
@@ -101,35 +42,6 @@ Macro "Build Networks" (Args,Result)
 Data:
     In({ Args.[HighwayDatabase] })
     In({ Args.[TransitRoutes] })
-EndMacro
-
-
-Macro "Skims and Accessibilities" (Args,Result)
-    Attributes = {
-        {"Picture", "bmp\\planskim_v3.bmp"}
-    }
-Data:
-    InSections({"Accessibility|Mode Logsums|Mandatory",
-                "Accessibility|Destination Logsums|Auto",
-                    "Accessibility|Destination Logsums|Non Motorized",
-                    "Accessibility|Destination Logsums|Public Transport"})
-    In({ Args.[HighwayDatabase] })
-    In({ Args.[TransitRoutes] })
-    OutSections({"Skims|Motorized",
-                 "Skims|NonMotorized",
-                 "Accessibility|Output"})
-Body:
-    model = FlowChart({ "Skim Matrices" },{ "Accessibilities" },"Group steps")
-    //
-    // Nodes
-    FlowChartNode(model,"Skim Matrices",,,)
-    FlowChartNode(model,"TAZ Accessibility",,,)
-    FlowChartNode(model,"Mandatory Accessibility",,,)
-    //
-    // Links
-    FlowChartLink(model,"Skim Matrices","TAZ Accessibility",False,,)
-    FlowChartLink(model,"TAZ Accessibility","Mandatory Accessibility",False,,)
-    Return(model)
 EndMacro
 
 
@@ -173,35 +85,6 @@ Data:
                     "Accessibility|Destination Logsums|Public Transport"})
     Out({ Args.[MandatoryModeAccessibility] })
     Out({ Args.[MandatoryDestAccessibility] })
-EndMacro
-
-
-Macro "ABM Core" (Args,Result)
-    Attributes = {
-        {"Description", "Peoria ABM"},
-        {"Height", 45},
-        {"Picture", "bmp\\plantour_v3.bmp"},
-        {"TextStyle", "Left"}
-    }
-Body:
-    // model = FlowChart( { StartNodes } , { EndNodes } , Description)
-    model = FlowChart({"ABM Preprocess"},{"SubTour Models"},"Group steps")
-    
-    // FlowChartNode(model,NodeName,MacroName,UI,Description)
-    FlowChartModel(model,"ABM Preprocess",,,)
-    FlowChartNode(model,"LongTermChoices",,,)
-    FlowChartModel(model,"Mandatory Models",,,)
-    FlowChartModel(model,"SubTour Models",,,)
-    FlowChartModel(model,"NonMandatory Models",,,)
-    FlowChartModel(model,"ABM Postprocess",,,)
-    
-    // FlowChartLink(model , FromNode , ToNode , Condition , Description , IsFeedbackLoop)
-    FlowChartLink(model,"ABM Preprocess","LongTermChoices",True,,)
-    FlowChartLink(model,"LongTermChoices","Mandatory Models",True,,)
-    FlowChartLink(model,"Mandatory Models","SubTour Models",True,,)
-    FlowChartLink(model,"SubTour Models","NonMandatory Models",True,,)
-    FlowChartLink(model,"NonMandatory Models","ABM Postprocess",True,,)
-    Return(model)
 EndMacro
 
 
@@ -876,65 +759,6 @@ Macro "ABM Postprocess" (Args,Result)
 EndMacro
 
 
-Macro "Supplementary Models" (Args, Result)
-    Attributes = {
-        {"MacroNames",{"Airport Model","Commercial Vehicles"}}
-    }
-EndMacro
-
-
-Macro "Auto Assignments" (Args, Result)
-    Attributes = {
-        {"Class", {"GISDK"}},
-        {"MacroNames",{"Create Assignment OD Matrices","Highway Assignment AM OP PM"}},
-    {"Picture", "bmp\\plansubarea_v3.bmp"},
-    {"PicturePosition", "CenterRight"}
-    }
-EndMacro
-
-
-Macro "Public Transit Assignments" (Args, Result)
-    Attributes = {
-        {"MacroNames", {"Transit Assignment"}}
-    }
-Body:
-    ShowMessage("Public Transit Assignments: Not yet implemented")
-    Return(1)
-EndMacro
-
-
-Macro "Reports" (Args, Result)
-    Attributes = {
-        {"MacroNames", {"Reports"}}
-    }
-Body:
-    ShowMessage("Reports: Not yet implemented")
-    Return(1)
-EndMacro
-
-
-/*
-Macro "Report.Population Synthesis" (Args,Result)
-    Attributes = {
-        {"MacroName", "ReportPopSynth"}
-    }
-EndMacro
-*/
-Macro "Convergence" (Args, Result)
-    Attributes = {
-        {"Height", 100},
-        {"MacroName", "FeedbackConvergence"},
-        {"Picture", "bmp\\planiteration_v3.bmp"},
-        {"PicturePosition", "Center"},
-        {"Shape", "Decision"},
-        {"Text", " "},
-        {"Width", 100},
-        {"FillColor",{192,96,0}},
-        {"FillColor2",{192,96,0}}
-    }
-EndMacro
-
-
 Macro "Visitor Party Synthesis" (Args,Result)
     Attributes = {
         {"Class", {"GISDK"}},
@@ -1103,8 +927,6 @@ Macro "Visitor Stop Dest Choice" (Args,Result)
         {"Class", {"GISDK"}},
         {"MacroNames", {"Visitor Stops Destination"}}
     }
-Data:
-    InSections()
 EndMacro
 
 
@@ -1131,7 +953,9 @@ EndMacro
 Macro "Visitor OD" (Args,Result)
     Attributes = {
         {"Class", {"GISDK"}},
-        {"MacroNames",{"Create Visitor Trip File","Write Visitor OD", "Close Visitor ABM Manager"}}
+        {"MacroNames",{"Create Visitor Trip File",
+                        "Write Visitor OD",
+                        "Close Visitor ABM Manager"}}
     }
 Data:
     Out({ Args.[VisitorTrips] })
@@ -1141,30 +965,11 @@ Data:
 EndMacro
 
 
-Macro "Visitor ABM" (Args,Result)
+Macro "Initial Processing" (Args,Result)
     Attributes = {
-        {"Description", "Visitor ABM"}
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Initial Processing"}}
     }
-Body:
-    // model = FlowChart( { StartNodes } , { EndNodes } , Description)
-    model = FlowChart({"Visitor Party Synthesis"},{"Visitor OD"},"Group steps")
-    //
-    // Nodes
-    //
-    // FlowChartNode(model,NodeName,MacroName,UI,Description)
-    //
-    FlowChartNode(model,"Visitor Party Synthesis",,,)
-    FlowChartNode(model,"Visitor Tour Models",,,)
-    FlowChartNode(model,"Visitor Stop Models",,,)
-    FlowChartNode(model,"Visitor OD",,,)
-    //
-    // Links
-    //
-    // FlowChartLink(model , FromNode , ToNode , Condition , Description , IsFeedbackLoop)
-    //
-    FlowChartLink(model,"Visitor Party Synthesis","Visitor Tour Models",True,,)
-    FlowChartLink(model,"Visitor Tour Models","Visitor Stop Models",True,,)
-    FlowChartLink(model,"Visitor Stop Models","Visitor OD",True,,)
-    Return(model)
+    Return(True)
 EndMacro
 

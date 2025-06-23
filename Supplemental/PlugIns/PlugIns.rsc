@@ -6,7 +6,7 @@ Macro "Model.Attributes" (Args,Result)
         {"BannerPicture", "Supplemental\\bmp\\NRV_logo.bmp"},
         {"BannerWidth", 250},
         {"ResizePicture", 1},
-        {"Base Scenario Name", "Base"},
+        {"Base Scenario Name", "Base_2016"},
         {"ClearLogFiles", 1},
         {"CloseOpenFiles", 1},
         {"CodeUI", "ui\\ui.dbd"},
