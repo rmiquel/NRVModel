@@ -24,7 +24,7 @@ Macro "Remove School Bus Trips"
   UpdateProgressBar("Remove School Bus Trips", 0)
   shared no_bus_file
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
   output_dir = scen_dir + "/outputs/mode"
 
@@ -49,7 +49,7 @@ Macro "Apply MC Probabilities"
   UpdateProgressBar("Apply MC Probabilities", 0)
   shared no_bus_file
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
   
   opts = null

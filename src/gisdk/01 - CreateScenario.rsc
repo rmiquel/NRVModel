@@ -5,10 +5,10 @@ Macro "Create Scenario" is the main control macro, which calls all other
 macros in this script.
 */
 
-Macro "Create Scenario"
+Macro "Create Scenario" (Args)
 
   // Check if anything has already been created in the scenario directory
-  dir = MODELARGS.scen_dir + "/inputs/*"
+  dir = Args.[Scenario Folder] + "/inputs/*"
   if GetDirectoryInfo(dir, "All") <> null then do
     opts = null
     opts.Buttons = "YesNo"
@@ -21,25 +21,26 @@ Macro "Create Scenario"
   end
 
   if yesno = "Yes" or yesno = null then do
-    RunMacro("Create Folder Structure")
-    RunMacro("Copy TAZ")
-    RunMacro("Create Scenario SE")
-    RunMacro("Create Scenario Highway")
-    RunMacro("Create Scenario Transit")
+    RunMacro("Create Folder Structure", Args)
+    RunMacro("Copy TAZ", Args)
+    RunMacro("Create Scenario SE", Args)
+    RunMacro("Create Scenario Highway", Args)
+    RunMacro("Create Scenario Transit", Args)
   end
+
+  ShowMessage("Scenario created")
 EndMacro
 
 /*
 - Creates input and output folders needed in the scenario directory
 */
 
-Macro "Create Folder Structure"
-  UpdateProgressBar("Create Folder Structure", 0)
+Macro "Create Folder Structure" (Args)
 
   // copy the master directory structure to the scenario input directory
   opts = null
-  opts.from = MODELARGS.master_dir
-  opts.to = MODELARGS.scen_dir + "/inputs"
+  opts.from = Args.[Master Folder]
+  opts.to = Args.[Scenario Folder] + "/inputs"
   opts.copy_files = "true"
   RunMacro("Copy Directory", opts)
 
@@ -60,7 +61,7 @@ Macro "Create Folder Structure"
   }
 
   for d = 1 to a_dir.length do
-    dir = MODELARGS.scen_dir + a_dir[d]
+    dir = Args.[Scenario Folder] + a_dir[d]
 
     RunMacro("Create Directory", dir)
   end
@@ -73,18 +74,17 @@ EndMacro
 - standardizes name
 */
 
-Macro "Copy TAZ"
-  UpdateProgressBar("Copy TAZ", 0)
+Macro "Copy TAZ" (Args)
 
   // Remove any dbd files in the taz directory
-  dir = MODELARGS.scen_dir + "/inputs/taz"
+  dir = Args.[Scenario Folder] + "/inputs/taz"
   a_dbds = RunMacro("Catalog Files", dir, "dbd")
   for i = 1 to a_dbds.length do
     DeleteDatabase(a_dbds[i])
   end
 
   // Create the TAZ file
-  taz_dir = MODELARGS.master_dir + "\\taz"
+  taz_dir = Args.[Master Folder] + "\\taz"
   a_files = GetDirectoryInfo(taz_dir + "/*.dbd", "File")
   if a_files.length > 1 then Throw(
     "There are multiple DBD files in the master TAZ folder.\n" +
@@ -92,7 +92,7 @@ Macro "Copy TAZ"
   )
   CopyDatabase(
     taz_dir + "\\" + a_files[1][1],
-    MODELARGS.scen_dir + "\\inputs\\taz\\ScenarioTAZ.dbd"
+    Args.[Scenario Folder] + "\\inputs\\taz\\ScenarioTAZ.dbd"
   )
 
 EndMacro
@@ -102,23 +102,22 @@ EndMacro
 - standardizes name
 */
 
-Macro "Create Scenario SE"
-  UpdateProgressBar("Create Scenario SE", 0)
+Macro "Create Scenario SE" (Args)
 
   // Remove any bin or dcb files in the directory
-  dir = MODELARGS.scen_dir + "/inputs/sedata"
+  dir = Args.[Scenario Folder] + "/inputs/sedata"
   a_dbds = RunMacro("Catalog Files", dir, {"bin", "dcb"})
   for i = 1 to a_dbds.length do
     DeleteFile(a_dbds[i])
   end
 
   // Make sure folder exists before exporting
-  dir = MODELARGS.scen_dir + "/inputs/sedata"
+  dir = Args.[Scenario Folder] + "/inputs/sedata"
   if GetDirectoryInfo(dir, "All") = null then CreateDirectory(dir)
 
   // Export se data into the scenario folder
-  master_se = OpenTable("master_se", "FFB", {MODELARGS.master_se})
-  scen_se = MODELARGS.scen_dir + "/inputs/sedata/ScenarioSE.bin"
+  master_se = OpenTable("master_se", "FFB", {Args.[Master SE]})
+  scen_se = Args.[Scenario Folder] + "/inputs/sedata/ScenarioSE.bin"
   if GetFileInfo(scen_se) <> null then DeleteTableFiles("FFB", scen_se, )
   ExportView(
     master_se + "|",
@@ -129,7 +128,7 @@ Macro "Create Scenario SE"
 
   // Add field to differentiate internal from external zones
   se_tbl = OpenTable(
-    "se", "FFB", {MODELARGS.scen_dir + "/inputs/sedata/ScenarioSE.bin"}
+    "se", "FFB", {Args.[Scenario Folder] + "/inputs/sedata/ScenarioSE.bin"}
   )
   a_fields = {{"InternalZone", "Character", 10,}}
   RunMacro("TCB Add View Fields", {se_tbl, a_fields})
@@ -138,8 +137,8 @@ Macro "Create Scenario SE"
   SetDataVector(se_tbl + "|", "InternalZone", v_type, )
 
   // Add records for external stations
-  {nlyr, llyr} = GetDBLayers(MODELARGS.master_hwy)
-  nlyr = AddLayerToWorkspace(nlyr, MODELARGS.master_hwy, nlyr)
+  {nlyr, llyr} = GetDBLayers(Args.[Master Links])
+  nlyr = AddLayerToWorkspace(nlyr, Args.[Master Links], nlyr)
   SetLayer(nlyr)
   SelectByQuery("ext", "Several", "Select * where External = 1")
   v_ext_ids = GetDataVector(nlyr + "|ext", "TAZ", )
@@ -164,26 +163,25 @@ EndMacro
 - uses the GT highway project manager
 */
 
-Macro "Create Scenario Highway"
-  UpdateProgressBar("Create Scenario Highway", 0)
+Macro "Create Scenario Highway" (Args)
 
   // Remove any dbd files in the directory
-  dir = MODELARGS.scen_dir + "/inputs/networks"
+  dir = Args.[Scenario Folder] + "/inputs/networks"
   a_dbds = RunMacro("Catalog Files", dir, "dbd")
   for i = 1 to a_dbds.length do
     DeleteDatabase(a_dbds[i])
   end
 
   // Copy the master highway network into the scenario folder
-  scen_hwy = MODELARGS.scen_dir + "/inputs/networks/ScenarioNetwork.dbd"
+  scen_hwy = Args.[Scenario Folder] + "/inputs/networks/ScenarioNetwork.dbd"
   if GetFileInfo(scen_hwy) <> null then DeleteFile(scen_hwy)
-  CopyDatabase(MODELARGS.master_hwy, scen_hwy)
+  CopyDatabase(Args.[Master Links], scen_hwy)
 
   // Update the network using gisdk_tools
   opts = null
   opts.hwy_dbd = scen_hwy
-  opts.proj_list = MODELARGS.scen_dir + "/HighwayProjectList.csv"
-  opts.master_dbd = MODELARGS.master_hwy
+  opts.proj_list = Args.[Scenario Folder] + "/HighwayProjectList.csv"
+  opts.master_dbd = Args.[Master Links]
   RunMacro("Highway Project Management", opts)
 
   RunMacro("Close All")
@@ -195,18 +193,17 @@ EndMacro
 - uses the GT transit project manager
 */
 
-Macro "Create Scenario Transit"
-  UpdateProgressBar("Create Scenario Transit", 0)
+Macro "Create Scenario Transit" (Args)
 
   // Remove any RTS files in the directory
-  scen_rts = MODELARGS.scen_dir + "/inputs/networks/ScenarioRoutes.dbd"
+  scen_rts = Args.[Scenario Folder] + "/inputs/networks/ScenarioRoutes.dbd"
   if GetFileInfo(scen_rts) <> null then DeleteRouteSystem(scen_rts)
 
   // Create scenario RTS using gisdk_tools
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   opts = null
-  opts.master_rts = MODELARGS.master_rts
-  opts.scen_hwy = MODELARGS.scen_dir + "/inputs/networks/ScenarioNetwork.dbd"
+  opts.master_rts = Args.[Master Routes]
+  opts.scen_hwy = Args.[Scenario Folder] + "/inputs/networks/ScenarioNetwork.dbd"
   opts.proj_list = scen_dir + "/TransitProjectList.csv"
   opts.centroid_qry = "TAZ <> null"
   RunMacro("Transit Project Management", opts)
@@ -214,7 +211,7 @@ Macro "Create Scenario Transit"
   // Check that no centroids are marked for PNR. This will cause
   // transit skimming to crash.
   opts = null
-  opts.file = MODELARGS.scen_dir + "/inputs/networks/ScenarioNetwork.dbd"
+  opts.file = Args.[Scenario Folder] + "/inputs/networks/ScenarioNetwork.dbd"
   {map, {nlyr, llyr}} = RunMacro("Create Map", opts)
   SetLayer(nlyr)
   qry = "Select * where TAZ <> null and PNR = 1"

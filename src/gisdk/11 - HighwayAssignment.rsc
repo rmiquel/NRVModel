@@ -21,7 +21,7 @@ EndMacro
 Macro "Assignment Matrix Creation"
   UpdateProgressBar("Assignment Matrix Creation", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
   cycle = MODELARGS.cycle
 
@@ -49,7 +49,7 @@ Includes options to support feedback/cycling
 Macro "Run Highway Assignment"
   UpdateProgressBar("Run Highway Assignment", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
 
   // Set options for the OUE macro call
@@ -80,7 +80,7 @@ Depends
 Macro "Log Cycle RMSE" (rmse, prmse)
   UpdateProgressBar("Log Cycle RMSE", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
   cycle = MODELARGS.cycle
   log_file = scen_dir + "/outputs/assignment/cycle_rmse_" + period + ".csv"

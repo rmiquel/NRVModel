@@ -25,7 +25,7 @@ older scenarios.
 Macro "Create Output Copies"
   UpdateProgressBar("Create Output Copies", 0)
 
-  input_dir = MODELARGS.scen_dir + "/inputs"
+  input_dir = Args.[Scenario Folder] + "/inputs"
 
   opts = null
   opts.from_rts = input_dir + "/networks/ScenarioRoutes.rts"
@@ -52,7 +52,7 @@ tags TAZs and Links with area types.
 Macro "Determine Area Type"
   UpdateProgressBar("Determine Area Type", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   taz_dbd = MODELARGS.taz_dbd
   se_bin = MODELARGS.se_bin
   hwy_dbd = MODELARGS.hwy_dbd
@@ -93,7 +93,7 @@ capacities. It then converts to period capacity based on TOD factors.
 Macro "Capacity"
   UpdateProgressBar("Capacity", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   hwy_dbd = MODELARGS.hwy_dbd
 
   // Assign facility type to ramps
@@ -119,7 +119,7 @@ Macro "Capacity"
   // Calculate period capacities
   {nlyr, llyr} = GetDBLayers(MODELARGS.hwy_dbd)
   llyr = AddLayerToWorkspace(llyr, MODELARGS.hwy_dbd, llyr)
-  settings_file = MODELARGS.scen_dir +
+  settings_file = Args.[Scenario Folder] +
     "/inputs/networks/period_capacity_factors.csv"
   pf_factors = RunMacro("Read Parameter File", settings_file)
 
@@ -155,7 +155,7 @@ Macro "Set CC Speeds"
   UpdateProgressBar("Set CC Speeds", 0)
 
   hwy_dbd = MODELARGS.hwy_dbd
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
 
   // Add link layer to workspace
   {nlyr, llyr} = GetDBLayers(hwy_dbd)
@@ -207,7 +207,7 @@ Macro "Other Attributes"
   RunMacro("Add Fields", llyr, a_fields, {, , , , 1})
 
   // Open parameter table
-  ffs_file = MODELARGS.scen_dir + "/inputs/networks/ff_speed_alpha.csv"
+  ffs_file = Args.[Scenario Folder] + "/inputs/networks/ff_speed_alpha.csv"
   ffs_tbl = OpenTable("ffs", "CSV", {ffs_file, })
 
   // Join based on AreaType and HCMType
@@ -246,7 +246,7 @@ any other files that need similar treatment.
 Macro "Filter Transit Settings"
   UpdateProgressBar("Filter Transit Settings", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   period = MODELARGS.periods[1]
   rts_file = MODELARGS.rts_file
   param_dir = scen_dir + "/inputs/networks"

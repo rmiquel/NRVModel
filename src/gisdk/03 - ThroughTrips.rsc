@@ -30,7 +30,7 @@ Macro "Convert EE CSV to MTX"
   n = SelectByQuery("ext", "Several", qry)
   if n = 0 then Throw("No external stations found")
   opts = null
-  mtx_file = MODELARGS.scen_dir + "/inputs/external/base_ee_table.mtx"
+  mtx_file = Args.[Scenario Folder] + "/inputs/external/base_ee_table.mtx"
   opts.[File Name] = mtx_file
   opts.Label = "EE Matrix"
   opts.Tables = {"trips"}
@@ -42,7 +42,7 @@ Macro "Convert EE CSV to MTX"
   mtx = CreateMatrix(row_spec, , opts)
 
   // Update the EE matrix with the csv table
-  csv = MODELARGS.scen_dir + "/inputs/external/base_ee_table.csv"
+  csv = Args.[Scenario Folder] + "/inputs/external/base_ee_table.csv"
   view = OpenTable("csv", "CSV", {csv})
   opts = null
   opts.[Missing Is Zero] = "Yes"
@@ -76,7 +76,7 @@ Macro "Calculate EE IPF Marginals"
   UpdateProgressBar("Calculate EE IPF Marginals", 0)
   shared margTbl
 
-  margTbl = MODELARGS.scen_dir + "/inputs/external/external_awdt.csv"
+  margTbl = Args.[Scenario Folder] + "/inputs/external/external_awdt.csv"
   margTbl = OpenTable("margTbl", "CSV", {margTbl, })
 
   opts = null
@@ -98,7 +98,7 @@ Macro "IPF EE Seed Table"
   shared margTbl
 
   // Open the input EE mtx (it is not modified)
-  mtx_file = MODELARGS.scen_dir + "/inputs/external/base_ee_table.mtx"
+  mtx_file = Args.[Scenario Folder] + "/inputs/external/base_ee_table.mtx"
   mtx = OpenMatrix(mtx_file, )
   a_corenames = GetMatrixCoreNames(mtx)
   {ri, ci} = GetMatrixIndex(mtx)
@@ -108,7 +108,7 @@ Macro "IPF EE Seed Table"
   Opts = null
   Opts.Input.[Base Matrix Currency] = {mtx_file, a_corenames[1], ri, ci}
   Opts.Input.[PA View Set] = {
-    MODELARGS.scen_dir + "/inputs/external/external_awdt.csv", margTbl, ,
+    Args.[Scenario Folder] + "/inputs/external/external_awdt.csv", margTbl, ,
   }
   Opts.Global.[Constraint Type] = "Doubly"
   Opts.Global.Iterations = 300
@@ -180,7 +180,7 @@ Depends
 Macro "EE TOD"
   UpdateProgressBar("EE TOD", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   param_file = scen_dir + "/inputs/tod/time_of_day_factors.csv"
   ee_mtx = scen_dir + "/outputs/external/EETable.mtx"
 

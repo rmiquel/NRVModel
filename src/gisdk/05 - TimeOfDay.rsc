@@ -9,7 +9,7 @@ Macro "Time of Day"
   UpdateProgressBar("Time of Day", 0)
   opts = null
   opts.table = MODELARGS.se_bin
-  opts.param_file = MODELARGS.scen_dir + "/inputs/tod/time_of_day_factors.csv"
+  opts.param_file = Args.[Scenario Folder] + "/inputs/tod/time_of_day_factors.csv"
   RunMacro("Calculate Fields - Simple", opts)
   RunMacro("Close All")
 EndMacro

@@ -26,7 +26,7 @@ Macro "Write Skim CSVs"
   UpdateProgressBar("Write Skim CSVs", 0)
 
   a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   output_dir = scen_dir + "/outputs/summary/skim_csvs"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
 
@@ -65,7 +65,7 @@ Macro "Summarize Distribution"
   UpdateProgressBar("Summarize Distribution", 0)
 
   a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   dist_dir = scen_dir + "/outputs/distribution"
   output_dir = scen_dir + "/outputs/summary/distribution_csvs"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
@@ -113,7 +113,7 @@ Macro "Summarize Mode"
   UpdateProgressBar("Summarize Mode", 0)
 
   a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   mode_dir = scen_dir + "/outputs/mode"
   output_dir = scen_dir + "/outputs/summary/mode"
   RunMacro("Create Directory", output_dir)
@@ -142,7 +142,7 @@ Macro "Create Loaded Network"
   UpdateProgressBar("Create Loaded Network", 0)
 
   a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   hwy_dbd = MODELARGS.hwy_dbd
   output_dir = scen_dir + "/outputs/summary/loaded_network"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
@@ -252,7 +252,7 @@ Macro "Calculate Daily Fields"
   UpdateProgressBar("Calculate Daily Fields", 0)
 
   a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   output_dir = scen_dir + "/outputs/summary/loaded_network"
   loaded_dbd = output_dir + "/LoadedNetwork.dbd"
   a_dir = {"AB", "BA"}
@@ -406,7 +406,7 @@ Depends
 
 Macro "Get Final Cycle Number" (period)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   rmse_file = scen_dir + "/outputs/assignment/cycle_rmse_" + period + ".csv"
   df = CreateObject("df")
   df.read_csv(rmse_file)
@@ -423,7 +423,7 @@ Macro "VOC Maps"
   UpdateProgressBar("VOC Maps", 0)
 
   a_periods = MODELARGS.periods + {"Daily"}
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   hwy_dbd = scen_dir + "/outputs/summary/loaded_network/LoadedNetwork.dbd"
   output_dir = scen_dir + "/outputs/summary/maps"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
@@ -561,7 +561,7 @@ Macro "Create Count Difference Map"
   UpdateProgressBar("Count Difference Map", 0)
 
   // Create total count diff map
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   macro_opts = null
   macro_opts.output_file = scen_dir +
     "/outputs/summary/maps/Count Difference - Total.map"
@@ -575,7 +575,7 @@ Macro "Create Count Difference Map"
   RunMacro("Count Difference Map", macro_opts)
 
   // Create SUT count diff map
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   macro_opts = null
   macro_opts.output_file = scen_dir +
     "/outputs/summary/maps/Count Difference - SUT.map"
@@ -589,7 +589,7 @@ Macro "Create Count Difference Map"
   RunMacro("Count Difference Map", macro_opts)
 
   // Create MUT count diff map
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   macro_opts = null
   macro_opts.output_file = scen_dir +
     "/outputs/summary/maps/Count Difference - MUT.map"
@@ -613,7 +613,7 @@ VMT and VHT.
 Macro "Summarize by FT and AT"
   UpdateProgressBar("Summarize by FT and AT", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   opts.hwy_dbd = scen_dir + "/outputs/summary/loaded_network/LoadedNetwork.dbd"
   opts.output_dir = scen_dir + "/outputs/summary"
   RunMacro("Link Summary by FT and AT", opts)
@@ -629,7 +629,7 @@ macro "Outviz Assignment Validation"
 Macro "Run Outviz Assignment Validation"
   UpdateProgressBar("Outviz Assignment Validation", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   model_dir = RunMacro("Normalize Path", scen_dir + "/../..")
   opts = null
   opts.rscriptexe = model_dir + "/src/R/R-3.5.0/bin/Rscript.exe"
@@ -647,7 +647,7 @@ Summarizes transit assignment.
 Macro "Transit Summary"
   UpdateProgressBar("Transit Summary", 0)
   
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   opts = null
   opts.transit_asn_dir = scen_dir + "/outputs/assignment/transit"
   opts.output_dir = scen_dir + "/outputs/summary/transit_tables"

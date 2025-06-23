@@ -18,12 +18,7 @@
         }
         Args.[Scenario Folder] = {
             "Type":"Folder",
-            "Value":"%Base Folder%\\Scenarios\\base_2022"
-        }
-        Args.[Common Folder] = {
-            "Type":"Folder",
-            "Caption":"Common Folder",
-            "Value":"%Data Folder%\\CommonFiles"
+            "Value":"%Base Folder%\\scenarios\\Base_2016"
         }
         Args.[Input Folder] = {
             "Type":"Folder",
@@ -32,20 +27,6 @@
         Args.[Output Folder] = {
             "Type":"Folder",
             "Value":"%Scenario Folder%\\Output"
-        }
-        Args.OutputSkims = {
-            "Type":"Folder",
-            "Value":"%Output Folder%\\Skims"
-        }
-        Args.Exit = {
-            "Type":"boolean",
-            "Description":"A step can set it to True and the model will stop running.",
-            "Value":null
-        }
-        Args.ExitMessage = {
-            "Type":"string",
-            "Description":"Diagnostic error message.",
-            "Value":"OK"
         }
         Args.[Disable Macros] = {
             "Type":"array",
@@ -59,7 +40,39 @@
             "Type":"array",
             "Value":null
         }
+        Args.[Master SE] = {
+            "Type":"File",
+            "Description":"Master SED Demographics",
+            "Value":"%Master Folder%\\sedata\\se_2016.bin"
+        }
+        Args.[Master Links] = {
+            "Type":"File",
+            "Description":"Master highway database",
+            "Value":"%Master Folder%\\networks\\master_network.dbd"
+        }
+        Args.[Master Routes] = {
+            "Type":"File",
+            "Description":"Master transit routes",
+            "Value":"%Master Folder%\\networks\\master_transit.rts"
+        }
+        Args.AMFlows = {
+            "Type":"File",
+            "Caption":"Highway AM Flows",
+            "Description":"AMFlows",
+            "Value":"%Output Folder%\\Assignment\\Roadway\\AMFlows.bin"
+        }
 	
+
+
+
+
+
+
+
+
+
+
+    
 	Section = "Parameters|Feedback"
 	
         Args.Iteration = {
@@ -305,21 +318,13 @@
 	
 	Section = "GEO Master Data"
 	
-        Args.[Master Links] = {
-            "Type":"File",
-            "Description":"Master highway database",
-            "Value":"%Master Folder%\\networks\\master_links.dbd"
-        }
+
         Args.HighwayInputDatabase = {
             "Type":"File",
             "Description":"Input highway database",
             "Value":"%Input Folder%\\networks\\scenario_links.dbd"
         }
-        Args.[Master Routes] = {
-            "Type":"File",
-            "Description":"Master transit routes",
-            "Value":"%Master Folder%\\networks\\master_routes.rts"
-        }
+
         Args.TransitRouteInputs = {
             "Type":"File",
             "Description":"Input transit routes",
@@ -335,11 +340,7 @@
             "Description":"Input TAZ Geography",
             "Value":"%Input Folder%\\tazs\\scenario_tazs.dbd"
         }
-        Args.[Master SE] = {
-            "Type":"File",
-            "Description":"Master SED Demographics",
-            "Value":"%Master Folder%\\sedata\\base_2022.bin"
-        }
+
         Args.Demographics = {
             "Type":"File",
             "Description":"Input SED Demographics",
@@ -3973,12 +3974,6 @@
 	
 	Section = "AssignmentOutputs"
 	
-        Args.AMFlows = {
-            "Type":"File",
-            "Caption":"Highway AM Flows",
-            "Description":"AMFlows",
-            "Value":"%Output Folder%\\Assignment\\Roadway\\AMFlows.bin"
-        }
         Args.PMFlows = {
             "Type":"File",
             "Caption":"Highway PM Flows",

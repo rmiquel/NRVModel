@@ -26,7 +26,7 @@ are included by default (no networks created separately for them).
 Macro "Update MC Variables File"
   UpdateProgressBar("Update MC Variables File", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
   net_dir = scen_dir + "/outputs/networks"
   var_tbl = scen_dir + "/inputs/mode/mc_variables.csv"
@@ -59,7 +59,7 @@ been willing to help explain some of them and how to use them.
 Macro "Run NLM MC"
   UpdateProgressBar("Run NLM MC", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   se_bin = MODELARGS.se_bin
   period = MODELARGS.period
   skim_dir = scen_dir + "/outputs/skims"

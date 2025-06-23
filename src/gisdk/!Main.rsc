@@ -144,11 +144,11 @@ dBox "Main" location: x, y
       "Model path includes spaces or other special characters.\n" +
       "Setup in a directory with only 'a-z' and '_' to avoid potential issues."
     )
-    MODELARGS.master_dir = RunMacro(
+    Args.[Master Folder] = RunMacro(
       "Normalize Path", ui_dir + "/../../master"
     )
-    MODELARGS.master_hwy = MODELARGS.master_dir + "/networks/master_network.dbd"
-    MODELARGS.master_rts = MODELARGS.master_dir + "/networks/master_transit.rts"
+    Args.[Master Links] = Args.[Master Folder] + "/networks/master_network.dbd"
+    Args.[Master Routes] = Args.[Master Folder] + "/networks/master_transit.rts"
 
     // Check to see if the UI needs to be recompiled
     RunMacro("Recompile UI Check", ui_dbd, ui_dir)
@@ -235,7 +235,7 @@ dBox "Main" location: x, y
   text 28, 5 variable: "Model with Feedback"
   button 26, 7, 20 Prompt:"Run Full Model" do
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
-    if MODELARGS.scen_dir = null then do
+    if Args.[Scenario Folder] = null then do
       ShowMessage("Select a scenario folder")
     end else do
       CreateStopwatch("run_time")
@@ -277,7 +277,7 @@ dBox "Main" location: x, y
   EndItem
   button 26, 12.5, 20 Prompt: "Fixed OD Run" do
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
-    if MODELARGS.scen_dir = null then do
+    if Args.[Scenario Folder] = null then do
       ShowMessage("Select a scenario folder")
     end else do
       RunMacro("Fixed OD Run")
@@ -437,7 +437,7 @@ dBox "Main" location: x, y
   EndItem
   
   button same, after, 15 Prompt: "Calibrate MC" do
-    if MODELARGS.scen_dir = null 
+    if Args.[Scenario Folder] = null 
       then ShowMessage("Choose a model scenario to use for calibration.")
     else RunDbox("MC Calibration")
   EndItem
@@ -476,11 +476,11 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
 
     // Check to see if ScenarioSettings.csv and project list csvs are present
-    settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+    settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
     if GetFileInfo(settings_file) then settings = "True" else settings = "False"
-    hwy_list_file = MODELARGS.scen_dir + "/HighwayProjectList.csv"
+    hwy_list_file = Args.[Scenario Folder] + "/HighwayProjectList.csv"
     if GetFileInfo(hwy_list_file) then hwy_list = "True" else hwy_list = "False"
-    trn_list_file = MODELARGS.scen_dir + "/TransitProjectList.csv"
+    trn_list_file = Args.[Scenario Folder] + "/TransitProjectList.csv"
     if GetFileInfo(trn_list_file) then trn_list = "True" else trn_list = "False"
 
     // If the project lists exist, read IDs (for display only).
@@ -543,7 +543,7 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
     file = ChooseFile(
       {{"Binary File", "*.bin"}},
       "Choose the SE bin file",
-      {{"Initial Directory", MODELARGS.master_dir + "\\sedata"}}
+      {{"Initial Directory", Args.[Master Folder] + "\\sedata"}}
     )
 
     // Extract just the file name and extension from the full path and prefix it
@@ -606,7 +606,7 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
     if !ok then ShowMessage("Some values are missing")
 
     // Check that settings are valid
-    se_file = MODELARGS.master_dir + "/sedata/" + Settings.master_se
+    se_file = Args.[Master Folder] + "/sedata/" + Settings.master_se
     if GetFileInfo(se_file) = null then do
       ok = "False"
       ShowMessage(
@@ -622,7 +622,7 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
 
     // Write out settings to ScenarioSettings.csv
     if ok and write_settings then do
-      settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+      settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
       col_names = {"Parameter", "Value", "Description"}
       v_description = A2V(a_description)
       RunMacro(
@@ -663,7 +663,7 @@ Macro "Wrapper" (a_scen_list)
     RunMacro("Init MODELARGS", a_scen_list[s])
 
     pct = round((s - 1) / a_scen_list.length * 100, 0)
-    UpdateProgressBar("Running Scenario: " + MODELARGS.scen_dir, pct)
+    UpdateProgressBar("Running Scenario: " + Args.[Scenario Folder], pct)
     CreateProgressBar("", )
     RunMacro("Run Full Model")
     DestroyProgressBar()
@@ -692,9 +692,9 @@ Macro "Init MODELARGS" (scen_dir)
   // Reset MODELARGS, but Preserve important info from GUI
   // using a backup opts array
   Backup.debug = MODELARGS.debug
-  Backup.master_dir = MODELARGS.master_dir
-  Backup.master_hwy = MODELARGS.master_hwy
-  Backup.master_rts = MODELARGS.master_rts
+  Backup.master_dir = Args.[Master Folder]
+  Backup.master_hwy = Args.[Master Links]
+  Backup.master_rts = Args.[Master Routes]
   Backup.max_cycles = MODELARGS.max_cycles
   Backup.wrapper = MODELARGS.wrapper
   Backup.gt_ui = MODELARGS.gt_ui
@@ -705,7 +705,7 @@ Macro "Init MODELARGS" (scen_dir)
   MODELARGS.cycle = 1
 
   // Use the master period capacity factor file to establish TOD periods
-  param_file = MODELARGS.master_dir +
+  param_file = Args.[Master Folder] +
     "\\networks\\period_capacity_factors.csv"
   pf_factors = RunMacro("Read Parameter File", param_file)
   MODELARGS.periods = null
@@ -715,7 +715,7 @@ Macro "Init MODELARGS" (scen_dir)
   pf_factors = null
 
   // Add scenario-specific info
-  MODELARGS.scen_dir = scen_dir
+  Args.[Scenario Folder] = scen_dir
   MODELARGS.hwy_dbd = scen_dir + "\\outputs\\networks\\ScenarioNetwork.dbd"
   MODELARGS.rts_file = scen_dir + "\\outputs\\networks\\ScenarioRoutes.rts"
   MODELARGS.taz_dbd = scen_dir + "\\outputs\\taz\\ScenarioTAZ.dbd"
@@ -724,12 +724,12 @@ Macro "Init MODELARGS" (scen_dir)
 
   // Load MODELARGS with info from the settings file if it exists
   // and has data.
-  settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+  settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
 
   if GetFileInfo(settings_file) <> null then do
     // Check file to make sure it has field names and data
     ok = "True"
-    settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+    settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
 
     df = CreateObject("df")
     df.read_csv(settings_file)
@@ -744,8 +744,8 @@ Macro "Init MODELARGS" (scen_dir)
     Settings = RunMacro("Read Parameter File", settings_file)
     MODELARGS = MODELARGS + Settings
     // Convert the se data file name to a full path
-    MODELARGS.master_se =  MODELARGS.master_dir + "/sedata/" +
-      MODELARGS.master_se
+    Args.[Master SE] =  Args.[Master Folder] + "/sedata/" +
+      Args.[Master SE]
   end
 
   RunMacro("Close All")
@@ -825,7 +825,7 @@ Macro "Run Single Step" (MacroOpts)
   period_loop = MacroOpts.period_loop
   
   if step_name = null then ShowMessage("'step_name' not provided")
-  else if MODELARGS.scen_dir = null then ShowMessage("Select a scenario folder.")
+  else if Args.[Scenario Folder] = null then ShowMessage("Select a scenario folder.")
   else do
     MODELARGS.cycle = 1
     if period_loop then do
@@ -871,7 +871,7 @@ Macro "Create Release" (remove_gt_source)
   CreateProgressBar("", )
   UpdateProgressBar("Creating a Release", 0)
 
-  master_dir = MODELARGS.master_dir
+  master_dir = Args.[Master Folder]
   model_dir = RunMacro("Normalize Path", master_dir + "/..")
   release_dir = RunMacro("Normalize Path", model_dir + "/../client_release")
   from_gisdk_dir = model_dir + "/src/gisdk"
