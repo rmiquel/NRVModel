@@ -23,8 +23,8 @@ Macro "Convert EE CSV to MTX"
   UpdateProgressBar("Convert EE CSV to MTX", 0)
 
   // Create EE table from node layer
-  {nlayer, llayer} = GetDBLayers(MODELARGS.hwy_dbd)
-  map = RunMacro("G30 new map", MODELARGS.hwy_dbd)
+  {nlayer, llayer} = GetDBLayers(Args.hwy_dbd)
+  map = RunMacro("G30 new map", Args.hwy_dbd)
   SetLayer(nlayer)
   qry = "Select * where External = 1"
   n = SelectByQuery("ext", "Several", qry)
@@ -117,7 +117,7 @@ Macro "IPF EE Seed Table"
   Opts.Field.[P Core Fields] = {margTbl + ".EEmarg"}
   Opts.Field.[A Core Fields] = {margTbl + ".EEmarg"}
   Opts.Output.[Output Matrix].Label = "EE Trips Matrix"
-  Opts.Output.[Output Matrix].[File Name] = MODELARGS.ee_mtx
+  Opts.Output.[Output Matrix].[File Name] = Args.ee_mtx
   ok = RunMacro("TCB Run Procedure", "Growth Factor", Opts, &Ret)
   if !ok then Throw("EE IPF failed")
 
@@ -144,7 +144,7 @@ Macro "EE Symmetry"
   UpdateProgressBar("EE Symmetry", 0)
 
   // Open the IPFd EE mtx
-  mtx = OpenMatrix(MODELARGS.ee_mtx, )
+  mtx = OpenMatrix(Args.ee_mtx, )
   a_corenames = GetMatrixCoreNames(mtx)
   {ri, ci} = GetMatrixIndex(mtx)
   Cur = CreateMatrixCurrencies(mtx, ri, ci, )

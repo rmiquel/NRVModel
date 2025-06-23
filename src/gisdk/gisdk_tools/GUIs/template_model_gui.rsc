@@ -603,11 +603,11 @@ Macro "Init MODELARGS" (scen_dir)
 
   // Add scenario-specific info
   Args.[Scenario Folder] = scen_dir
-  MODELARGS.hwy_dbd = scen_dir + "\\outputs\\networks\\ScenarioNetwork.dbd"
-  MODELARGS.rts_file = scen_dir + "\\outputs\\networks\\ScenarioRoutes.rts"
-  MODELARGS.taz_dbd = scen_dir + "\\outputs\\taz\\ScenarioTAZ.dbd"
-  MODELARGS.ee_mtx = scen_dir + "\\outputs\\external\\EETable.mtx"
-  MODELARGS.se_bin = scen_dir + "\\outputs\\sedata\\ScenarioSE.bin"
+  Args.hwy_dbd = scen_dir + "\\outputs\\networks\\ScenarioNetwork.dbd"
+  Args.rts_file = scen_dir + "\\outputs\\networks\\ScenarioRoutes.rts"
+  Args.taz_dbd = scen_dir + "\\outputs\\taz\\ScenarioTAZ.dbd"
+  Args.ee_mtx = scen_dir + "\\outputs\\external\\EETable.mtx"
+  Args.se_bin = scen_dir + "\\outputs\\sedata\\ScenarioSE.bin"
 
   // Load MODELARGS with info from the settings file if it exists
   // and has data.

@@ -47,7 +47,7 @@ Depends
 Macro "Initial Congested Speed"
   UpdateProgressBar("Initial Congested Speed", 0)
 
-  hwy_dbd = MODELARGS.hwy_dbd
+  hwy_dbd = Args.hwy_dbd
   scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
 
@@ -90,7 +90,7 @@ Macro "Create Highway Net Files"
 
   period = MODELARGS.period
   scen_dir = Args.[Scenario Folder]
-  hwy_dbd = MODELARGS.hwy_dbd
+  hwy_dbd = Args.hwy_dbd
   in_dir = scen_dir + "/inputs/networks"
 
   opts = null
@@ -116,7 +116,7 @@ Macro "Create Transit Net Files"
   net_dir = scen_dir + "/inputs/networks"
 
   opts = null
-  opts.rts_file = MODELARGS.rts_file
+  opts.rts_file = Args.rts_file
   opts.settings_file = net_dir + "/transit_net_settings_filtered.csv"
   opts.fields_file = net_dir + "/transit_net_fields.csv"
   opts.mode_table = net_dir + "/transit_mode_table.csv"
@@ -135,8 +135,8 @@ Macro "Update Congested Link Times"
   
   scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
-  hwy_dbd = MODELARGS.hwy_dbd
-  rts_file = MODELARGS.rts_file
+  hwy_dbd = Args.hwy_dbd
+  rts_file = Args.rts_file
   
   // Update highway networks
   opts = null
@@ -205,7 +205,7 @@ Macro "Transit Skims"
   UpdateProgressBar("Transit Skims", 0)
 
   scen_dir = Args.[Scenario Folder]
-  rts_file = MODELARGS.rts_file
+  rts_file = Args.rts_file
   period = MODELARGS.period
   cycle = MODELARGS.cycle
 
@@ -263,8 +263,8 @@ Macro "Create Skim Indices"
 
   period = MODELARGS.period
   scen_dir = Args.[Scenario Folder]
-  se_bin = MODELARGS.se_bin
-  hwy_dbd = MODELARGS.hwy_dbd
+  se_bin = Args.se_bin
+  hwy_dbd = Args.hwy_dbd
 
   // Add node layer to the map
   {nlyr, llyr} = GetDBLayers(hwy_dbd)

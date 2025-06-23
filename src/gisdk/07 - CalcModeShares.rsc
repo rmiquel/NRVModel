@@ -60,7 +60,7 @@ Macro "Run NLM MC"
   UpdateProgressBar("Run NLM MC", 0)
 
   scen_dir = Args.[Scenario Folder]
-  se_bin = MODELARGS.se_bin
+  se_bin = Args.se_bin
   period = MODELARGS.period
   skim_dir = scen_dir + "/outputs/skims"
   mc_dir = scen_dir + "/inputs/mode"

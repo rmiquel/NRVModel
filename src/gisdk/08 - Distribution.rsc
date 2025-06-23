@@ -24,7 +24,7 @@ Macro "Convert to Distribution Purposes"
   UpdateProgressBar("Convert to Distribution Purposes", 0)
 
   period = MODELARGS.period
-  se_bin = MODELARGS.se_bin
+  se_bin = Args.se_bin
   param_file = Args.[Scenario Folder] + "/inputs/distribution/d_purp_conversion.csv"
 
   opts = null
@@ -47,7 +47,7 @@ Macro "Add Inter-County Skim Core"
 
   period = MODELARGS.period
   scen_dir = Args.[Scenario Folder]
-  taz_dbd = MODELARGS.taz_dbd
+  taz_dbd = Args.taz_dbd
 
   skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
 
@@ -108,7 +108,7 @@ Macro "Resident DC"
 
   scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
-  se_bin = MODELARGS.se_bin
+  se_bin = Args.se_bin
 
   opts = null
   opts.period = period
@@ -140,7 +140,7 @@ Macro "HBU Gravity"
   period = MODELARGS.period
   opts = null
   opts.scen_dir = scen_dir
-  opts.se_bin = MODELARGS.se_bin
+  opts.se_bin = Args.se_bin
   opts.period = period
   opts.param_file = scen_dir + "/inputs/university/univ_distribution.csv"
   opts.skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
@@ -162,7 +162,7 @@ Macro "Commercial Gravity"
   period = MODELARGS.period
   opts = null
   opts.scen_dir = scen_dir
-  opts.se_bin = MODELARGS.se_bin
+  opts.se_bin = Args.se_bin
   opts.period = period
   opts.param_file = scen_dir + "/inputs/cv/cv_distribution.csv"
   opts.skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
@@ -184,7 +184,7 @@ Macro "IEEI Gravity"
   period = MODELARGS.period
   opts = null
   opts.scen_dir = scen_dir
-  opts.se_bin = MODELARGS.se_bin
+  opts.se_bin = Args.se_bin
   opts.period = period
   opts.param_file = scen_dir + "/inputs/external/ieei_distribution.csv"
   opts.skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
@@ -208,7 +208,7 @@ Macro "NHBNR"
 
   scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
-  se_bin = MODELARGS.se_bin
+  se_bin = Args.se_bin
 
   // Collect vector of IEEI trip attractions
   mtx_file = scen_dir + "/outputs/distribution/trips_IEEI_" + period + ".mtx"

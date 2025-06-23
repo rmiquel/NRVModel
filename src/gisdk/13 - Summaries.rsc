@@ -143,7 +143,7 @@ Macro "Create Loaded Network"
 
   a_periods = MODELARGS.periods
   scen_dir = Args.[Scenario Folder]
-  hwy_dbd = MODELARGS.hwy_dbd
+  hwy_dbd = Args.hwy_dbd
   output_dir = scen_dir + "/outputs/summary/loaded_network"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
 

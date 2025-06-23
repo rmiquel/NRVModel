@@ -26,7 +26,7 @@
         }
         Args.[Output Folder] = {
             "Type":"Folder",
-            "Value":"%Scenario Folder%\\Output"
+            "Value":"%Scenario Folder%\\Outputs"
         }
         Args.[Disable Macros] = {
             "Type":"array",
@@ -55,13 +55,31 @@
             "Description":"Master transit routes",
             "Value":"%Master Folder%\\networks\\master_transit.rts"
         }
-        Args.AMFlows = {
+        Args.rts_file = {
             "Type":"File",
-            "Caption":"Highway AM Flows",
-            "Description":"AMFlows",
-            "Value":"%Output Folder%\\Assignment\\Roadway\\AMFlows.bin"
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\networks\\ScenarioRoutes.rts"
         }
-	
+        Args.hwy_dbd = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\networks\\ScenarioNetwork.dbd"
+        }
+        Args.taz_dbd = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\taz\\ScenarioTAZ.dbd"
+        }
+        Args.ee_mtx = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\external\\EETable.mtx"
+        }
+        Args.se_bin = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\sedata\\ScenarioSE.bin"
+        }
 
 
 

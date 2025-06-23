@@ -29,16 +29,16 @@ Macro "Create Output Copies"
 
   opts = null
   opts.from_rts = input_dir + "/networks/ScenarioRoutes.rts"
-  {drive, folder, filename, ext} = SplitPath(MODELARGS.rts_file)
+  {drive, folder, filename, ext} = SplitPath(Args.rts_file)
   opts.to_dir = drive + folder
   opts.include_hwy_files = "true"
   RunMacro("Copy RTS Files", opts)
-  CopyDatabase(input_dir + "/taz/ScenarioTAZ.dbd", MODELARGS.taz_dbd)
+  CopyDatabase(input_dir + "/taz/ScenarioTAZ.dbd", Args.taz_dbd)
   se = OpenTable("se", "FFB", {input_dir + "/sedata/ScenarioSE.bin"})
   ExportView(
     se + "|",
     "FFB",
-    MODELARGS.se_bin,,
+    Args.se_bin,,
   )
   CloseView(se)
 EndMacro
@@ -53,9 +53,9 @@ Macro "Determine Area Type"
   UpdateProgressBar("Determine Area Type", 0)
 
   scen_dir = Args.[Scenario Folder]
-  taz_dbd = MODELARGS.taz_dbd
-  se_bin = MODELARGS.se_bin
-  hwy_dbd = MODELARGS.hwy_dbd
+  taz_dbd = Args.taz_dbd
+  se_bin = Args.se_bin
+  hwy_dbd = Args.hwy_dbd
 
   opts = null
   opts.table = se_bin
@@ -94,7 +94,7 @@ Macro "Capacity"
   UpdateProgressBar("Capacity", 0)
 
   scen_dir = Args.[Scenario Folder]
-  hwy_dbd = MODELARGS.hwy_dbd
+  hwy_dbd = Args.hwy_dbd
 
   // Assign facility type to ramps
   ramp_query = "Select * where HCMType = 'Ramp'"
@@ -117,8 +117,8 @@ Macro "Capacity"
   net.update_bin(hwy_bin)
 
   // Calculate period capacities
-  {nlyr, llyr} = GetDBLayers(MODELARGS.hwy_dbd)
-  llyr = AddLayerToWorkspace(llyr, MODELARGS.hwy_dbd, llyr)
+  {nlyr, llyr} = GetDBLayers(Args.hwy_dbd)
+  llyr = AddLayerToWorkspace(llyr, Args.hwy_dbd, llyr)
   settings_file = Args.[Scenario Folder] +
     "/inputs/networks/period_capacity_factors.csv"
   pf_factors = RunMacro("Read Parameter File", settings_file)
@@ -154,7 +154,7 @@ EndMacro
 Macro "Set CC Speeds"
   UpdateProgressBar("Set CC Speeds", 0)
 
-  hwy_dbd = MODELARGS.hwy_dbd
+  hwy_dbd = Args.hwy_dbd
   scen_dir = Args.[Scenario Folder]
 
   // Add link layer to workspace
@@ -195,8 +195,8 @@ Macro "Other Attributes"
   UpdateProgressBar("Free-Flow Speed", 0)
 
   // Add fields to highway DBD
-  {nlyr, llyr} = GetDBLayers(MODELARGS.hwy_dbd)
-  llyr = AddLayerToWorkspace(llyr, MODELARGS.hwy_dbd, llyr)
+  {nlyr, llyr} = GetDBLayers(Args.hwy_dbd)
+  llyr = AddLayerToWorkspace(llyr, Args.hwy_dbd, llyr)
   a_fields = {
               {"FFSpeed", "Integer", 10, , , , , "Free flow travel speed"},
               {"FFTime", "Real", 10, 2, , , , "Free flow travel time"},
@@ -248,7 +248,7 @@ Macro "Filter Transit Settings"
 
   scen_dir = Args.[Scenario Folder]
   period = MODELARGS.periods[1]
-  rts_file = MODELARGS.rts_file
+  rts_file = Args.rts_file
   param_dir = scen_dir + "/inputs/networks"
 
   opts.rts_file = rts_file

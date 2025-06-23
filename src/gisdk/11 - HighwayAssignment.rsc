@@ -55,7 +55,7 @@ Macro "Run Highway Assignment"
   // Set options for the OUE macro call
   opts = null
   opts.period = period
-  opts.hwy_dbd = MODELARGS.hwy_dbd
+  opts.hwy_dbd = Args.hwy_dbd
   opts.cycle = MODELARGS.cycle
   opts.asn_dir = scen_dir + "/outputs/assignment"
   opts.trip_mtx = opts.asn_dir + "/assignment_" + period + ".mtx"

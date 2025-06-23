@@ -8,7 +8,7 @@ Directionality factors are not applied here.
 Macro "Time of Day"
   UpdateProgressBar("Time of Day", 0)
   opts = null
-  opts.table = MODELARGS.se_bin
+  opts.table = Args.se_bin
   opts.param_file = Args.[Scenario Folder] + "/inputs/tod/time_of_day_factors.csv"
   RunMacro("Calculate Fields - Simple", opts)
   RunMacro("Close All")
