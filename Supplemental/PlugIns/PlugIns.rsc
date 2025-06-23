@@ -3,13 +3,13 @@ Macro "Model.Attributes" (Args,Result)
     Attributes = {
         {"BackgroundColor",{255,255,255}},
         {"BannerHeight", 119},
-        {"BannerPicture", "Supplemental\\bmp\\Oahu_logo.bmp"},
+        {"BannerPicture", "Supplemental\\bmp\\NRV_logo.bmp"},
         {"BannerWidth", 250},
         {"ResizePicture", 1},
         {"Base Scenario Name", "Base"},
         {"ClearLogFiles", 1},
         {"CloseOpenFiles", 1},
-        {"CodeUI", "ui\\OahuCode_ui.dbd"},
+        {"CodeUI", "ui\\ui.dbd"},
         {"DebugMode", 1},
         {"ExpandStages", "Side by Side"},
         {"HideBanner", 0},
@@ -69,12 +69,12 @@ Body:
     flowchart = RunMacro("GetFlowChart")
     {drive , path , name , ext} = SplitPath(flowchart.UI)
     uiFolder = drive + path + "ui\\"
-    srcFolder = drive + path + "sourcecode\\"
+    srcFolder = drive + path + "src\\gisdk\\"
 
     o = CreateObject("CC.Directory", RunMacro("FlowChart.ResolveValue", uiFolder, Args))
     o.Create()
 
-    RunMacro("CompileGISDKCode", {Source: srcFolder + "OahuCode.lst", UIDB: uiFolder + "OahuCode_ui.dbd", Silent: 0, ErrorMessage: "Error compiling Oahu Source Code"})
+    RunMacro("CompileGISDKCode", {Source: srcFolder + "!Compile This.lst", UIDB: uiFolder + "ui.dbd", Silent: 0, ErrorMessage: "Error compiling Model Source Code"})
 
     if lower(GetMapUnits()) <> "miles" then
         MessageBox("Set the system units to miles before running the model", {Caption: "Warning", Icon: "Warning", Buttons: "yes"})

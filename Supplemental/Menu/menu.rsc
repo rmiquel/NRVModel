@@ -104,10 +104,10 @@ EndClass
 
 // visualize menu items
 // Main toolbar menues
-MenuItem "Oahu Menu Item" text: "Oahu TDFM"
-    menu "Oahu Menu"
+MenuItem "Model Menu Item" text: "NRV Model"
+    menu "Model Menu"
  
-Menu "Oahu Menu"
+Menu "Model Menu"
     init do
     enditem
  
