@@ -1,0 +1,16 @@
+{
+    "Model": {
+        "Description": [
+            "The main model is OahuTDFM.model",
+            "This system has only one model file"
+        ],
+        "Author": "Caliper Corporation",
+        "Version": "2022.1",
+        "Name": "OahuTDFM.model",
+        "Parameters": ["Supplemental\\Parameters\\Common.parameters"],
+        "Styles": ["Supplemental\\Styles\\Common.styles"],
+        "Scenarios": "OahuTDFM.scenarios",
+        "Plugins": ["Supplemental\\PlugIns\\Plugins.rsc"],
+        "Menus":["Supplemental\\Menu\\Oahu_Menu.rsc"]
+    }
+}
