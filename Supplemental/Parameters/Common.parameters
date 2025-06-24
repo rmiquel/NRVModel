@@ -106,7 +106,7 @@
         Args.MaxIterations = {
             "Type":"int",
             "Description":"Maximum number of iterations that this model can run.",
-            "Value":5
+            "Value":3
         }
         
 	

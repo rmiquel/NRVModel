@@ -111,8 +111,9 @@ EndMacro
 */
 
 Macro  "Feedback" (Args)
-  if Args.Iteration >= Args.MaxIterations then converged = "true"
-  else if prmse_skim < .1 and prmse_flow < .1 then converged = "true"
-  else converged = "false"
-  return(converged)
+  // Simple check based on a set number of iterations
+  // if you want to check skim/flow %RMSE, use Args.hwy_prmse and Args.skim_prmse by period
+  if Args.Iteration >= Args.MaxIterations 
+    then return(1) // converged
+    else return(2) // not converged
 EndMacro
