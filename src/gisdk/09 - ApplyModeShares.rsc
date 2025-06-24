@@ -11,7 +11,7 @@ Apply Mode Shares (this script file)
   by the distribution model.
 */
 
-Macro "Apply Mode Shares"
+Macro "Apply Mode Shares" (Args)
   RunMacro("Remove School Bus Trips")
   RunMacro("Apply MC Probabilities")
 EndMacro
@@ -20,7 +20,7 @@ EndMacro
 
 */
 
-Macro "Remove School Bus Trips"
+Macro "Remove School Bus Trips" (Args)
   UpdateProgressBar("Remove School Bus Trips", 0)
   shared no_bus_file
 
@@ -45,7 +45,7 @@ EndMacro
 
 */
 
-Macro "Apply MC Probabilities"
+Macro "Apply MC Probabilities" (Args)
   UpdateProgressBar("Apply MC Probabilities", 0)
   shared no_bus_file
 

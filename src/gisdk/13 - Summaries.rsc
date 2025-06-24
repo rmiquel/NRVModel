@@ -3,7 +3,7 @@ This script contains a collection of macros to run after the model
 has completed.
 */
 
-Macro "Summaries"
+Macro "Summaries" (Args)
   RunMacro("Write Skim CSVs")
   RunMacro("Summarize Distribution")
   RunMacro("Summarize Mode")
@@ -22,7 +22,7 @@ This is done here instead of during skimming to reduce the
 number of times it must be done. Only the final skims are written out.
 */
 
-Macro "Write Skim CSVs"
+Macro "Write Skim CSVs" (Args)
   UpdateProgressBar("Write Skim CSVs", 0)
 
   a_periods = MODELARGS.periods
@@ -61,7 +61,7 @@ Creates a table of statistics and writes out
 final tables to CSV.
 */
 
-Macro "Summarize Distribution"
+Macro "Summarize Distribution" (Args)
   UpdateProgressBar("Summarize Distribution", 0)
 
   a_periods = MODELARGS.periods
@@ -109,7 +109,7 @@ EndMacro
 
 */
 
-Macro "Summarize Mode"
+Macro "Summarize Mode" (Args)
   UpdateProgressBar("Summarize Mode", 0)
 
   a_periods = MODELARGS.periods
@@ -138,7 +138,7 @@ Depends
   gplyr
 */
 
-Macro "Create Loaded Network"
+Macro "Create Loaded Network" (Args)
   UpdateProgressBar("Create Loaded Network", 0)
 
   a_periods = MODELARGS.periods
@@ -248,7 +248,7 @@ will be looped over. Create an array of the rest of the field names to
 summarize. e.g. {"Flow_auto", "Flow", "VMT"}.
 */
 
-Macro "Calculate Daily Fields"
+Macro "Calculate Daily Fields" (Args)
   UpdateProgressBar("Calculate Daily Fields", 0)
 
   a_periods = MODELARGS.periods
@@ -419,7 +419,7 @@ EndMacro
 Creates V/C maps for each time period.
 */
 
-Macro "VOC Maps"
+Macro "VOC Maps" (Args)
   UpdateProgressBar("VOC Maps", 0)
 
   a_periods = MODELARGS.periods + {"Daily"}
@@ -557,7 +557,7 @@ EndMacro
 
 */
 
-Macro "Create Count Difference Map"
+Macro "Create Count Difference Map" (Args)
   UpdateProgressBar("Count Difference Map", 0)
 
   // Create total count diff map
@@ -610,7 +610,7 @@ Uses a gisdk_tools library function to summarize highway stats like
 VMT and VHT.
 */
 
-Macro "Summarize by FT and AT"
+Macro "Summarize by FT and AT" (Args)
   UpdateProgressBar("Summarize by FT and AT", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -623,10 +623,10 @@ EndMacro
 
 /*
 Sets up project-specific options before calling the gisdk_tools
-macro "Outviz Assignment Validation"
+macro "Outviz Assignment Validation" (Args)
 */
 
-Macro "Run Outviz Assignment Validation"
+Macro "Run Outviz Assignment Validation" (Args)
   UpdateProgressBar("Outviz Assignment Validation", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -644,7 +644,7 @@ EndMacro
 Summarizes transit assignment.
 */
 
-Macro "Transit Summary"
+Macro "Transit Summary" (Args)
   UpdateProgressBar("Transit Summary", 0)
   
   scen_dir = Args.[Scenario Folder]

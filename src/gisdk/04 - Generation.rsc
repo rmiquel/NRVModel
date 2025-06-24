@@ -9,7 +9,7 @@ library script.  So are CV trips.
 IEEI trips are handled by macros in this script file.
 */
 
-Macro "Generation"
+Macro "Generation" (Args)
   RunMacro("Create HH Marginals")
   RunMacro("Create HH Joint Distribution")
   RunMacro("Resident Trip Production")
@@ -26,7 +26,7 @@ EndMacro
 Creates the marginal HH distributions for each TAZ.
 */
 
-Macro "Create HH Marginals"
+Macro "Create HH Marginals" (Args)
   UpdateProgressBar("Create HH Marginals", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -55,7 +55,7 @@ EndMacro
 Create the joint HH distribution for each TAZ
 */
 
-Macro "Create HH Joint Distribution"
+Macro "Create HH Joint Distribution" (Args)
   UpdateProgressBar("Create HH Joint Distribution", 0)
 
   //Copy se_bin to se_csv for R  06_17_2025
@@ -83,7 +83,7 @@ Resident Trip Productions
 Use the cross-classification model
 */
 
-Macro "Resident Trip Production"
+Macro "Resident Trip Production" (Args)
   UpdateProgressBar("Resident Trip Production", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -172,7 +172,7 @@ EndMacro
 Resident Trip Attractions
 */
 
-Macro "Resident Attractions"
+Macro "Resident Attractions" (Args)
   UpdateProgressBar("Resident Attractions", 0)
 
   opts = null
@@ -185,7 +185,7 @@ EndMacro
 
 */
 
-Macro "University Productions/Attractions"
+Macro "University Productions/Attractions" (Args)
   UpdateProgressBar("University Productions/Attractions", 0)
   
   se_bin = Args.se_bin
@@ -205,7 +205,7 @@ CV productions
 Attractions are the same as productions
 */
 
-Macro "CV Productions/Attractions"
+Macro "CV Productions/Attractions" (Args)
   UpdateProgressBar("CV Productions/Attractions", 0)
 
   opts = null
@@ -218,7 +218,7 @@ EndMacro
 Predicts IEEI productions
 */
 
-Macro "IEEI Productions"
+Macro "IEEI Productions" (Args)
   UpdateProgressBar("IEEI Productions", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -277,7 +277,7 @@ EndMacro
 IEEI trip attractions
 */
 
-Macro "IEEI Attractions"
+Macro "IEEI Attractions" (Args)
   UpdateProgressBar("IEEI Attractions", 0)
 
   opts = null
@@ -291,7 +291,7 @@ Calls the balance macro from the generation library and
 writes out a report of the balance factors applied.
 */
 
-Macro "Balance Ps and As"
+Macro "Balance Ps and As" (Args)
   UpdateProgressBar("Balance Ps and As", 0)
 
   // Call the balance macro

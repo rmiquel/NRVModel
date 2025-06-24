@@ -6,7 +6,7 @@ Macro "Initial Processing" is the main control macro, which calls all other
 macros in this script.
 */
 
-Macro "Initial Processing"
+Macro "Initial Processing" (Args)
   RunMacro("Create Output Copies")
   RunMacro("Determine Area Type")
   RunMacro("Capacity")
@@ -22,7 +22,7 @@ the input files as they were.  This helps when looking back at
 older scenarios.
 */
 
-Macro "Create Output Copies"
+Macro "Create Output Copies" (Args)
   UpdateProgressBar("Create Output Copies", 0)
 
   input_dir = Args.[Scenario Folder] + "/inputs"
@@ -49,7 +49,7 @@ Prepares input options for the AreaType.rsc library of tools, which
 tags TAZs and Links with area types.
 */
 
-Macro "Determine Area Type"
+Macro "Determine Area Type" (Args)
   UpdateProgressBar("Determine Area Type", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -90,7 +90,7 @@ Instead of using the hcmr package, this macro uses a lookup table to determine
 capacities. It then converts to period capacity based on TOD factors.
 */
 
-Macro "Capacity"
+Macro "Capacity" (Args)
   UpdateProgressBar("Capacity", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -151,7 +151,7 @@ EndMacro
 
 */
 
-Macro "Set CC Speeds"
+Macro "Set CC Speeds" (Args)
   UpdateProgressBar("Set CC Speeds", 0)
 
   hwy_dbd = Args.hwy_dbd
@@ -191,7 +191,7 @@ alpha are also added. Mode is just a column of 1s. It's required by the transit
 tnw mode table.
 */
 
-Macro "Other Attributes"
+Macro "Other Attributes" (Args)
   UpdateProgressBar("Free-Flow Speed", 0)
 
   // Add fields to highway DBD
@@ -243,7 +243,7 @@ modes required for that network are not present. Uses the results to filter
 any other files that need similar treatment.
 */
 
-Macro "Filter Transit Settings"
+Macro "Filter Transit Settings" (Args)
   UpdateProgressBar("Filter Transit Settings", 0)
 
   scen_dir = Args.[Scenario Folder]

@@ -4,7 +4,7 @@ This rsc file contains the external macros - both EE and IEEI.
 Macro "Externals" controls all other macros in this file.
 */
 
-Macro "Through Trips"
+Macro "Through Trips" (Args)
   RunMacro("Convert EE CSV to MTX")
   RunMacro("Calculate EE IPF Marginals")
   RunMacro("IPF EE Seed Table")
@@ -19,7 +19,7 @@ This ensures accurate matrix dimensions.  This matrix is then udpated
 with the ee CSV file, which is created by ExternalDevelopment.rmd.
 */
 
-Macro "Convert EE CSV to MTX"
+Macro "Convert EE CSV to MTX" (Args)
   UpdateProgressBar("Convert EE CSV to MTX", 0)
 
   // Create EE table from node layer
@@ -72,7 +72,7 @@ Uses the external_awdt.csv table to create a formula field
 containing the EE trips at each external station.
 */
 
-Macro "Calculate EE IPF Marginals"
+Macro "Calculate EE IPF Marginals" (Args)
   UpdateProgressBar("Calculate EE IPF Marginals", 0)
   shared margTbl
 
@@ -93,7 +93,7 @@ EndMacro
 Use the marginals calculated to IPF the base-year seed table.
 */
 
-Macro "IPF EE Seed Table"
+Macro "IPF EE Seed Table" (Args)
   UpdateProgressBar("IPF EE Seed Table", 0)
   shared margTbl
 
@@ -140,7 +140,7 @@ EndMacro
 This macro enforces symmetry on the EE matrix.
 */
 
-Macro "EE Symmetry"
+Macro "EE Symmetry" (Args)
   UpdateProgressBar("EE Symmetry", 0)
 
   // Open the IPFd EE mtx
@@ -177,7 +177,7 @@ Depends
   gplyr
 */
 
-Macro "EE TOD"
+Macro "EE TOD" (Args)
   UpdateProgressBar("EE TOD", 0)
 
   scen_dir = Args.[Scenario Folder]

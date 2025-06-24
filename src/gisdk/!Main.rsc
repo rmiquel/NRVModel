@@ -758,7 +758,7 @@ existing scenario and then run assignment using the same assignment trip tables.
 This macro automates running the steps after modifying the transport network.
 */
 
-Macro "Fixed OD Run"
+Macro "Fixed OD Run" (Args)
   if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
 
   RunMacro("Destroy Progress Bars")

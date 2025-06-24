@@ -5,7 +5,7 @@ for the "Calculate Fields - Simple" macro (ModelUtilities.rsc) and runs it.
 Directionality factors are not applied here.
 */
 
-Macro "Time of Day"
+Macro "Time of Day" (Args)
   UpdateProgressBar("Time of Day", 0)
   opts = null
   opts.table = Args.se_bin

@@ -7,7 +7,7 @@ for the model cycle.  These are returned and used to determine
 if another feedback cycle is necessary.
 */
 
-Macro "Highway Assignment"
+Macro "Highway Assignment" (Args)
   RunMacro("Assignment Matrix Creation")
   {rmse, prmse} = RunMacro("Run Highway Assignment")
   RunMacro("Log Cycle RMSE", rmse, prmse)
@@ -18,7 +18,7 @@ EndMacro
 
 */
 
-Macro "Assignment Matrix Creation"
+Macro "Assignment Matrix Creation" (Args)
   UpdateProgressBar("Assignment Matrix Creation", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -46,7 +46,7 @@ Sets up options for TCs MMA assignment
 Includes options to support feedback/cycling
 */
 
-Macro "Run Highway Assignment"
+Macro "Run Highway Assignment" (Args)
   UpdateProgressBar("Run Highway Assignment", 0)
 
   scen_dir = Args.[Scenario Folder]

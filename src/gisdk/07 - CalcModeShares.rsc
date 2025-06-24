@@ -11,7 +11,7 @@ Apply Mode Shares (different script file)
   by the distribution model.
 */
 
-Macro "Calc Mode Shares"
+Macro "Calc Mode Shares" (Args)
   RunMacro("Update MC Variables File")
   RunMacro("Run NLM MC")
 EndMacro
@@ -23,7 +23,7 @@ the .net and .tnw files to determine which are present. Bike and walk modes
 are included by default (no networks created separately for them).
 */
 
-Macro "Update MC Variables File"
+Macro "Update MC Variables File" (Args)
   UpdateProgressBar("Update MC Variables File", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -56,7 +56,7 @@ see all the methods available, but there is no help for them.  Caliper has
 been willing to help explain some of them and how to use them.
 */
 
-Macro "Run NLM MC"
+Macro "Run NLM MC" (Args)
   UpdateProgressBar("Run NLM MC", 0)
 
   scen_dir = Args.[Scenario Folder]

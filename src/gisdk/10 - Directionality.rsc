@@ -8,7 +8,7 @@ transit assignment if implemented in the future.
 
 */
 
-Macro "Directionality"
+Macro "Directionality" (Args)
   RunMacro("Split Highway and Non-Highway Trips")
   RunMacro("Apply Directionality")
   RunMacro("Vehicle Occupancy")
@@ -19,7 +19,7 @@ EndMacro
 
 */
 
-Macro "Split Highway and Non-Highway Trips"
+Macro "Split Highway and Non-Highway Trips" (Args)
   UpdateProgressBar("Dir - Purpose Conversion", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -61,7 +61,7 @@ Matrix core names from mode choice must be in the form of:
 "Purpose_Mode"
 */
 
-Macro "Apply Directionality"
+Macro "Apply Directionality" (Args)
   UpdateProgressBar("Apply Directionality", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -110,7 +110,7 @@ person trips in to vehicle trips by applying occupancy factors. The
 factors are specified in a parameter table by purpose, mode, and tod.
 */
 
-Macro "Vehicle Occupancy"
+Macro "Vehicle Occupancy" (Args)
   UpdateProgressBar("Vehicle Occupancy", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -161,7 +161,7 @@ This macro determines which method to use.
 For Hickory, all trips are assigned together.
 */
 
-Macro "Include Through Trips"
+Macro "Include Through Trips" (Args)
   UpdateProgressBar("Include Through Trips", 0)
 
   scen_dir = Args.[Scenario Folder]

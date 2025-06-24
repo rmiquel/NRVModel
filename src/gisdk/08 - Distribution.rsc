@@ -2,7 +2,7 @@
 
 */
 
-Macro "Distribution"
+Macro "Distribution" (Args)
     RunMacro("Convert to Distribution Purposes")
     RunMacro("Add Inter-County Skim Core")
     RunMacro("Resident DC")
@@ -20,7 +20,7 @@ purposes might be collapsed into HBO. The crosswalk is controlled
 by an equivalency table.
 */
 
-Macro "Convert to Distribution Purposes"
+Macro "Convert to Distribution Purposes" (Args)
   UpdateProgressBar("Convert to Distribution Purposes", 0)
 
   period = MODELARGS.period
@@ -42,7 +42,7 @@ lines. This intra-county core is used to penalize cross-county school
 trips in distribution.
 */
 
-Macro "Add Inter-County Skim Core"
+Macro "Add Inter-County Skim Core" (Args)
   UpdateProgressBar("Add Inter-County Skim Core", 0)
 
   period = MODELARGS.period
@@ -103,7 +103,7 @@ Prepares arguments for the "Destination Choice" macro
 in the Distribution.rsc library.
 */
 
-Macro "Resident DC"
+Macro "Resident DC" (Args)
   UpdateProgressBar("Resident DC", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -133,7 +133,7 @@ Prepares arguments for the "Gravity" macro
 in the Distribution.rsc library.
 */
 
-Macro "HBU Gravity"
+Macro "HBU Gravity" (Args)
   UpdateProgressBar("HBU Gravity", 0)
   
   scen_dir = Args.[Scenario Folder]
@@ -155,7 +155,7 @@ Prepares arguments for the "Gravity" macro
 in the Distribution.rsc library.
 */
 
-Macro "Commercial Gravity"
+Macro "Commercial Gravity" (Args)
   UpdateProgressBar("Commercial Gravity", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -177,7 +177,7 @@ Prepares arguments for the "Gravity" macro
 in the Distribution.rsc library.
 */
 
-Macro "IEEI Gravity"
+Macro "IEEI Gravity" (Args)
   UpdateProgressBar("IEEI Gravity", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -203,7 +203,7 @@ travellers went and produces NHB trips in those zones.
 This macro performs generation and distribution of the NHBNR trips.
 */
 
-Macro "NHBNR"
+Macro "NHBNR" (Args)
   UpdateProgressBar("NHBNR", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -272,7 +272,7 @@ Prepares arguments for the "Aggregate Distribution Matrices" macro
 in the Distribution.rsc library.
 */
 
-Macro "Aggregate Matrices"
+Macro "Aggregate Matrices" (Args)
   UpdateProgressBar("Aggregate Matrices", 0)
 
   scen_dir = Args.[Scenario Folder]

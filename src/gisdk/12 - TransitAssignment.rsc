@@ -2,7 +2,7 @@
 
 */
 
-Macro "Transit Assignment"
+Macro "Transit Assignment" (Args)
   
   RunMacro("Transit Assignment Matrix Creation")
   RunMacro("Run Transit Assignment")
@@ -12,7 +12,7 @@ EndMacro
 
 */
 
-Macro "Transit Assignment Matrix Creation"
+Macro "Transit Assignment Matrix Creation" (Args)
   UpdateProgressBar("Transit Assignment Matrix Creation", 0)
   
   scen_dir = Args.[Scenario Folder]
@@ -42,7 +42,7 @@ EndMacro
 
 */
 
-Macro "Run Transit Assignment"
+Macro "Run Transit Assignment" (Args)
   UpdateProgressBar("Run Transit Assignment", 0)
   
   scen_dir = Args.[Scenario Folder]

@@ -10,7 +10,7 @@ Returns
   %RMSE between feedback cycle skims or 9999 if first cycle
 */
 
-Macro "Skimming"
+Macro "Skimming" (Args)
     if MODELARGS.cycle = 1 then do
       RunMacro("Initial Congested Speed")
       RunMacro("Create Highway Net Files")
@@ -44,7 +44,7 @@ Depends
   gplyr
 */
 
-Macro "Initial Congested Speed"
+Macro "Initial Congested Speed" (Args)
   UpdateProgressBar("Initial Congested Speed", 0)
 
   hwy_dbd = Args.hwy_dbd
@@ -85,7 +85,7 @@ On the first cycle, this macro creates the initial highway .net files.
 Also sets their settings.
 */
 
-Macro "Create Highway Net Files"
+Macro "Create Highway Net Files" (Args)
   UpdateProgressBar("Create Highway Net Files", 0)
 
   period = MODELARGS.period
@@ -108,7 +108,7 @@ On the first cycle, this macro creates the initial transit .tnw files.
 Also sets their settings.
 */
 
-Macro "Create Transit Net Files"
+Macro "Create Transit Net Files" (Args)
   UpdateProgressBar("Create Transit Net Files", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -131,7 +131,7 @@ After feedback, the link travel times in the .net and .tnw files need to
 be updated.
 */
 
-Macro "Update Congested Link Times"
+Macro "Update Congested Link Times" (Args)
   
   scen_dir = Args.[Scenario Folder]
   period = MODELARGS.period
@@ -156,7 +156,7 @@ EndMacro
 
 */
 
-Macro "Highway Skims"
+Macro "Highway Skims" (Args)
   UpdateProgressBar("Highway Skims", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -201,7 +201,7 @@ EndMacro
 
 */
 
-Macro "Transit Skims"
+Macro "Transit Skims" (Args)
   UpdateProgressBar("Transit Skims", 0)
 
   scen_dir = Args.[Scenario Folder]
@@ -225,7 +225,7 @@ EndMacro
 Calculates cores needed for MC and DC.
 */
 
-Macro "Calculate Additional Skim Cores"
+Macro "Calculate Additional Skim Cores" (Args)
   UpdateProgressBar("Calculate Additional Skim Cores", 0)
 
   period = MODELARGS.period
@@ -258,7 +258,7 @@ Creates any additional indices needed by later model steps. For example,
 resident distribution should only see internal zones.
 */
 
-Macro "Create Skim Indices"
+Macro "Create Skim Indices" (Args)
   UpdateProgressBar("Create Skim Indices", 0)
 
   period = MODELARGS.period
@@ -298,7 +298,7 @@ Returns
   The relative/percent RMSE
 */
 
-Macro "Calculate Skim RMSE"
+Macro "Calculate Skim RMSE" (Args)
 
   cycle = MODELARGS.cycle
   period = MODELARGS.period
