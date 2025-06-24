@@ -8,10 +8,14 @@ if another feedback cycle is necessary.
 */
 
 Macro "Highway Assignment" (Args)
-  RunMacro("Assignment Matrix Creation", Args)
-  {rmse, prmse} = RunMacro("Run Highway Assignment", Args)
-  RunMacro("Log Cycle RMSE", rmse, prmse)
-  Args.hwy_prmse = prmse
+  for period in Args.Periods do
+    Args.period = period
+    RunMacro("Assignment Matrix Creation", Args)
+    {rmse, prmse} = RunMacro("Run Highway Assignment", Args)
+    RunMacro("Log Cycle RMSE", rmse, prmse, Args)
+    Args.hwy_prmse.(period) = prmse
+  end
+  return(1)
 EndMacro
 
 /*
@@ -19,7 +23,7 @@ EndMacro
 */
 
 Macro "Assignment Matrix Creation" (Args)
-  UpdateProgressBar("Assignment Matrix Creation", 0)
+  UpdateProgressBar(Args.period + ": Assignment Matrix Creation", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -47,7 +51,7 @@ Includes options to support feedback/cycling
 */
 
 Macro "Run Highway Assignment" (Args)
-  UpdateProgressBar("Run Highway Assignment", 0)
+  UpdateProgressBar(Args.period + ": Run Highway Assignment", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -77,8 +81,8 @@ Depends
   gplyr
 */
 
-Macro "Log Cycle RMSE" (rmse, prmse)
-  UpdateProgressBar("Log Cycle RMSE", 0)
+Macro "Log Cycle RMSE" (rmse, prmse, Args)
+  UpdateProgressBar(Args.period + ": Log Cycle RMSE", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
