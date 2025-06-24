@@ -12,8 +12,8 @@ Apply Mode Shares (this script file)
 */
 
 Macro "Apply Mode Shares" (Args)
-  RunMacro("Remove School Bus Trips")
-  RunMacro("Apply MC Probabilities")
+  RunMacro("Remove School Bus Trips"), Args)
+  RunMacro("Apply MC Probabilities"), Args)
 EndMacro
 
 /*

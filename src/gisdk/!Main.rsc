@@ -37,10 +37,10 @@ Macro "Run Full Model" (start_cycle)
   
   // Start of model steps
   if start_cycle = 1 then do
-    RunMacro("Initial Processing")
-    RunMacro("Through Trips")
-    RunMacro("Generation")
-    RunMacro("Time of Day")
+    RunMacro("Initial Processing"), Args)
+    RunMacro("Through Trips"), Args)
+    RunMacro("Generation"), Args)
+    RunMacro("Time of Day"), Args)
   end
 
   for p = 1 to MODELARGS.periods.length do
@@ -60,12 +60,12 @@ Macro "Run Full Model" (start_cycle)
       )
       CreateProgressBar("", )
 
-      prmse_skim = RunMacro("Skimming")
-      RunMacro("Calc Mode Shares")
-      RunMacro("Distribution")
-      RunMacro("Apply Mode Shares")
-      RunMacro("Directionality")
-      prmse_flow = RunMacro("Highway Assignment")
+      prmse_skim = RunMacro("Skimming"), Args)
+      RunMacro("Calc Mode Shares"), Args)
+      RunMacro("Distribution"), Args)
+      RunMacro("Apply Mode Shares"), Args)
+      RunMacro("Directionality"), Args)
+      prmse_flow = RunMacro("Highway Assignment"), Args)
 
       if prmse_skim < .1 and prmse_flow < .1 and MODELARGS.cycle >= 4
         then converged = "True"
@@ -74,11 +74,11 @@ Macro "Run Full Model" (start_cycle)
     end
     
     CreateProgressBar("", )
-    RunMacro("Transit Assignment")
+    RunMacro("Transit Assignment"), Args)
     DestroyProgressBar()
   end
 
-  RunMacro("Summaries")
+  RunMacro("Summaries"), Args)
   DestroyProgressBar()
   RunMacro("Close All")
   return(converged)
@@ -226,7 +226,7 @@ dBox "Main" location: x, y
   button 1, 3, 20 Prompt:"Create Scenario" do
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
     CreateProgressBar("", )
-    RunMacro("Create Scenario")
+    RunMacro("Create Scenario"), Args)
     DestroyProgressBar()
     ShowMessage("Done with 'Create Scenario'")
   EndItem
@@ -239,7 +239,7 @@ dBox "Main" location: x, y
       ShowMessage("Select a scenario folder")
     end else do
       CreateStopwatch("run_time")
-      converged = RunMacro("Run Full Model")
+      converged = RunMacro("Run Full Model"), Args)
       time = round(CheckStopwatch("run_time") / 3600, 2)
       DestroyStopwatch("run_time")
       converged_string = if converged
@@ -280,7 +280,7 @@ dBox "Main" location: x, y
     if Args.[Scenario Folder] = null then do
       ShowMessage("Select a scenario folder")
     end else do
-      RunMacro("Fixed OD Run")
+      RunMacro("Fixed OD Run"), Args)
       ShowMessage("Fixed OD Run Complete")
     end
   EndItem
@@ -388,7 +388,7 @@ dBox "Main" location: x, y
         scen_defined = RunDbox("Scenario Settings")
         if scen_defined then do
           CreateProgressBar("", )
-          RunMacro("Create Scenario")
+          RunMacro("Create Scenario"), Args)
           DestroyProgressBar()
         end
       end
@@ -665,7 +665,7 @@ Macro "Wrapper" (a_scen_list)
     pct = round((s - 1) / a_scen_list.length * 100, 0)
     UpdateProgressBar("Running Scenario: " + Args.[Scenario Folder], pct)
     CreateProgressBar("", )
-    RunMacro("Run Full Model")
+    RunMacro("Run Full Model"), Args)
     DestroyProgressBar()
   end
 
@@ -768,30 +768,30 @@ Macro "Fixed OD Run" (Args)
   CreateProgressBar("", )
 
   // From Initial Processing
-  RunMacro("Create Output Copies")
-  RunMacro("Determine Area Type")
-  RunMacro("Capacity")
-  RunMacro("Set CC Speeds")
-  RunMacro("Other Attributes")
+  RunMacro("Create Output Copies"), Args)
+  RunMacro("Determine Area Type"), Args)
+  RunMacro("Capacity"), Args)
+  RunMacro("Set CC Speeds"), Args)
+  RunMacro("Other Attributes"), Args)
 
   MODELARGS.cycle = 1
   for p = 1 to MODELARGS.periods.length do
     MODELARGS.period = MODELARGS.periods[p]
 
     // From Skimming
-    RunMacro("Initial Congested Speed")
-    RunMacro("Create Highway Net Files")
+    RunMacro("Initial Congested Speed"), Args)
+    RunMacro("Create Highway Net Files"), Args)
     
-    RunMacro("Highway Assignment")
+    RunMacro("Highway Assignment"), Args)
   end
 
   // From Summaries
-  RunMacro("Create Loaded Network")
-  RunMacro("Calculate Daily Fields")
-  RunMacro("VOC Maps")
-  RunMacro("Create Count Difference Map")
-  RunMacro("Summarize by FT and AT")
-  RunMacro("Run Outviz Assignment Validation")
+  RunMacro("Create Loaded Network"), Args)
+  RunMacro("Calculate Daily Fields"), Args)
+  RunMacro("VOC Maps"), Args)
+  RunMacro("Create Count Difference Map"), Args)
+  RunMacro("Summarize by FT and AT"), Args)
+  RunMacro("Run Outviz Assignment Validation"), Args)
   
   DestroyProgressBar()
   DestroyProgressBar()

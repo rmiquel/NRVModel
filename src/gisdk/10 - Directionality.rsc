@@ -9,10 +9,10 @@ transit assignment if implemented in the future.
 */
 
 Macro "Directionality" (Args)
-  RunMacro("Split Highway and Non-Highway Trips")
-  RunMacro("Apply Directionality")
-  RunMacro("Vehicle Occupancy")
-  RunMacro("Include Through Trips")
+  RunMacro("Split Highway and Non-Highway Trips"), Args)
+  RunMacro("Apply Directionality"), Args)
+  RunMacro("Vehicle Occupancy"), Args)
+  RunMacro("Include Through Trips"), Args)
 EndMacro
 
 /*

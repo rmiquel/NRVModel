@@ -4,8 +4,8 @@
 
 Macro "Transit Assignment" (Args)
   
-  RunMacro("Transit Assignment Matrix Creation")
-  RunMacro("Run Transit Assignment")
+  RunMacro("Transit Assignment Matrix Creation"), Args)
+  RunMacro("Run Transit Assignment"), Args)
 EndMacro
 
 /*

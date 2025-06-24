@@ -5,11 +5,11 @@ Macro "Externals" controls all other macros in this file.
 */
 
 Macro "Through Trips" (Args)
-  RunMacro("Convert EE CSV to MTX")
-  RunMacro("Calculate EE IPF Marginals")
-  RunMacro("IPF EE Seed Table")
-  RunMacro("EE Symmetry")
-  RunMacro("EE TOD")
+  RunMacro("Convert EE CSV to MTX"), Args)
+  RunMacro("Calculate EE IPF Marginals"), Args)
+  RunMacro("IPF EE Seed Table"), Args)
+  RunMacro("EE Symmetry"), Args)
+  RunMacro("EE TOD"), Args)
 EndMacro
 
 /*

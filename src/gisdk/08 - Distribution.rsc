@@ -3,14 +3,14 @@
 */
 
 Macro "Distribution" (Args)
-    RunMacro("Convert to Distribution Purposes")
-    RunMacro("Add Inter-County Skim Core")
-    RunMacro("Resident DC")
-    RunMacro("HBU Gravity")
-    RunMacro("Commercial Gravity")
-    RunMacro("IEEI Gravity")
-    RunMacro("NHBNR")
-    RunMacro("Aggregate Matrices")
+    RunMacro("Convert to Distribution Purposes"), Args)
+    RunMacro("Add Inter-County Skim Core"), Args)
+    RunMacro("Resident DC"), Args)
+    RunMacro("HBU Gravity"), Args)
+    RunMacro("Commercial Gravity"), Args)
+    RunMacro("IEEI Gravity"), Args)
+    RunMacro("NHBNR"), Args)
+    RunMacro("Aggregate Matrices"), Args)
 EndMacro
 
 /*
