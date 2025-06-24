@@ -75,6 +75,11 @@
             "Description":"Input transit routes",
             "Value":"%Output Folder%\\external\\EETable.mtx"
         }
+        Args.ext_awdt_year = {
+            "Type":"int",
+            "Description":"Year to use for external AWDT",
+            "Value":2016
+        }
         Args.se_bin = {
             "Type":"File",
             "Description":"Input transit routes",

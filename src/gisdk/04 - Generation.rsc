@@ -223,7 +223,7 @@ Macro "IEEI Productions" (Args)
 
   scen_dir = Args.[Scenario Folder]
   se_bin = Args.se_bin
-  year = MODELARGS.ext_awdt_year
+  year = Args.ext_awdt_year
 
   // Open se table and add fields
   se_tbl = OpenTable("se", "FFB", {se_bin})

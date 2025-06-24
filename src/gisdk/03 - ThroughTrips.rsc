@@ -10,6 +10,7 @@ Macro "Through Trips" (Args)
   RunMacro("IPF EE Seed Table", Args)
   RunMacro("EE Symmetry", Args)
   RunMacro("EE TOD", Args)
+  return(1)
 EndMacro
 
 /*
@@ -84,7 +85,7 @@ Macro "Calculate EE IPF Marginals" (Args)
   CreateExpression(
     margTbl,
     "EEmarg",
-    "(EERatio * AWDT" + String(MODELARGS.ext_awdt_year) + ") / 2",
+    "(EERatio * AWDT" + String(Args.ext_awdt_year) + ") / 2",
   )
 
 EndMacro
@@ -118,6 +119,7 @@ Macro "IPF EE Seed Table" (Args)
   Opts.Field.[A Core Fields] = {margTbl + ".EEmarg"}
   Opts.Output.[Output Matrix].Label = "EE Trips Matrix"
   Opts.Output.[Output Matrix].[File Name] = Args.ee_mtx
+  RunMacro("TCB Init")
   ok = RunMacro("TCB Run Procedure", "Growth Factor", Opts, &Ret)
   if !ok then Throw("EE IPF failed")
 
