@@ -45,13 +45,13 @@ Macro "Full Model Run"
     prmse_skim = null
     prmse_flow = null
     converged = "False"
-    while !converged and Args.Iteration <= MODELARGS.max_cycles do
+    while !converged and Args.Iteration <= Args.MaxIterations do
       UpdateProgressBar(
         "Period: " + Args.period + "     " +
         "Cycle: " + String(Args.Iteration) + "     " +
         "Skim RMSE: " + String(prmse_skim) + "%     " +
         "Flow RMSE: " + String(prmse_flow) + "%",
-        round(Args.Iteration / MODELARGS.max_cycles * 100, 0)
+        round(Args.Iteration / Args.MaxIterations * 100, 0)
       )
       CreateProgressBar("placeholder", )
 
@@ -121,7 +121,7 @@ dBox "Main" location: x, y
     RunMacro("Recompile UI Check", ui_dbd, ui_dir)
 
     // Initialize other dbox items
-    MODELARGS.max_cycles = 20
+    Args.MaxIterations = 20
     git_hub_image = ui_dir + "/../bmp/GitHub-Mark-32px.bmp"
   EndItem
 
@@ -214,7 +214,7 @@ dBox "Main" location: x, y
   EndItem
   Popdown Menu 36, after, 6 Prompt: "Max Cycles"
     List:{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20}
-    Editable Variable: MODELARGS.max_cycles
+    Editable Variable: Args.MaxIterations
 
   // Fixed OD run button
   text 28, 11 variable: "Fixed OD Run"
@@ -356,7 +356,7 @@ dBox "Main" location: x, y
   EndItem
   Popdown Menu 11, after, 6 Prompt: "Max Cycles"
     List:{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20}
-    Editable Variable: MODELARGS.max_cycles
+    Editable Variable: Args.MaxIterations
 
 
 
@@ -583,7 +583,7 @@ Macro "Init MODELARGS" (scen_dir)
   Backup.master_dir = Args.[Master Folder]
   Backup.master_hwy = Args.[Master Links]
   Backup.master_rts = Args.[Master Routes]
-  Backup.max_cycles = MODELARGS.max_cycles
+  Backup.max_cycles = Args.MaxIterations
   Backup.wrapper = MODELARGS.wrapper
   MODELARGS = null
   for i = 1 to Backup.length do

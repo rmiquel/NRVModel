@@ -50,13 +50,13 @@ Macro "Run Full Model" (start_cycle)
     prmse_skim = null
     prmse_flow = null
     converged = "False"
-    while !converged and Args.Iteration <= MODELARGS.max_cycles do
+    while !converged and Args.Iteration <= Args.MaxIterations do
       UpdateProgressBar(
         "Period: " + Args.period + "     " +
         "Cycle: " + String(Args.Iteration) + "     " +
         "Skim RMSE: " + String(prmse_skim) + "%     " +
         "Flow RMSE: " + String(prmse_flow) + "%",
-        round(Args.Iteration / MODELARGS.max_cycles * 100, 0)
+        round(Args.Iteration / Args.MaxIterations * 100, 0)
       )
       CreateProgressBar("", )
 
@@ -154,7 +154,7 @@ dBox "Main" location: x, y
     RunMacro("Recompile UI Check", ui_dbd, ui_dir)
 
     // Initialize other dbox items
-    MODELARGS.max_cycles = 5
+    Args.MaxIterations = 5
     git_hub_image = ui_dir + "/../bmp/GitHub-Mark-32px.bmp"
   EndItem
 
@@ -254,9 +254,9 @@ dBox "Main" location: x, y
   EndItem
   Popdown Menu 36, after, 6 Prompt: "Max Cycles"
     List:{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20}
-    Editable Variable: MODELARGS.max_cycles do
-      if TypeOf(MODELARGS.max_cycles) = "string" 
-        then MODELARGS.max_cycles = S2I(MODELARGS.max_cycles)
+    Editable Variable: Args.MaxIterations do
+      if TypeOf(Args.MaxIterations) = "string" 
+        then Args.MaxIterations = S2I(Args.MaxIterations)
     EndItem
 
   // Fixed OD run button
@@ -420,7 +420,7 @@ dBox "Main" location: x, y
   EndItem
   Popdown Menu 11, after, 6 Prompt: "Max Cycles"
     List:{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20}
-    Editable Variable: MODELARGS.max_cycles
+    Editable Variable: Args.MaxIterations
 
 
 
@@ -695,7 +695,7 @@ Macro "Init MODELARGS" (scen_dir)
   Backup.master_dir = Args.[Master Folder]
   Backup.master_hwy = Args.[Master Links]
   Backup.master_rts = Args.[Master Routes]
-  Backup.max_cycles = MODELARGS.max_cycles
+  Backup.max_cycles = Args.MaxIterations
   Backup.wrapper = MODELARGS.wrapper
   Backup.gt_ui = MODELARGS.gt_ui
   MODELARGS = null
