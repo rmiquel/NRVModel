@@ -3,14 +3,18 @@
 */
 
 Macro "Distribution" (Args)
-    RunMacro("Convert to Distribution Purposes", Args)
-    RunMacro("Add Inter-County Skim Core", Args)
-    RunMacro("Resident DC", Args)
-    RunMacro("HBU Gravity", Args)
-    RunMacro("Commercial Gravity", Args)
-    RunMacro("IEEI Gravity", Args)
-    RunMacro("NHBNR", Args)
-    RunMacro("Aggregate Matrices", Args)
+    for period in Args.Periods do
+      Args.period = period
+      RunMacro("Convert to Distribution Purposes", Args)
+      RunMacro("Add Inter-County Skim Core", Args)
+      RunMacro("Resident DC", Args)
+      RunMacro("HBU Gravity", Args)
+      RunMacro("Commercial Gravity", Args)
+      RunMacro("IEEI Gravity", Args)
+      RunMacro("NHBNR", Args)
+      RunMacro("Aggregate Matrices", Args)
+    end
+    return(1)
 EndMacro
 
 /*
@@ -21,7 +25,7 @@ by an equivalency table.
 */
 
 Macro "Convert to Distribution Purposes" (Args)
-  UpdateProgressBar("Convert to Distribution Purposes", 0)
+  UpdateProgressBar(Args.period + ": Convert to Distribution Purposes", 0)
 
   period = Args.period
   se_bin = Args.se_bin
@@ -43,7 +47,7 @@ trips in distribution.
 */
 
 Macro "Add Inter-County Skim Core" (Args)
-  UpdateProgressBar("Add Inter-County Skim Core", 0)
+  UpdateProgressBar(Args.period + ": Add Inter-County Skim Core", 0)
 
   period = Args.period
   scen_dir = Args.[Scenario Folder]
@@ -104,7 +108,7 @@ in the Distribution.rsc library.
 */
 
 Macro "Resident DC" (Args)
-  UpdateProgressBar("Resident DC", 0)
+  UpdateProgressBar(Args.period + ": Resident DC", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -134,7 +138,7 @@ in the Distribution.rsc library.
 */
 
 Macro "HBU Gravity" (Args)
-  UpdateProgressBar("HBU Gravity", 0)
+  UpdateProgressBar(Args.period + ": HBU Gravity", 0)
   
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -156,7 +160,7 @@ in the Distribution.rsc library.
 */
 
 Macro "Commercial Gravity" (Args)
-  UpdateProgressBar("Commercial Gravity", 0)
+  UpdateProgressBar(Args.period + ": Commercial Gravity", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -178,7 +182,7 @@ in the Distribution.rsc library.
 */
 
 Macro "IEEI Gravity" (Args)
-  UpdateProgressBar("IEEI Gravity", 0)
+  UpdateProgressBar(Args.period + ": IEEI Gravity", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -204,7 +208,7 @@ This macro performs generation and distribution of the NHBNR trips.
 */
 
 Macro "NHBNR" (Args)
-  UpdateProgressBar("NHBNR", 0)
+  UpdateProgressBar(Args.period + ": NHBNR", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -273,7 +277,7 @@ in the Distribution.rsc library.
 */
 
 Macro "Aggregate Matrices" (Args)
-  UpdateProgressBar("Aggregate Matrices", 0)
+  UpdateProgressBar(Args.period + ": Aggregate Matrices", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
