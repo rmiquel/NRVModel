@@ -4,16 +4,16 @@ has completed.
 */
 
 Macro "Summaries" (Args)
-  RunMacro("Write Skim CSVs"), Args)
-  RunMacro("Summarize Distribution"), Args)
-  RunMacro("Summarize Mode"), Args)
-  RunMacro("Create Loaded Network"), Args)
-  RunMacro("Calculate Daily Fields"), Args)
-  RunMacro("VOC Maps"), Args)
-  RunMacro("Create Count Difference Map"), Args)
-  RunMacro("Summarize by FT and AT"), Args)
-  RunMacro("Run Outviz Assignment Validation"), Args)
-  RunMacro("Transit Summary"), Args)
+  RunMacro("Write Skim CSVs", Args)
+  RunMacro("Summarize Distribution", Args)
+  RunMacro("Summarize Mode", Args)
+  RunMacro("Create Loaded Network", Args)
+  RunMacro("Calculate Daily Fields", Args)
+  RunMacro("VOC Maps", Args)
+  RunMacro("Create Count Difference Map", Args)
+  RunMacro("Summarize by FT and AT", Args)
+  RunMacro("Run Outviz Assignment Validation", Args)
+  RunMacro("Transit Summary", Args)
 EndMacro
 
 /*

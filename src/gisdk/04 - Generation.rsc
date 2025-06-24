@@ -10,16 +10,16 @@ IEEI trips are handled by macros in this script file.
 */
 
 Macro "Generation" (Args)
-  RunMacro("Create HH Marginals"), Args)
-  RunMacro("Create HH Joint Distribution"), Args)
-  RunMacro("Resident Trip Production"), Args)
-  RunMacro("Resident Attractions"), Args)
-  RunMacro("University Productions/Attractions"), Args)
-  RunMacro("CV Productions/Attractions"), Args)
-  RunMacro("IEEI Productions"), Args)
-  RunMacro("IEEI Attractions"), Args)
-  RunMacro("Balance Ps and As"), Args)
-  RunMacro("Close All"), Args)
+  RunMacro("Create HH Marginals", Args)
+  RunMacro("Create HH Joint Distribution", Args)
+  RunMacro("Resident Trip Production", Args)
+  RunMacro("Resident Attractions", Args)
+  RunMacro("University Productions/Attractions", Args)
+  RunMacro("CV Productions/Attractions", Args)
+  RunMacro("IEEI Productions", Args)
+  RunMacro("IEEI Attractions", Args)
+  RunMacro("Balance Ps and As", Args)
+  RunMacro("Close All")
 EndMacro
 
 /*

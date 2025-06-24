@@ -12,8 +12,8 @@ Apply Mode Shares (different script file)
 */
 
 Macro "Calc Mode Shares" (Args)
-  RunMacro("Update MC Variables File"), Args)
-  RunMacro("Run NLM MC"), Args)
+  RunMacro("Update MC Variables File", Args)
+  RunMacro("Run NLM MC", Args)
 EndMacro
 
 /*

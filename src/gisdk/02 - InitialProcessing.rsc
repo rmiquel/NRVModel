@@ -7,12 +7,12 @@ macros in this script.
 */
 
 Macro "Initial Processing" (Args)
-  RunMacro("Create Output Copies"), Args)
-  RunMacro("Determine Area Type"), Args)
-  RunMacro("Capacity"), Args)
-  RunMacro("Set CC Speeds"), Args)
-  RunMacro("Other Attributes"), Args)
-  RunMacro("Filter Transit Settings"), Args)
+  RunMacro("Create Output Copies", Args)
+  RunMacro("Determine Area Type", Args)
+  RunMacro("Capacity", Args)
+  RunMacro("Set CC Speeds", Args)
+  RunMacro("Other Attributes", Args)
+  RunMacro("Filter Transit Settings", Args)
 EndMacro
 
 /*

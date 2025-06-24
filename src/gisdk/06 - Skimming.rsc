@@ -12,17 +12,17 @@ Returns
 
 Macro "Skimming" (Args)
     if Args.Iteration = 1 then do
-      RunMacro("Initial Congested Speed"), Args)
-      RunMacro("Create Highway Net Files"), Args)
-      RunMacro("Create Transit Net Files"), Args)
+      RunMacro("Initial Congested Speed", Args)
+      RunMacro("Create Highway Net Files", Args)
+      RunMacro("Create Transit Net Files", Args)
     end else do
-      RunMacro("Update Congested Link Times"), Args)
+      RunMacro("Update Congested Link Times", Args)
     end
-    RunMacro("Highway Skims"), Args)
-    RunMacro("Transit Skims"), Args)
-    RunMacro("Calculate Additional Skim Cores"), Args)
-    RunMacro("Create Skim Indices"), Args)
-    {rmse, prmse} = RunMacro("Calculate Skim RMSE"), Args)
+    RunMacro("Highway Skims", Args)
+    RunMacro("Transit Skims", Args)
+    RunMacro("Calculate Additional Skim Cores", Args)
+    RunMacro("Create Skim Indices", Args)
+    {rmse, prmse} = RunMacro("Calculate Skim RMSE")
     RunMacro("Log Cycle Skim RMSE", rmse, prmse)
     return(prmse)
 EndMacro

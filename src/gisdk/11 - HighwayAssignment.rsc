@@ -8,8 +8,8 @@ if another feedback cycle is necessary.
 */
 
 Macro "Highway Assignment" (Args)
-  RunMacro("Assignment Matrix Creation"), Args)
-  {rmse, prmse} = RunMacro("Run Highway Assignment"), Args)
+  RunMacro("Assignment Matrix Creation", Args)
+  {rmse, prmse} = RunMacro("Run Highway Assignment", Args)
   RunMacro("Log Cycle RMSE", rmse, prmse)
   return(prmse)
 EndMacro
