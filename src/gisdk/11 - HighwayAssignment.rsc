@@ -11,7 +11,7 @@ Macro "Highway Assignment" (Args)
   RunMacro("Assignment Matrix Creation", Args)
   {rmse, prmse} = RunMacro("Run Highway Assignment", Args)
   RunMacro("Log Cycle RMSE", rmse, prmse)
-  return(prmse)
+  Args.hwy_prmse = prmse
 EndMacro
 
 /*
@@ -100,4 +100,15 @@ Macro "Log Cycle RMSE" (rmse, prmse)
   end
 
   new_df.write_csv(log_file)
+EndMacro
+
+/*
+
+*/
+
+Macro  "Feedback" (Args)
+  if Args.Iteration >= Args.MaxIterations then converged = "true"
+  else if prmse_skim < .1 and prmse_flow < .1 then converged = "true"
+  else converged = "false"
+  return(converged)
 EndMacro

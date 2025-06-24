@@ -24,7 +24,7 @@ Macro "Skimming" (Args)
     RunMacro("Create Skim Indices", Args)
     {rmse, prmse} = RunMacro("Calculate Skim RMSE")
     RunMacro("Log Cycle Skim RMSE", rmse, prmse)
-    return(prmse)
+    Args.skim_prmse = prmse
 EndMacro
 
 /*
