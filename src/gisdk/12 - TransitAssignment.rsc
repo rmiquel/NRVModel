@@ -3,9 +3,12 @@
 */
 
 Macro "Transit Assignment" (Args)
-  
-  RunMacro("Transit Assignment Matrix Creation", Args)
-  RunMacro("Run Transit Assignment", Args)
+  for period in Args.Periods do
+    Args.period = period
+    RunMacro("Transit Assignment Matrix Creation", Args)
+    RunMacro("Run Transit Assignment", Args)
+  end
+  return(1)
 EndMacro
 
 /*
@@ -13,7 +16,7 @@ EndMacro
 */
 
 Macro "Transit Assignment Matrix Creation" (Args)
-  UpdateProgressBar("Transit Assignment Matrix Creation", 0)
+  UpdateProgressBar(Args.period + ": Transit Assignment Matrix Creation", 0)
   
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -43,7 +46,7 @@ EndMacro
 */
 
 Macro "Run Transit Assignment" (Args)
-  UpdateProgressBar("Run Transit Assignment", 0)
+  UpdateProgressBar(Args.period + ": Run Transit Assignment", 0)
   
   scen_dir = Args.[Scenario Folder]
   period = Args.period
