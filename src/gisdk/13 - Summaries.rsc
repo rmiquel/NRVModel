@@ -25,7 +25,7 @@ number of times it must be done. Only the final skims are written out.
 Macro "Write Skim CSVs" (Args)
   UpdateProgressBar("Write Skim CSVs", 0)
 
-  a_periods = Args.TimePeriods
+  a_periods = Args.Periods
   scen_dir = Args.[Scenario Folder]
   output_dir = scen_dir + "/outputs/summary/skim_csvs"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
@@ -64,7 +64,7 @@ final tables to CSV.
 Macro "Summarize Distribution" (Args)
   UpdateProgressBar("Summarize Distribution", 0)
 
-  a_periods = Args.TimePeriods
+  a_periods = Args.Periods
   scen_dir = Args.[Scenario Folder]
   dist_dir = scen_dir + "/outputs/distribution"
   output_dir = scen_dir + "/outputs/summary/distribution_csvs"
@@ -112,7 +112,7 @@ EndMacro
 Macro "Summarize Mode" (Args)
   UpdateProgressBar("Summarize Mode", 0)
 
-  a_periods = Args.TimePeriods
+  a_periods = Args.Periods
   scen_dir = Args.[Scenario Folder]
   mode_dir = scen_dir + "/outputs/mode"
   output_dir = scen_dir + "/outputs/summary/mode"
@@ -141,7 +141,7 @@ Depends
 Macro "Create Loaded Network" (Args)
   UpdateProgressBar("Create Loaded Network", 0)
 
-  a_periods = Args.TimePeriods
+  a_periods = Args.Periods
   scen_dir = Args.[Scenario Folder]
   hwy_dbd = Args.hwy_dbd
   output_dir = scen_dir + "/outputs/summary/loaded_network"
@@ -251,7 +251,7 @@ summarize. e.g. {"Flow_auto", "Flow", "VMT"}.
 Macro "Calculate Daily Fields" (Args)
   UpdateProgressBar("Calculate Daily Fields", 0)
 
-  a_periods = Args.TimePeriods
+  a_periods = Args.Periods
   scen_dir = Args.[Scenario Folder]
   output_dir = scen_dir + "/outputs/summary/loaded_network"
   loaded_dbd = output_dir + "/LoadedNetwork.dbd"
@@ -422,7 +422,7 @@ Creates V/C maps for each time period.
 Macro "VOC Maps" (Args)
   UpdateProgressBar("VOC Maps", 0)
 
-  a_periods = Args.TimePeriods + {"Daily"}
+  a_periods = Args.Periods + {"Daily"}
   scen_dir = Args.[Scenario Folder]
   hwy_dbd = scen_dir + "/outputs/summary/loaded_network/LoadedNetwork.dbd"
   output_dir = scen_dir + "/outputs/summary/maps"

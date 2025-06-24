@@ -97,58 +97,11 @@ EndMacro
 
 Macro "Model.OnModelStart" (Args,Result)
 Body:
-    Args.ABMFlag = 1 // Set to default value
-    
-    // Create Empty Folders
-    folders = {Args.[Output Folder],
-               Args.[Output Folder] + "\\Intermediate\\",
-               Args.[Output Folder] + "\\Population\\",
-               Args.[Output Folder] + "\\Networks\\",
-               Args.[Output Folder] + "\\access\\",
-               Args.[Output Folder] + "\\skims\\",
-               Args.[Output Folder] + "\\ToursAndTrips\\",
-               Args.[Output Folder] + "\\OD\\"    
-               }
-    for f in folders do
-        o = CreateObject("CC.Directory", RunMacro("FlowChart.ResolveValue", f, Args))
-        o.Create()
-    end
-
-    // Release or close any unwanted instances of the two class objects below
-    RunMacro("ReleaseSingleton", "ABM_Manager")
-    RunMacro("ReleaseSingleton", "ABM.TimeManager")
-
-    // Set time period arguments
-    periods = null
-    periods.EA.StartTime = 180  // 3 AM
-    periods.EA.EndTime = 360    // 6 AM
-    periods.AM.StartTime = 360  // 6 AM
-    periods.AM.EndTime = 540    // 9 AM
-    periods.MD.StartTime = 540  // 9 AM
-    periods.MD.EndTime = 900    // 3 PM
-    periods.PM.StartTime = 900  // 3 PM
-    periods.PM.EndTime = 1140   // 7 PM
-    periods.EV.StartTime = 1140  // 7 PM
-    periods.EV.EndTime = 1260    // 9 PM
-    periods.NT.StartTime = 1260  // 9 PM
-    periods.NT.EndTime = 1620    // 3 AM next day
-    Return({TimePeriods: periods})
 EndMacro
 
 
 Macro "Model.OnModelDone" (Args,Result)
 Body:
-    mr = CreateObject("Model.Runtime")
-    if Args.ABMFlag > 0 then do
-        if Args.ABMFlag = 1 then
-            mr.RunCode("Export ABM Data", Args, {Overwrite: 1})
-        else if Args.ABMFlag = 2 then
-            mr.RunCode("Export Visitor ABM Data", Args, {Overwrite: 1})
-        RunMacro("ReleaseSingleton", "ABM_Manager")
-        RunMacro("ReleaseSingleton", "ABM.TimeManager")
-    end
-    Args.ABMFlag = 1 // Set to default value
-    Return(Result)
 EndMacro
 
 

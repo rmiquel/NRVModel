@@ -38,8 +38,8 @@ Macro "Full Model Run"
   RunMacro("Generation")
   RunMacro("Time of Day")
 
-  for p = 1 to Args.TimePeriods.length do
-    Args.period = Args.TimePeriods[p]
+  for p = 1 to Args.Periods.length do
+    Args.period = Args.Periods[p]
 
     Args.Iteration = 1
     prmse_skim = null
@@ -595,9 +595,9 @@ Macro "Init MODELARGS" (scen_dir)
   param_file = Args.[Master Folder] +
     "\\networks\\period_capacity_factors.csv"
   pf_factors = RunMacro("Read Parameter File", param_file)
-  Args.TimePeriods = null
+  Args.Periods = null
   for p = 1 to pf_factors.length do
-    Args.TimePeriods = Args.TimePeriods + {pf_factors[p][1]}
+    Args.Periods = Args.Periods + {pf_factors[p][1]}
   end
   pf_factors = null
 
@@ -660,8 +660,8 @@ Macro "Fixed OD Run"
   RunMacro("Free-Flow Speed and Alpha")
 
   Args.Iteration = 1
-  for p = 1 to Args.TimePeriods.length do
-    Args.period = Args.TimePeriods[p]
+  for p = 1 to Args.Periods.length do
+    Args.period = Args.Periods[p]
 
     // From Skimming
     RunMacro("Initial Congested Speed")

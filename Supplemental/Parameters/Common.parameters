@@ -107,7 +107,7 @@
 	
 	Section = "Parameters|Periods"
 	
-        Args.TimePeriods = {
+        Args.Periods = {
             "Type":"hidden",
             "Value":
             {"AM", "MD", "PM","NT"}

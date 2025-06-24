@@ -26,7 +26,7 @@ Macro "Assignment Matrix Creation" (Args)
   cycle = Args.Iteration
 
   // Clear the assignment directory on the very first run
-  if cycle = 1 and period = Args.TimePeriods[1] then do
+  if cycle = 1 and period = Args.Periods[1] then do
     dir = scen_dir + "/outputs/assignment"
     RunMacro("Clear Directory", dir)
   end

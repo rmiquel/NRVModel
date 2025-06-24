@@ -13,6 +13,7 @@ Macro "Initial Processing" (Args)
   RunMacro("Set CC Speeds", Args)
   RunMacro("Other Attributes", Args)
   RunMacro("Filter Transit Settings", Args)
+  return(1)
 EndMacro
 
 /*
@@ -127,7 +128,7 @@ Macro "Capacity" (Args)
   a_dir = {"AB", "BA"}
 
   for los in a_los do
-    for tod in Args.TimePeriods do
+    for tod in Args.Periods do
       for dir in a_dir do
 
         field_name = dir + tod + "Cap" + los
@@ -181,6 +182,7 @@ Macro "Set CC Speeds" (Args)
   v_speed = GetDataVector(jv + "|CCs", "CCSpeed", )
   SetDataVector(jv + "|CCs", "PostedSpeed", v_speed, )
 
+  CloseView(jv)
   RunMacro("Close All")
 EndMacro
 
@@ -234,6 +236,7 @@ Macro "Other Attributes" (Args)
   SetDataVector(jv + "|", llyr + ".Alpha", v_alpha, )
   SetDataVector(jv + "|", llyr + ".WalkTime", v_wt, )
 
+  CloseView(jv)
   RunMacro("Close All")
 EndMacro
 
@@ -247,7 +250,7 @@ Macro "Filter Transit Settings" (Args)
   UpdateProgressBar("Filter Transit Settings", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = Args.TimePeriods[1]
+  period = Args.Periods[1]
   rts_file = Args.rts_file
   param_dir = scen_dir + "/inputs/networks"
 
