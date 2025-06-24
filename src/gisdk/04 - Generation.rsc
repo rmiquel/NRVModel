@@ -20,6 +20,7 @@ Macro "Generation" (Args)
   RunMacro("IEEI Attractions", Args)
   RunMacro("Balance Ps and As", Args)
   RunMacro("Close All")
+  return(1)
 EndMacro
 
 /*

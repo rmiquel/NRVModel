@@ -12,4 +12,5 @@ Macro "Time of Day" (Args)
   opts.param_file = Args.[Scenario Folder] + "/inputs/tod/time_of_day_factors.csv"
   RunMacro("Calculate Fields - Simple", opts)
   RunMacro("Close All")
+  return(1)
 EndMacro
