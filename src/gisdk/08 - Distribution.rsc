@@ -23,7 +23,7 @@ by an equivalency table.
 Macro "Convert to Distribution Purposes" (Args)
   UpdateProgressBar("Convert to Distribution Purposes", 0)
 
-  period = MODELARGS.period
+  period = Args.period
   se_bin = Args.se_bin
   param_file = Args.[Scenario Folder] + "/inputs/distribution/d_purp_conversion.csv"
 
@@ -45,7 +45,7 @@ trips in distribution.
 Macro "Add Inter-County Skim Core" (Args)
   UpdateProgressBar("Add Inter-County Skim Core", 0)
 
-  period = MODELARGS.period
+  period = Args.period
   scen_dir = Args.[Scenario Folder]
   taz_dbd = Args.taz_dbd
 
@@ -107,7 +107,7 @@ Macro "Resident DC" (Args)
   UpdateProgressBar("Resident DC", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   se_bin = Args.se_bin
 
   opts = null
@@ -137,7 +137,7 @@ Macro "HBU Gravity" (Args)
   UpdateProgressBar("HBU Gravity", 0)
   
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   opts = null
   opts.scen_dir = scen_dir
   opts.se_bin = Args.se_bin
@@ -159,7 +159,7 @@ Macro "Commercial Gravity" (Args)
   UpdateProgressBar("Commercial Gravity", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   opts = null
   opts.scen_dir = scen_dir
   opts.se_bin = Args.se_bin
@@ -181,7 +181,7 @@ Macro "IEEI Gravity" (Args)
   UpdateProgressBar("IEEI Gravity", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   opts = null
   opts.scen_dir = scen_dir
   opts.se_bin = Args.se_bin
@@ -207,7 +207,7 @@ Macro "NHBNR" (Args)
   UpdateProgressBar("NHBNR", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   se_bin = Args.se_bin
 
   // Collect vector of IEEI trip attractions
@@ -276,7 +276,7 @@ Macro "Aggregate Matrices" (Args)
   UpdateProgressBar("Aggregate Matrices", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   dist_dir = scen_dir + "/outputs/distribution"
 
   opts.matrices = {

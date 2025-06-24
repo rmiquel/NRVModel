@@ -16,8 +16,8 @@ Macro "Transit Assignment Matrix Creation" (Args)
   UpdateProgressBar("Transit Assignment Matrix Creation", 0)
   
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  period = Args.period
+  cycle = Args.Iteration
 
   to_dir = scen_dir + "/outputs/assignment/transit"
   RunMacro("Create Directory", to_dir)
@@ -46,7 +46,7 @@ Macro "Run Transit Assignment" (Args)
   UpdateProgressBar("Run Transit Assignment", 0)
   
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   
   opts = null
   opts.period = period

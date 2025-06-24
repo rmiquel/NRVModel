@@ -127,7 +127,7 @@ Macro "Capacity" (Args)
   a_dir = {"AB", "BA"}
 
   for los in a_los do
-    for tod in MODELARGS.periods do
+    for tod in Args.TimePeriods do
       for dir in a_dir do
 
         field_name = dir + tod + "Cap" + los
@@ -247,7 +247,7 @@ Macro "Filter Transit Settings" (Args)
   UpdateProgressBar("Filter Transit Settings", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.periods[1]
+  period = Args.TimePeriods[1]
   rts_file = Args.rts_file
   param_dir = scen_dir + "/inputs/networks"
 

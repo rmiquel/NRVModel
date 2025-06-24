@@ -12,7 +12,7 @@ the "src/lib" directory.
 Passing information between dialog boxes and macros is handled using the
 global MODELARGS variable. MODELARGS is established/modified entirely
 in this main script.  In all other scripts, it is simply referenced
-- not modified.  For example, many macros use MODELARGS.period to determine
+- not modified.  For example, many macros use Args.period to determine
 which time of day (e.g. "AM") they are operating in.
 */
 
@@ -38,20 +38,20 @@ Macro "Full Model Run"
   RunMacro("Generation")
   RunMacro("Time of Day")
 
-  for p = 1 to MODELARGS.periods.length do
-    MODELARGS.period = MODELARGS.periods[p]
+  for p = 1 to Args.TimePeriods.length do
+    Args.period = Args.TimePeriods[p]
 
-    MODELARGS.cycle = 1
+    Args.Iteration = 1
     prmse_skim = null
     prmse_flow = null
     converged = "False"
-    while !converged and MODELARGS.cycle <= MODELARGS.max_cycles do
+    while !converged and Args.Iteration <= MODELARGS.max_cycles do
       UpdateProgressBar(
-        "Period: " + MODELARGS.period + "     " +
-        "Cycle: " + String(MODELARGS.cycle) + "     " +
+        "Period: " + Args.period + "     " +
+        "Cycle: " + String(Args.Iteration) + "     " +
         "Skim RMSE: " + String(prmse_skim) + "%     " +
         "Flow RMSE: " + String(prmse_flow) + "%",
-        round(MODELARGS.cycle / MODELARGS.max_cycles * 100, 0)
+        round(Args.Iteration / MODELARGS.max_cycles * 100, 0)
       )
       CreateProgressBar("placeholder", )
 
@@ -62,9 +62,9 @@ Macro "Full Model Run"
       RunMacro("Directionality")
       prmse_flow = RunMacro("Highway Assignment")
 
-      if prmse_skim < .1 and prmse_flow < .1 and MODELARGS.cycle >= 4
+      if prmse_skim < .1 and prmse_flow < .1 and Args.Iteration >= 4
         then converged = "True"
-      MODELARGS.cycle = MODELARGS.cycle + 1
+      Args.Iteration = Args.Iteration + 1
       DestroyProgressBar()
     end
   end
@@ -589,15 +589,15 @@ Macro "Init MODELARGS" (scen_dir)
   for i = 1 to Backup.length do
     MODELARGS.(Backup[i][1]) = Backup[i][2]
   end
-  MODELARGS.cycle = 1
+  Args.Iteration = 1
 
   // Use the master period capacity factor file to establish TOD periods
   param_file = Args.[Master Folder] +
     "\\networks\\period_capacity_factors.csv"
   pf_factors = RunMacro("Read Parameter File", param_file)
-  MODELARGS.periods = null
+  Args.TimePeriods = null
   for p = 1 to pf_factors.length do
-    MODELARGS.periods = MODELARGS.periods + {pf_factors[p][1]}
+    Args.TimePeriods = Args.TimePeriods + {pf_factors[p][1]}
   end
   pf_factors = null
 
@@ -659,9 +659,9 @@ Macro "Fixed OD Run"
   RunMacro("Capacity")
   RunMacro("Free-Flow Speed and Alpha")
 
-  MODELARGS.cycle = 1
-  for p = 1 to MODELARGS.periods.length do
-    MODELARGS.period = MODELARGS.periods[p]
+  Args.Iteration = 1
+  for p = 1 to Args.TimePeriods.length do
+    Args.period = Args.TimePeriods[p]
 
     // From Skimming
     RunMacro("Initial Congested Speed")

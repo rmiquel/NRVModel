@@ -103,58 +103,14 @@
             "Description":"Maximum number of iterations that this model can run.",
             "Value":4
         }
-        Args.AMFeedbackConvergence = {
-            "Type":"double",
-            "Description":"AM Feedback RMSE convergence criteria.",
-            "Value":0.5
-        }
-        Args.PMFeedbackConvergence = {
-            "Type":"double",
-            "Description":"PM Feedback RMSE convergence criteria.",
-            "Value":0.5
-        }
-        Args.OPFeedbackConvergence = {
-            "Type":"double",
-            "Description":"OP Feedback RMSE convergence criteria.",
-            "Value":0.5
-        }
-        Args.RunInIterations = {
-            "Type":"array",
-            "Description":"Option array listing step names and what iteration they run in each scenario",
-            "Value":null
-        }
-        Args.CongestedTimeFile = {
-            "Type":"File",
-            "Caption":"Congested link speeds file",
-            "Value":"%Input Folder%\\networks\\CongestedTimes.bin"
-        }
+        
 	
 	Section = "Parameters|Periods"
 	
         Args.TimePeriods = {
             "Type":"hidden",
             "Value":
-            {"AM","PM","OP"}
-        }
-        Args.[ABM Manager] = {
-            "Type":"hidden",
-            "Description":"CC ABM Manager Object",
-            "Value":null
-        }
-        Args.AMCapFactor = {
-            "Type":"int",
-            "Description":"Peak hour to AM period capacity factor",
-            "Value":2.5
-        }
-        Args.PMCapFactor = {
-            "Type":"int",
-            "Description":"Peak hour to PM period capacity factor",
-            "Value":3.5
-        }
-        Args.OPCapFactor = {
-            "Type":"int",
-            "Description":"Peak hour to NT period capacity factor",
-            "Value":7
+            {"AM", "MD", "PM","NT"}
         }
 	
 	Section = "Parameters|ABM"

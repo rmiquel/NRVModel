@@ -27,7 +27,7 @@ Macro "Update MC Variables File" (Args)
   UpdateProgressBar("Update MC Variables File", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   net_dir = scen_dir + "/outputs/networks"
   var_tbl = scen_dir + "/inputs/mode/mc_variables.csv"
   out_tbl = scen_dir + "/outputs/mode/mc_variables_updated.csv"
@@ -61,7 +61,7 @@ Macro "Run NLM MC" (Args)
 
   scen_dir = Args.[Scenario Folder]
   se_bin = Args.se_bin
-  period = MODELARGS.period
+  period = Args.period
   skim_dir = scen_dir + "/outputs/skims"
   mc_dir = scen_dir + "/inputs/mode"
   template_mdl = mc_dir + "/template_mc.mdl"

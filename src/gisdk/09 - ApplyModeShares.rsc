@@ -25,7 +25,7 @@ Macro "Remove School Bus Trips" (Args)
   shared no_bus_file
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   output_dir = scen_dir + "/outputs/mode"
 
   // Copy the DC matrix to a MC matrix
@@ -50,7 +50,7 @@ Macro "Apply MC Probabilities" (Args)
   shared no_bus_file
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   
   opts = null
   opts.trip_matrix = no_bus_file

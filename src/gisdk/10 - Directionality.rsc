@@ -23,7 +23,7 @@ Macro "Split Highway and Non-Highway Trips" (Args)
   UpdateProgressBar("Dir - Purpose Conversion", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
 
   // Create the highway trip table
   opts = null
@@ -65,7 +65,7 @@ Macro "Apply Directionality" (Args)
   UpdateProgressBar("Apply Directionality", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   param_file = scen_dir + "/inputs/directionality/directionality_factors.csv"
   from_mtx = scen_dir + "/outputs/directionality/pa_person_hwy_trips_" +
     period + ".mtx"
@@ -114,7 +114,7 @@ Macro "Vehicle Occupancy" (Args)
   UpdateProgressBar("Vehicle Occupancy", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   from_mtx = scen_dir + "/outputs/directionality/od_person_hwy_trips_" +
     period + ".mtx"
   to_mtx = scen_dir + "/outputs/directionality/od_vehicle_hwy_trips_" +
@@ -165,7 +165,7 @@ Macro "Include Through Trips" (Args)
   UpdateProgressBar("Include Through Trips", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
   ee_mtx = scen_dir + "/outputs/external/EETable.mtx"
   v_mtx = scen_dir + "/outputs/directionality/od_vehicle_hwy_trips_" +
     period + ".mtx"

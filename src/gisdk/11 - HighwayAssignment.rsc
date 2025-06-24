@@ -22,11 +22,11 @@ Macro "Assignment Matrix Creation" (Args)
   UpdateProgressBar("Assignment Matrix Creation", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  period = Args.period
+  cycle = Args.Iteration
 
   // Clear the assignment directory on the very first run
-  if cycle = 1 and period = MODELARGS.periods[1] then do
+  if cycle = 1 and period = Args.TimePeriods[1] then do
     dir = scen_dir + "/outputs/assignment"
     RunMacro("Clear Directory", dir)
   end
@@ -50,13 +50,13 @@ Macro "Run Highway Assignment" (Args)
   UpdateProgressBar("Run Highway Assignment", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
+  period = Args.period
 
   // Set options for the OUE macro call
   opts = null
   opts.period = period
   opts.hwy_dbd = Args.hwy_dbd
-  opts.cycle = MODELARGS.cycle
+  opts.cycle = Args.Iteration
   opts.asn_dir = scen_dir + "/outputs/assignment"
   opts.trip_mtx = opts.asn_dir + "/assignment_" + period + ".mtx"
   opts.toll_mtx = null
@@ -81,8 +81,8 @@ Macro "Log Cycle RMSE" (rmse, prmse)
   UpdateProgressBar("Log Cycle RMSE", 0)
 
   scen_dir = Args.[Scenario Folder]
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  period = Args.period
+  cycle = Args.Iteration
   log_file = scen_dir + "/outputs/assignment/cycle_rmse_" + period + ".csv"
 
   // Create data frame of current cycle and rmse
