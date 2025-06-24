@@ -9,10 +9,14 @@ transit assignment if implemented in the future.
 */
 
 Macro "Directionality" (Args)
-  RunMacro("Split Highway and Non-Highway Trips", Args)
-  RunMacro("Apply Directionality", Args)
-  RunMacro("Vehicle Occupancy", Args)
-  RunMacro("Include Through Trips", Args)
+  for period in Args.Periods do
+    Args.period = period
+    RunMacro("Split Highway and Non-Highway Trips", Args)
+    RunMacro("Apply Directionality", Args)
+    RunMacro("Vehicle Occupancy", Args)
+    RunMacro("Include Through Trips", Args)
+  end
+  return(1)
 EndMacro
 
 /*
@@ -20,7 +24,7 @@ EndMacro
 */
 
 Macro "Split Highway and Non-Highway Trips" (Args)
-  UpdateProgressBar("Dir - Purpose Conversion", 0)
+  UpdateProgressBar(Args.period + ": Dir - Purpose Conversion", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -62,7 +66,7 @@ Matrix core names from mode choice must be in the form of:
 */
 
 Macro "Apply Directionality" (Args)
-  UpdateProgressBar("Apply Directionality", 0)
+  UpdateProgressBar(Args.period + ": Apply Directionality", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -111,7 +115,7 @@ factors are specified in a parameter table by purpose, mode, and tod.
 */
 
 Macro "Vehicle Occupancy" (Args)
-  UpdateProgressBar("Vehicle Occupancy", 0)
+  UpdateProgressBar(Args.period + ": Vehicle Occupancy", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -162,7 +166,7 @@ For Hickory, all trips are assigned together.
 */
 
 Macro "Include Through Trips" (Args)
-  UpdateProgressBar("Include Through Trips", 0)
+  UpdateProgressBar(Args.period + ": Include Through Trips", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
