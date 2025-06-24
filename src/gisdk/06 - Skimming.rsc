@@ -11,20 +11,25 @@ Returns
 */
 
 Macro "Skimming" (Args)
-    if Args.Iteration = 1 then do
-      RunMacro("Initial Congested Speed", Args)
-      RunMacro("Create Highway Net Files", Args)
-      RunMacro("Create Transit Net Files", Args)
-    end else do
-      RunMacro("Update Congested Link Times", Args)
+    for period in Args.Periods do
+      Args.period = period
+
+      if Args.Iteration = 1 then do
+        RunMacro("Initial Congested Speed", Args)
+        RunMacro("Create Highway Net Files", Args)
+        RunMacro("Create Transit Net Files", Args)
+      end else do
+        RunMacro("Update Congested Link Times", Args)
+      end
+      RunMacro("Highway Skims", Args)
+      RunMacro("Transit Skims", Args)
+      RunMacro("Calculate Additional Skim Cores", Args)
+      RunMacro("Create Skim Indices", Args)
+      {rmse, prmse} = RunMacro("Calculate Skim RMSE", Args)
+      RunMacro("Log Cycle Skim RMSE", rmse, prmse, Args)
+      Args.skim_prmse.(period) = prmse
     end
-    RunMacro("Highway Skims", Args)
-    RunMacro("Transit Skims", Args)
-    RunMacro("Calculate Additional Skim Cores", Args)
-    RunMacro("Create Skim Indices", Args)
-    {rmse, prmse} = RunMacro("Calculate Skim RMSE")
-    RunMacro("Log Cycle Skim RMSE", rmse, prmse)
-    Args.skim_prmse = prmse
+    return(1)
 EndMacro
 
 /*
@@ -109,7 +114,7 @@ Also sets their settings.
 */
 
 Macro "Create Transit Net Files" (Args)
-  UpdateProgressBar("Create Transit Net Files", 0)
+  UpdateProgressBar(Args.period + ": Create Transit Net Files", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -157,7 +162,7 @@ EndMacro
 */
 
 Macro "Highway Skims" (Args)
-  UpdateProgressBar("Highway Skims", 0)
+  UpdateProgressBar(Args.period + ": Highway Skims", 0)
 
   scen_dir = Args.[Scenario Folder]
   period = Args.period
@@ -202,7 +207,7 @@ EndMacro
 */
 
 Macro "Transit Skims" (Args)
-  UpdateProgressBar("Transit Skims", 0)
+  UpdateProgressBar(Args.period + ": Transit Skims", 0)
 
   scen_dir = Args.[Scenario Folder]
   rts_file = Args.rts_file
@@ -340,7 +345,7 @@ Depends
   gplyr
 */
 
-Macro "Log Cycle Skim RMSE" (rmse, prmse)
+Macro "Log Cycle Skim RMSE" (rmse, prmse, Args)
   UpdateProgressBar("Log Cycle Skim RMSE", 0)
 
   scen_dir = Args.[Scenario Folder]
