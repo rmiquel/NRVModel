@@ -4,9 +4,9 @@ has completed.
 */
 
 Macro "Summaries" (Args)
-  RunMacro("Write Skim CSVs", Args)
-  RunMacro("Summarize Distribution", Args)
-  RunMacro("Summarize Mode", Args)
+  // RunMacro("Write Skim CSVs", Args)
+  // RunMacro("Summarize Distribution", Args)
+  // RunMacro("Summarize Mode", Args)
   RunMacro("Create Loaded Network", Args)
   RunMacro("Calculate Daily Fields", Args)
   RunMacro("VOC Maps", Args)
@@ -14,6 +14,7 @@ Macro "Summaries" (Args)
   RunMacro("Summarize by FT and AT", Args)
   RunMacro("Run Outviz Assignment Validation", Args)
   RunMacro("Transit Summary", Args)
+  return(1)
 EndMacro
 
 /*
@@ -155,7 +156,7 @@ Macro "Create Loaded Network" (Args)
   for p = 1 to a_periods.length do
     period = a_periods[p]
 
-    fin_cycle = RunMacro("Get Final Cycle Number", period)
+    fin_cycle = RunMacro("Get Final Cycle Number", period, Args)
     asn_file = scen_dir + "/outputs/assignment/cycle_" + String(fin_cycle) +
       "/LinkFlow_" + period + ".bin"
 
@@ -404,7 +405,7 @@ Depends
   gplyr
 */
 
-Macro "Get Final Cycle Number" (period)
+Macro "Get Final Cycle Number" (period, Args)
 
   scen_dir = Args.[Scenario Folder]
   rmse_file = scen_dir + "/outputs/assignment/cycle_rmse_" + period + ".csv"
