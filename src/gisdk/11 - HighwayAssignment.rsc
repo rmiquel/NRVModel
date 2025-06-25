@@ -115,5 +115,8 @@ Macro  "Feedback" (Args)
   // if you want to check skim/flow %RMSE, use Args.hwy_prmse and Args.skim_prmse by period
   if Args.Iteration >= Args.MaxIterations 
     then return(1) // converged
-    else return(2) // not converged
+    else do
+      Args.Iteration = Args.Iteration + 1
+      return(2) // not converged
+    end
 EndMacro

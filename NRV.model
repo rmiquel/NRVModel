@@ -126,7 +126,7 @@ EndMacro
 Macro "Feedback" (Args,Result)
     Attributes = {
         {"Class", {"GISDK"}},
-        {"MacroNames", { /* "Macro Name 1", ..., "Macro Name n" */ }},
+        {"MacroNames", {"Feedback"}},
         {"Shape", "Decision"}
     }
 EndMacro
