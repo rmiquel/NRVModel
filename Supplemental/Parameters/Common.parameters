@@ -4,17 +4,9 @@
             "Type":"Folder",
             "Value":"%Model Folder%"
         }
-        Args.[Data Folder] = {
-            "Type":"Folder",
-            "Value":"%Model Folder%\\Data"
-        }
         Args.[Master Folder] = {
             "Type":"Folder",
             "Value":"%Base Folder%\\Master"
-        }
-        Args.ScenarioSubFolder = {
-            "Type":"hidden",
-            "Value":"BaseYear"
         }
         Args.[Scenario Folder] = {
             "Type":"Folder",
@@ -22,11 +14,11 @@
         }
         Args.[Input Folder] = {
             "Type":"Folder",
-            "Value":"%Scenario Folder%\\Input"
+            "Value":"%Scenario Folder%\\inputs"
         }
         Args.[Output Folder] = {
             "Type":"Folder",
-            "Value":"%Scenario Folder%\\Outputs"
+            "Value":"%Scenario Folder%\\outputs"
         }
         Args.[Disable Macros] = {
             "Type":"array",
