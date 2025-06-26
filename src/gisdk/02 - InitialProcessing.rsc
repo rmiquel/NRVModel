@@ -108,14 +108,23 @@ Macro "Capacity" (Args)
 
   // Lookup hourly capacities
   cap_tbl = scen_dir + "/inputs/networks/hourly_capacities.csv"
-  cap = CreateObject("df")
-  cap.read_csv(cap_tbl)
   hwy_bin = Substitute(hwy_dbd, ".dbd", ".bin", )
-  net = CreateObject("df")
-  net.read_bin(hwy_bin, {"HCMType", "AreaType"})
-  net.left_join(cap, {"HCMType", "AreaType"})
-  net.select({"capd_phpl", "cape_phpl"})
-  net.update_bin(hwy_bin)
+  cap_tbl = CreateObject("Table", cap_tbl)
+  hwy_tbl = CreateObject("Table", hwy_bin)
+  hwy_tbl.AddField("capd_phpl")
+  hwy_tbl.AddField("cape_phpl")
+  cap_specs = cap_tbl.GetFieldSpecs({NamedArray: "true"})
+  hwy_specs = hwy_tbl.GetFieldSpecs({NamedArray: "true"})
+  join = hwy_tbl.Join({
+    Table: cap_tbl,
+    LeftFields: {"HCMType", "AreaType"},
+    RightFields: {"HCMType", "AreaType"}
+  })
+  join.(hwy_specs.("capd_phpl")) = join.(cap_specs.("capd_phpl"))
+  join.(hwy_specs.("cape_phpl")) = join.(cap_specs.("cape_phpl"))
+  join = null
+  cap_tbl = null
+  hwy_tbl = null
 
   // Calculate period capacities
   {nlyr, llyr} = GetDBLayers(Args.hwy_dbd)
