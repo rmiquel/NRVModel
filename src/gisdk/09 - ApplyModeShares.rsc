@@ -11,21 +11,25 @@ Apply Mode Shares (this script file)
   by the distribution model.
 */
 
-Macro "Apply Mode Shares"
-  RunMacro("Remove School Bus Trips")
-  RunMacro("Apply MC Probabilities")
+Macro "Apply Mode Shares" (Args)
+  for period in Args.Periods do
+    Args.period = period
+    RunMacro("Remove School Bus Trips", Args)
+    RunMacro("Apply MC Probabilities", Args)
+  end
+  return(1)
 EndMacro
 
 /*
 
 */
 
-Macro "Remove School Bus Trips"
-  UpdateProgressBar("Remove School Bus Trips", 0)
+Macro "Remove School Bus Trips" (Args)
+  UpdateProgressBar(Args.period + ": Remove School Bus Trips", 0)
   shared no_bus_file
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   output_dir = scen_dir + "/outputs/mode"
 
   // Copy the DC matrix to a MC matrix
@@ -45,12 +49,12 @@ EndMacro
 
 */
 
-Macro "Apply MC Probabilities"
-  UpdateProgressBar("Apply MC Probabilities", 0)
+Macro "Apply MC Probabilities" (Args)
+  UpdateProgressBar(Args.period + ": Apply MC Probabilities", 0)
   shared no_bus_file
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   
   opts = null
   opts.trip_matrix = no_bus_file

@@ -6,13 +6,14 @@ Macro "Initial Processing" is the main control macro, which calls all other
 macros in this script.
 */
 
-Macro "Initial Processing"
-  RunMacro("Create Output Copies")
-  RunMacro("Determine Area Type")
-  RunMacro("Capacity")
-  RunMacro("Set CC Speeds")
-  RunMacro("Other Attributes")
-  RunMacro("Filter Transit Settings")
+Macro "Initial Processing" (Args)
+  RunMacro("Create Output Copies", Args)
+  RunMacro("Determine Area Type", Args)
+  RunMacro("Capacity", Args)
+  RunMacro("Set CC Speeds", Args)
+  RunMacro("Other Attributes", Args)
+  RunMacro("Filter Transit Settings", Args)
+  return(1)
 EndMacro
 
 /*
@@ -22,23 +23,23 @@ the input files as they were.  This helps when looking back at
 older scenarios.
 */
 
-Macro "Create Output Copies"
+Macro "Create Output Copies" (Args)
   UpdateProgressBar("Create Output Copies", 0)
 
-  input_dir = MODELARGS.scen_dir + "/inputs"
+  input_dir = Args.[Scenario Folder] + "/inputs"
 
   opts = null
   opts.from_rts = input_dir + "/networks/ScenarioRoutes.rts"
-  {drive, folder, filename, ext} = SplitPath(MODELARGS.rts_file)
+  {drive, folder, filename, ext} = SplitPath(Args.rts_file)
   opts.to_dir = drive + folder
   opts.include_hwy_files = "true"
   RunMacro("Copy RTS Files", opts)
-  CopyDatabase(input_dir + "/taz/ScenarioTAZ.dbd", MODELARGS.taz_dbd)
+  CopyDatabase(input_dir + "/taz/ScenarioTAZ.dbd", Args.taz_dbd)
   se = OpenTable("se", "FFB", {input_dir + "/sedata/ScenarioSE.bin"})
   ExportView(
     se + "|",
     "FFB",
-    MODELARGS.se_bin,,
+    Args.se_bin,,
   )
   CloseView(se)
 EndMacro
@@ -49,13 +50,13 @@ Prepares input options for the AreaType.rsc library of tools, which
 tags TAZs and Links with area types.
 */
 
-Macro "Determine Area Type"
+Macro "Determine Area Type" (Args)
   UpdateProgressBar("Determine Area Type", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  taz_dbd = MODELARGS.taz_dbd
-  se_bin = MODELARGS.se_bin
-  hwy_dbd = MODELARGS.hwy_dbd
+  scen_dir = Args.[Scenario Folder]
+  taz_dbd = Args.taz_dbd
+  se_bin = Args.se_bin
+  hwy_dbd = Args.hwy_dbd
 
   opts = null
   opts.table = se_bin
@@ -90,11 +91,11 @@ Instead of using the hcmr package, this macro uses a lookup table to determine
 capacities. It then converts to period capacity based on TOD factors.
 */
 
-Macro "Capacity"
+Macro "Capacity" (Args)
   UpdateProgressBar("Capacity", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  hwy_dbd = MODELARGS.hwy_dbd
+  scen_dir = Args.[Scenario Folder]
+  hwy_dbd = Args.hwy_dbd
 
   // Assign facility type to ramps
   ramp_query = "Select * where HCMType = 'Ramp'"
@@ -107,19 +108,28 @@ Macro "Capacity"
 
   // Lookup hourly capacities
   cap_tbl = scen_dir + "/inputs/networks/hourly_capacities.csv"
-  cap = CreateObject("df")
-  cap.read_csv(cap_tbl)
   hwy_bin = Substitute(hwy_dbd, ".dbd", ".bin", )
-  net = CreateObject("df")
-  net.read_bin(hwy_bin, {"HCMType", "AreaType"})
-  net.left_join(cap, {"HCMType", "AreaType"})
-  net.select({"capd_phpl", "cape_phpl"})
-  net.update_bin(hwy_bin)
+  cap_tbl = CreateObject("Table", cap_tbl)
+  hwy_tbl = CreateObject("Table", hwy_bin)
+  hwy_tbl.AddField("capd_phpl")
+  hwy_tbl.AddField("cape_phpl")
+  cap_specs = cap_tbl.GetFieldSpecs({NamedArray: "true"})
+  hwy_specs = hwy_tbl.GetFieldSpecs({NamedArray: "true"})
+  join = hwy_tbl.Join({
+    Table: cap_tbl,
+    LeftFields: {"HCMType", "AreaType"},
+    RightFields: {"HCMType", "AreaType"}
+  })
+  join.(hwy_specs.("capd_phpl")) = join.(cap_specs.("capd_phpl"))
+  join.(hwy_specs.("cape_phpl")) = join.(cap_specs.("cape_phpl"))
+  join = null
+  cap_tbl = null
+  hwy_tbl = null
 
   // Calculate period capacities
-  {nlyr, llyr} = GetDBLayers(MODELARGS.hwy_dbd)
-  llyr = AddLayerToWorkspace(llyr, MODELARGS.hwy_dbd, llyr)
-  settings_file = MODELARGS.scen_dir +
+  {nlyr, llyr} = GetDBLayers(Args.hwy_dbd)
+  llyr = AddLayerToWorkspace(llyr, Args.hwy_dbd, llyr)
+  settings_file = Args.[Scenario Folder] +
     "/inputs/networks/period_capacity_factors.csv"
   pf_factors = RunMacro("Read Parameter File", settings_file)
 
@@ -127,7 +137,7 @@ Macro "Capacity"
   a_dir = {"AB", "BA"}
 
   for los in a_los do
-    for tod in MODELARGS.periods do
+    for tod in Args.Periods do
       for dir in a_dir do
 
         field_name = dir + tod + "Cap" + los
@@ -151,11 +161,11 @@ EndMacro
 
 */
 
-Macro "Set CC Speeds"
+Macro "Set CC Speeds" (Args)
   UpdateProgressBar("Set CC Speeds", 0)
 
-  hwy_dbd = MODELARGS.hwy_dbd
-  scen_dir = MODELARGS.scen_dir
+  hwy_dbd = Args.hwy_dbd
+  scen_dir = Args.[Scenario Folder]
 
   // Add link layer to workspace
   {nlyr, llyr} = GetDBLayers(hwy_dbd)
@@ -181,6 +191,7 @@ Macro "Set CC Speeds"
   v_speed = GetDataVector(jv + "|CCs", "CCSpeed", )
   SetDataVector(jv + "|CCs", "PostedSpeed", v_speed, )
 
+  CloseView(jv)
   RunMacro("Close All")
 EndMacro
 
@@ -191,12 +202,12 @@ alpha are also added. Mode is just a column of 1s. It's required by the transit
 tnw mode table.
 */
 
-Macro "Other Attributes"
+Macro "Other Attributes" (Args)
   UpdateProgressBar("Free-Flow Speed", 0)
 
   // Add fields to highway DBD
-  {nlyr, llyr} = GetDBLayers(MODELARGS.hwy_dbd)
-  llyr = AddLayerToWorkspace(llyr, MODELARGS.hwy_dbd, llyr)
+  {nlyr, llyr} = GetDBLayers(Args.hwy_dbd)
+  llyr = AddLayerToWorkspace(llyr, Args.hwy_dbd, llyr)
   a_fields = {
               {"FFSpeed", "Integer", 10, , , , , "Free flow travel speed"},
               {"FFTime", "Real", 10, 2, , , , "Free flow travel time"},
@@ -207,7 +218,7 @@ Macro "Other Attributes"
   RunMacro("Add Fields", llyr, a_fields, {, , , , 1})
 
   // Open parameter table
-  ffs_file = MODELARGS.scen_dir + "/inputs/networks/ff_speed_alpha.csv"
+  ffs_file = Args.[Scenario Folder] + "/inputs/networks/ff_speed_alpha.csv"
   ffs_tbl = OpenTable("ffs", "CSV", {ffs_file, })
 
   // Join based on AreaType and HCMType
@@ -234,6 +245,7 @@ Macro "Other Attributes"
   SetDataVector(jv + "|", llyr + ".Alpha", v_alpha, )
   SetDataVector(jv + "|", llyr + ".WalkTime", v_wt, )
 
+  CloseView(jv)
   RunMacro("Close All")
 EndMacro
 
@@ -243,12 +255,12 @@ modes required for that network are not present. Uses the results to filter
 any other files that need similar treatment.
 */
 
-Macro "Filter Transit Settings"
+Macro "Filter Transit Settings" (Args)
   UpdateProgressBar("Filter Transit Settings", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.periods[1]
-  rts_file = MODELARGS.rts_file
+  scen_dir = Args.[Scenario Folder]
+  period = Args.Periods[1]
+  rts_file = Args.rts_file
   param_dir = scen_dir + "/inputs/networks"
 
   opts.rts_file = rts_file

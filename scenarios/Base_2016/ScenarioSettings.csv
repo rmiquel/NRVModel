@@ -1,3 +1,0 @@
-Parameter,Value,Description
-ext_awdt_year,2016,Determines AWDT to use at external stations
-master_se,se_2016.bin,Name of se bin file in master sedata folder to use

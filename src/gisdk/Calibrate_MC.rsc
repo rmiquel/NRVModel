@@ -22,7 +22,7 @@ dBox "MC Calibration" location: x, y Title: "MC Calibration" toolbox
       string_rel_gap = "0.1"
     end else string_rel_gap = String(rel_gap)
     target_dir = RunMacro("Normalize Path",
-      MODELARGS.scen_dir + "/../../docs/data/mode_choice"
+      Args.[Scenario Folder] + "/../../docs/data/mode_choice"
     )
   EndItem
   
@@ -42,7 +42,7 @@ dBox "MC Calibration" location: x, y Title: "MC Calibration" toolbox
     coeffs_file = ChooseFile(
       {{"CSV File", "*.csv"}}, 
       "Choose the MC Coefficients File", 
-      {{"Initial Directory", MODELARGS.scen_dir + "\\inputs\\mode"}}
+      {{"Initial Directory", Args.[Scenario Folder] + "\\inputs\\mode"}}
     )
     no_coeff:
     on escape default
@@ -97,7 +97,7 @@ dBox "MC Calibration" location: x, y Title: "MC Calibration" toolbox
     {folder, names} = ChooseFiles(
       {{"Matrix File", "*.mtx"}},
       "Choose the Modal Trip Matrices",
-      {{"Initial Directory", MODELARGS.scen_dir + "\\outputs\\mode"}}
+      {{"Initial Directory", Args.[Scenario Folder] + "\\outputs\\mode"}}
     )
     modal_trip_matrices = null
     for name in names do

@@ -2,15 +2,19 @@
 
 */
 
-Macro "Distribution"
-    RunMacro("Convert to Distribution Purposes")
-    RunMacro("Add Inter-County Skim Core")
-    RunMacro("Resident DC")
-    RunMacro("HBU Gravity")
-    RunMacro("Commercial Gravity")
-    RunMacro("IEEI Gravity")
-    RunMacro("NHBNR")
-    RunMacro("Aggregate Matrices")
+Macro "Distribution" (Args)
+    for period in Args.Periods do
+      Args.period = period
+      RunMacro("Convert to Distribution Purposes", Args)
+      RunMacro("Add Inter-County Skim Core", Args)
+      RunMacro("Resident DC", Args)
+      RunMacro("HBU Gravity", Args)
+      RunMacro("Commercial Gravity", Args)
+      RunMacro("IEEI Gravity", Args)
+      RunMacro("NHBNR", Args)
+      RunMacro("Aggregate Matrices", Args)
+    end
+    return(1)
 EndMacro
 
 /*
@@ -20,12 +24,12 @@ purposes might be collapsed into HBO. The crosswalk is controlled
 by an equivalency table.
 */
 
-Macro "Convert to Distribution Purposes"
-  UpdateProgressBar("Convert to Distribution Purposes", 0)
+Macro "Convert to Distribution Purposes" (Args)
+  UpdateProgressBar(Args.period + ": Convert to Distribution Purposes", 0)
 
-  period = MODELARGS.period
-  se_bin = MODELARGS.se_bin
-  param_file = MODELARGS.scen_dir + "/inputs/distribution/d_purp_conversion.csv"
+  period = Args.period
+  se_bin = Args.se_bin
+  param_file = Args.[Scenario Folder] + "/inputs/distribution/d_purp_conversion.csv"
 
   opts = null
   opts.table = se_bin
@@ -42,12 +46,12 @@ lines. This intra-county core is used to penalize cross-county school
 trips in distribution.
 */
 
-Macro "Add Inter-County Skim Core"
-  UpdateProgressBar("Add Inter-County Skim Core", 0)
+Macro "Add Inter-County Skim Core" (Args)
+  UpdateProgressBar(Args.period + ": Add Inter-County Skim Core", 0)
 
-  period = MODELARGS.period
-  scen_dir = MODELARGS.scen_dir
-  taz_dbd = MODELARGS.taz_dbd
+  period = Args.period
+  scen_dir = Args.[Scenario Folder]
+  taz_dbd = Args.taz_dbd
 
   skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
 
@@ -103,12 +107,12 @@ Prepares arguments for the "Destination Choice" macro
 in the Distribution.rsc library.
 */
 
-Macro "Resident DC"
-  UpdateProgressBar("Resident DC", 0)
+Macro "Resident DC" (Args)
+  UpdateProgressBar(Args.period + ": Resident DC", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
-  se_bin = MODELARGS.se_bin
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
+  se_bin = Args.se_bin
 
   opts = null
   opts.period = period
@@ -133,14 +137,14 @@ Prepares arguments for the "Gravity" macro
 in the Distribution.rsc library.
 */
 
-Macro "HBU Gravity"
-  UpdateProgressBar("HBU Gravity", 0)
+Macro "HBU Gravity" (Args)
+  UpdateProgressBar(Args.period + ": HBU Gravity", 0)
   
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   opts = null
   opts.scen_dir = scen_dir
-  opts.se_bin = MODELARGS.se_bin
+  opts.se_bin = Args.se_bin
   opts.period = period
   opts.param_file = scen_dir + "/inputs/university/univ_distribution.csv"
   opts.skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
@@ -155,14 +159,14 @@ Prepares arguments for the "Gravity" macro
 in the Distribution.rsc library.
 */
 
-Macro "Commercial Gravity"
-  UpdateProgressBar("Commercial Gravity", 0)
+Macro "Commercial Gravity" (Args)
+  UpdateProgressBar(Args.period + ": Commercial Gravity", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   opts = null
   opts.scen_dir = scen_dir
-  opts.se_bin = MODELARGS.se_bin
+  opts.se_bin = Args.se_bin
   opts.period = period
   opts.param_file = scen_dir + "/inputs/cv/cv_distribution.csv"
   opts.skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
@@ -177,14 +181,14 @@ Prepares arguments for the "Gravity" macro
 in the Distribution.rsc library.
 */
 
-Macro "IEEI Gravity"
-  UpdateProgressBar("IEEI Gravity", 0)
+Macro "IEEI Gravity" (Args)
+  UpdateProgressBar(Args.period + ": IEEI Gravity", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   opts = null
   opts.scen_dir = scen_dir
-  opts.se_bin = MODELARGS.se_bin
+  opts.se_bin = Args.se_bin
   opts.period = period
   opts.param_file = scen_dir + "/inputs/external/ieei_distribution.csv"
   opts.skim_file = scen_dir + "/outputs/skims/highway/_hwy_skim_" + period + ".mtx"
@@ -203,12 +207,12 @@ travellers went and produces NHB trips in those zones.
 This macro performs generation and distribution of the NHBNR trips.
 */
 
-Macro "NHBNR"
-  UpdateProgressBar("NHBNR", 0)
+Macro "NHBNR" (Args)
+  UpdateProgressBar(Args.period + ": NHBNR", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
-  se_bin = MODELARGS.se_bin
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
+  se_bin = Args.se_bin
 
   // Collect vector of IEEI trip attractions
   mtx_file = scen_dir + "/outputs/distribution/trips_IEEI_" + period + ".mtx"
@@ -272,11 +276,11 @@ Prepares arguments for the "Aggregate Distribution Matrices" macro
 in the Distribution.rsc library.
 */
 
-Macro "Aggregate Matrices"
-  UpdateProgressBar("Aggregate Matrices", 0)
+Macro "Aggregate Matrices" (Args)
+  UpdateProgressBar(Args.period + ": Aggregate Matrices", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   dist_dir = scen_dir + "/outputs/distribution"
 
   opts.matrices = {

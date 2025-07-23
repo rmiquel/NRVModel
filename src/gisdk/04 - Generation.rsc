@@ -9,29 +9,30 @@ library script.  So are CV trips.
 IEEI trips are handled by macros in this script file.
 */
 
-Macro "Generation"
-  RunMacro("Create HH Marginals")
-  RunMacro("Create HH Joint Distribution")
-  RunMacro("Resident Trip Production")
-  RunMacro("Resident Attractions")
-  RunMacro("University Productions/Attractions")
-  RunMacro("CV Productions/Attractions")
-  RunMacro("IEEI Productions")
-  RunMacro("IEEI Attractions")
-  RunMacro("Balance Ps and As")
+Macro "Generation" (Args)
+  RunMacro("Create HH Marginals", Args)
+  RunMacro("Create HH Joint Distribution", Args)
+  RunMacro("Resident Trip Production", Args)
+  RunMacro("Resident Attractions", Args)
+  RunMacro("University Productions/Attractions", Args)
+  RunMacro("CV Productions/Attractions", Args)
+  RunMacro("IEEI Productions", Args)
+  RunMacro("IEEI Attractions", Args)
+  RunMacro("Balance Ps and As", Args)
   RunMacro("Close All")
+  return(1)
 EndMacro
 
 /*
 Creates the marginal HH distributions for each TAZ.
 */
 
-Macro "Create HH Marginals"
+Macro "Create HH Marginals" (Args)
   UpdateProgressBar("Create HH Marginals", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   param_dir = scen_dir + "/inputs/generation"
-  se_bin = MODELARGS.se_bin
+  se_bin = Args.se_bin
   
   // Calculate the average/ratio fields that will be used to determine
   // marginals.
@@ -55,26 +56,26 @@ EndMacro
 Create the joint HH distribution for each TAZ
 */
 
-Macro "Create HH Joint Distribution"
+Macro "Create HH Joint Distribution" (Args)
   UpdateProgressBar("Create HH Joint Distribution", 0)
 
   //Copy se_bin to se_csv for R  06_17_2025
-  scen_dir = MODELARGS.scen_dir
-  se_trans = OpenTable("SE", "FFB", {MODELARGS.se_bin, })
+  scen_dir = Args.[Scenario Folder]
+  se_trans = OpenTable("SE", "FFB", {Args.se_bin, })
   ExportView("SE|", "CSV", scen_dir + "\\inputs\\sedata\\SE_Scenario.csv", ,{{"CSV Header", "True"}})
 //  CopyTableFiles("SE", null, null, null, scen_dir + "\\inputs\\sedata\\SE_Scenario.csv", null)
   se_trans = null
 
   opts = null
-  opts.se_bin = MODELARGS.se_bin
+  opts.se_bin = Args.se_bin
   opts.se_csv = scen_dir + "\\inputs\\sedata\\SE_Scenario.csv"
-  rdir = MODELARGS.scen_dir + "/../../src/R"
+  rdir = Args.[Scenario Folder] + "/../../src/R"
   opts.rscriptexe = rdir + "/R-3.5.0/bin/Rscript.exe"
-  gdir = MODELARGS.scen_dir + "/../../src/gisdk"
+  gdir = Args.[Scenario Folder] + "/../../src/gisdk"
   opts.rscript = gdir + "/gisdk_tools/Generation.R"
-  param_dir = MODELARGS.scen_dir + "/inputs/generation"
+  param_dir = Args.[Scenario Folder] + "/inputs/generation"
   opts.seed_tbl = param_dir + "/disagg_hh_joint.csv"
-  opts.output_dir = MODELARGS.scen_dir + "/outputs/generation"
+  opts.output_dir = Args.[Scenario Folder] + "/outputs/generation"
   RunMacro("HH Joint Distribution", opts)
 EndMacro
 
@@ -83,16 +84,16 @@ Resident Trip Productions
 Use the cross-classification model
 */
 
-Macro "Resident Trip Production"
+Macro "Resident Trip Production" (Args)
   UpdateProgressBar("Resident Trip Production", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  se_bin = MODELARGS.se_bin
+  scen_dir = Args.[Scenario Folder]
+  se_bin = Args.se_bin
 
   // Use GT to create work and nonwork trip data frames
-  opts.param_work = MODELARGS.scen_dir +
+  opts.param_work = Args.[Scenario Folder] +
     "/inputs/generation/prod_rates_work.csv"
-  opts.param_nonwork = MODELARGS.scen_dir +
+  opts.param_nonwork = Args.[Scenario Folder] +
     "/inputs/generation/prod_rates_nonwork.csv"
   opts.disagg_file = scen_dir + "/outputs/generation/HHDisaggregation.csv"
   opts.return_dfs = "True"
@@ -172,12 +173,12 @@ EndMacro
 Resident Trip Attractions
 */
 
-Macro "Resident Attractions"
+Macro "Resident Attractions" (Args)
   UpdateProgressBar("Resident Attractions", 0)
 
   opts = null
-  opts.table = MODELARGS.scen_dir + "/outputs/sedata/ScenarioSE.bin"
-  opts.param_file = MODELARGS.scen_dir + "/inputs/generation/attr_rates.csv"
+  opts.table = Args.[Scenario Folder] + "/outputs/sedata/ScenarioSE.bin"
+  opts.param_file = Args.[Scenario Folder] + "/inputs/generation/attr_rates.csv"
   RunMacro("Calculate Fields - Simple", opts)
 EndMacro
 
@@ -185,16 +186,16 @@ EndMacro
 
 */
 
-Macro "University Productions/Attractions"
+Macro "University Productions/Attractions" (Args)
   UpdateProgressBar("University Productions/Attractions", 0)
   
-  se_bin = MODELARGS.se_bin
+  se_bin = Args.se_bin
   se_csv = scen_dir + "\\inputs\\sedata\\SE_Scenario.csv"
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   
   // Generate Ps and As
   opts = null
-  opts.table = MODELARGS.se_bin
+  opts.table = Args.se_bin
 //  opts.table = se_csv
   opts.param_file = scen_dir + "/inputs/university/univ_generation.csv"
   RunMacro("Calculate Fields", opts)
@@ -205,12 +206,12 @@ CV productions
 Attractions are the same as productions
 */
 
-Macro "CV Productions/Attractions"
+Macro "CV Productions/Attractions" (Args)
   UpdateProgressBar("CV Productions/Attractions", 0)
 
   opts = null
-  opts.table = MODELARGS.se_bin
-  opts.param_file = MODELARGS.scen_dir + "/inputs/cv/cv_generation.csv"
+  opts.table = Args.se_bin
+  opts.param_file = Args.[Scenario Folder] + "/inputs/cv/cv_generation.csv"
   RunMacro("Calculate Fields - Simple", opts)
 EndMacro
 
@@ -218,12 +219,12 @@ EndMacro
 Predicts IEEI productions
 */
 
-Macro "IEEI Productions"
+Macro "IEEI Productions" (Args)
   UpdateProgressBar("IEEI Productions", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  se_bin = MODELARGS.se_bin
-  year = MODELARGS.ext_awdt_year
+  scen_dir = Args.[Scenario Folder]
+  se_bin = Args.se_bin
+  year = Args.ext_awdt_year
 
   // Open se table and add fields
   se_tbl = OpenTable("se", "FFB", {se_bin})
@@ -277,12 +278,12 @@ EndMacro
 IEEI trip attractions
 */
 
-Macro "IEEI Attractions"
+Macro "IEEI Attractions" (Args)
   UpdateProgressBar("IEEI Attractions", 0)
 
   opts = null
-  opts.table = MODELARGS.se_bin
-  opts.param_file = MODELARGS.scen_dir + "/inputs/external/ieei_generation.csv"
+  opts.table = Args.se_bin
+  opts.param_file = Args.[Scenario Folder] + "/inputs/external/ieei_generation.csv"
   RunMacro("Calculate Fields - Simple", opts)
 EndMacro
 
@@ -291,18 +292,18 @@ Calls the balance macro from the generation library and
 writes out a report of the balance factors applied.
 */
 
-Macro "Balance Ps and As"
+Macro "Balance Ps and As" (Args)
   UpdateProgressBar("Balance Ps and As", 0)
 
   // Call the balance macro
   opts = null
-  opts.tbl = MODELARGS.se_bin
-  opts.balance_tbl = MODELARGS.scen_dir + "/inputs/generation/balance.csv"
+  opts.tbl = Args.se_bin
+  opts.balance_tbl = Args.[Scenario Folder] + "/inputs/generation/balance.csv"
   {tbl, unbalanced} = RunMacro("Balance", opts)
 
   // Write out report and unbalanced table
   df = CreateObject("df", tbl)
-  df.write_csv(MODELARGS.scen_dir + "/outputs/generation/balance_report.csv")
+  df.write_csv(Args.[Scenario Folder] + "/outputs/generation/balance_report.csv")
   df = CreateObject("df", unbalanced)
-  df.write_csv(MODELARGS.scen_dir + "/outputs/generation/unbalanced_pa.csv")
+  df.write_csv(Args.[Scenario Folder] + "/outputs/generation/unbalanced_pa.csv")
 EndMacro

@@ -10,21 +10,26 @@ Returns
   %RMSE between feedback cycle skims or 9999 if first cycle
 */
 
-Macro "Skimming"
-    if MODELARGS.cycle = 1 then do
-      RunMacro("Initial Congested Speed")
-      RunMacro("Create Highway Net Files")
-      RunMacro("Create Transit Net Files")
-    end else do
-      RunMacro("Update Congested Link Times")
+Macro "Skimming" (Args)
+    for period in Args.Periods do
+      Args.period = period
+
+      if Args.Iteration = 1 then do
+        RunMacro("Initial Congested Speed", Args)
+        RunMacro("Create Highway Net Files", Args)
+        RunMacro("Create Transit Net Files", Args)
+      end else do
+        RunMacro("Update Congested Link Times", Args)
+      end
+      RunMacro("Highway Skims", Args)
+      RunMacro("Transit Skims", Args)
+      RunMacro("Calculate Additional Skim Cores", Args)
+      RunMacro("Create Skim Indices", Args)
+      {rmse, prmse} = RunMacro("Calculate Skim RMSE", Args)
+      RunMacro("Log Cycle Skim RMSE", rmse, prmse, Args)
+      Args.skim_prmse.(period) = prmse
     end
-    RunMacro("Highway Skims")
-    RunMacro("Transit Skims")
-    RunMacro("Calculate Additional Skim Cores")
-    RunMacro("Create Skim Indices")
-    {rmse, prmse} = RunMacro("Calculate Skim RMSE")
-    RunMacro("Log Cycle Skim RMSE", rmse, prmse)
-    return(prmse)
+    return(1)
 EndMacro
 
 /*
@@ -44,12 +49,12 @@ Depends
   gplyr
 */
 
-Macro "Initial Congested Speed"
+Macro "Initial Congested Speed" (Args)
   UpdateProgressBar("Initial Congested Speed", 0)
 
-  hwy_dbd = MODELARGS.hwy_dbd
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  hwy_dbd = Args.hwy_dbd
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
 
   // Add field to highway DBD
   {nlyr, llyr} = GetDBLayers(hwy_dbd)
@@ -85,12 +90,12 @@ On the first cycle, this macro creates the initial highway .net files.
 Also sets their settings.
 */
 
-Macro "Create Highway Net Files"
+Macro "Create Highway Net Files" (Args)
   UpdateProgressBar("Create Highway Net Files", 0)
 
-  period = MODELARGS.period
-  scen_dir = MODELARGS.scen_dir
-  hwy_dbd = MODELARGS.hwy_dbd
+  period = Args.period
+  scen_dir = Args.[Scenario Folder]
+  hwy_dbd = Args.hwy_dbd
   in_dir = scen_dir + "/inputs/networks"
 
   opts = null
@@ -108,15 +113,15 @@ On the first cycle, this macro creates the initial transit .tnw files.
 Also sets their settings.
 */
 
-Macro "Create Transit Net Files"
-  UpdateProgressBar("Create Transit Net Files", 0)
+Macro "Create Transit Net Files" (Args)
+  UpdateProgressBar(Args.period + ": Create Transit Net Files", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   net_dir = scen_dir + "/inputs/networks"
 
   opts = null
-  opts.rts_file = MODELARGS.rts_file
+  opts.rts_file = Args.rts_file
   opts.settings_file = net_dir + "/transit_net_settings_filtered.csv"
   opts.fields_file = net_dir + "/transit_net_fields.csv"
   opts.mode_table = net_dir + "/transit_mode_table.csv"
@@ -131,12 +136,12 @@ After feedback, the link travel times in the .net and .tnw files need to
 be updated.
 */
 
-Macro "Update Congested Link Times"
+Macro "Update Congested Link Times" (Args)
   
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
-  hwy_dbd = MODELARGS.hwy_dbd
-  rts_file = MODELARGS.rts_file
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
+  hwy_dbd = Args.hwy_dbd
+  rts_file = Args.rts_file
   
   // Update highway networks
   opts = null
@@ -156,12 +161,12 @@ EndMacro
 
 */
 
-Macro "Highway Skims"
-  UpdateProgressBar("Highway Skims", 0)
+Macro "Highway Skims" (Args)
+  UpdateProgressBar(Args.period + ": Highway Skims", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
+  cycle = Args.Iteration
 
   opts.param_file = scen_dir + "/inputs/networks/highway_net_settings.csv"
   opts.expr_vars.period = period
@@ -201,13 +206,13 @@ EndMacro
 
 */
 
-Macro "Transit Skims"
-  UpdateProgressBar("Transit Skims", 0)
+Macro "Transit Skims" (Args)
+  UpdateProgressBar(Args.period + ": Transit Skims", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  rts_file = MODELARGS.rts_file
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  scen_dir = Args.[Scenario Folder]
+  rts_file = Args.rts_file
+  period = Args.period
+  cycle = Args.Iteration
 
   opts.rts_file = rts_file
   opts.param_file = scen_dir + "/inputs/networks/transit_net_settings_filtered.csv"
@@ -225,11 +230,11 @@ EndMacro
 Calculates cores needed for MC and DC.
 */
 
-Macro "Calculate Additional Skim Cores"
+Macro "Calculate Additional Skim Cores" (Args)
   UpdateProgressBar("Calculate Additional Skim Cores", 0)
 
-  period = MODELARGS.period
-  scen_dir = MODELARGS.scen_dir
+  period = Args.period
+  scen_dir = Args.[Scenario Folder]
 
   // Highway skim cores
   opts = null
@@ -258,13 +263,13 @@ Creates any additional indices needed by later model steps. For example,
 resident distribution should only see internal zones.
 */
 
-Macro "Create Skim Indices"
+Macro "Create Skim Indices" (Args)
   UpdateProgressBar("Create Skim Indices", 0)
 
-  period = MODELARGS.period
-  scen_dir = MODELARGS.scen_dir
-  se_bin = MODELARGS.se_bin
-  hwy_dbd = MODELARGS.hwy_dbd
+  period = Args.period
+  scen_dir = Args.[Scenario Folder]
+  se_bin = Args.se_bin
+  hwy_dbd = Args.hwy_dbd
 
   // Add node layer to the map
   {nlyr, llyr} = GetDBLayers(hwy_dbd)
@@ -298,11 +303,11 @@ Returns
   The relative/percent RMSE
 */
 
-Macro "Calculate Skim RMSE"
+Macro "Calculate Skim RMSE" (Args)
 
-  cycle = MODELARGS.cycle
-  period = MODELARGS.period
-  scen_dir = MODELARGS.scen_dir
+  cycle = Args.Iteration
+  period = Args.period
+  scen_dir = Args.[Scenario Folder]
   skim_dir = scen_dir + "/outputs/skims/highway"
   prev_dir = skim_dir + "/previous"
   corename = "da_time"
@@ -340,12 +345,12 @@ Depends
   gplyr
 */
 
-Macro "Log Cycle Skim RMSE" (rmse, prmse)
+Macro "Log Cycle Skim RMSE" (rmse, prmse, Args)
   UpdateProgressBar("Log Cycle Skim RMSE", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
+  cycle = Args.Iteration
   log_file = scen_dir + "/outputs/skims/cycle_rmse_" + period + ".csv"
 
   // Create data frame of current cycle and rmse

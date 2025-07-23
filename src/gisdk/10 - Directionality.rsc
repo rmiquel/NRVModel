@@ -8,22 +8,26 @@ transit assignment if implemented in the future.
 
 */
 
-Macro "Directionality"
-  RunMacro("Split Highway and Non-Highway Trips")
-  RunMacro("Apply Directionality")
-  RunMacro("Vehicle Occupancy")
-  RunMacro("Include Through Trips")
+Macro "Directionality" (Args)
+  for period in Args.Periods do
+    Args.period = period
+    RunMacro("Split Highway and Non-Highway Trips", Args)
+    RunMacro("Apply Directionality", Args)
+    RunMacro("Vehicle Occupancy", Args)
+    RunMacro("Include Through Trips", Args)
+  end
+  return(1)
 EndMacro
 
 /*
 
 */
 
-Macro "Split Highway and Non-Highway Trips"
-  UpdateProgressBar("Dir - Purpose Conversion", 0)
+Macro "Split Highway and Non-Highway Trips" (Args)
+  UpdateProgressBar(Args.period + ": Dir - Purpose Conversion", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
 
   // Create the highway trip table
   opts = null
@@ -61,11 +65,11 @@ Matrix core names from mode choice must be in the form of:
 "Purpose_Mode"
 */
 
-Macro "Apply Directionality"
-  UpdateProgressBar("Apply Directionality", 0)
+Macro "Apply Directionality" (Args)
+  UpdateProgressBar(Args.period + ": Apply Directionality", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   param_file = scen_dir + "/inputs/directionality/directionality_factors.csv"
   from_mtx = scen_dir + "/outputs/directionality/pa_person_hwy_trips_" +
     period + ".mtx"
@@ -110,11 +114,11 @@ person trips in to vehicle trips by applying occupancy factors. The
 factors are specified in a parameter table by purpose, mode, and tod.
 */
 
-Macro "Vehicle Occupancy"
-  UpdateProgressBar("Vehicle Occupancy", 0)
+Macro "Vehicle Occupancy" (Args)
+  UpdateProgressBar(Args.period + ": Vehicle Occupancy", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   from_mtx = scen_dir + "/outputs/directionality/od_person_hwy_trips_" +
     period + ".mtx"
   to_mtx = scen_dir + "/outputs/directionality/od_vehicle_hwy_trips_" +
@@ -161,11 +165,11 @@ This macro determines which method to use.
 For Hickory, all trips are assigned together.
 */
 
-Macro "Include Through Trips"
-  UpdateProgressBar("Include Through Trips", 0)
+Macro "Include Through Trips" (Args)
+  UpdateProgressBar(Args.period + ": Include Through Trips", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   ee_mtx = scen_dir + "/outputs/external/EETable.mtx"
   v_mtx = scen_dir + "/outputs/directionality/od_vehicle_hwy_trips_" +
     period + ".mtx"

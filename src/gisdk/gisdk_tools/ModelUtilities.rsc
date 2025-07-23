@@ -12,7 +12,7 @@ Inputs
     Optional String
     Full path to the scenario directory. If provided, the macro will clear
     any DCC files in the directory (and all sub directories). If null, the macro
-    will look for a global MODELARGS.scen_dir variable. If neither are present,
+    will look for a global Args.[Scenario Folder] variable. If neither are present,
     then the DCC file cleaning step does not occur.
 */
 
@@ -27,8 +27,10 @@ Macro "Close All" (scen_dir)
   end
 
   // Close any views
-  RunMacro("TCB Init")
-  RunMacro("G30 File Close All")
+  views = GetViewNames()
+  for view in views do
+    Closeview(view)
+  end
 
   // Close matrices
   mtxs = GetMatrices()
@@ -43,7 +45,7 @@ Macro "Close All" (scen_dir)
   // if scen_dir is passed to the function, then use it. If not, look for
   // the global variable MODELARGS (that should be established in
   // your project code). If neither exists, do nothing.
-  if scen_dir = null then scen_dir = MODELARGS.scen_dir
+  if scen_dir = null then scen_dir = Args.[Scenario Folder]
   if scen_dir <> null then do
     a_files = RunMacro("Catalog Files", scen_dir, {"DCC"})
     for f = 1 to a_files.length do

@@ -3,17 +3,18 @@ This script contains a collection of macros to run after the model
 has completed.
 */
 
-Macro "Summaries"
-  RunMacro("Write Skim CSVs")
-  RunMacro("Summarize Distribution")
-  RunMacro("Summarize Mode")
-  RunMacro("Create Loaded Network")
-  RunMacro("Calculate Daily Fields")
-  RunMacro("VOC Maps")
-  RunMacro("Create Count Difference Map")
-  RunMacro("Summarize by FT and AT")
-  RunMacro("Run Outviz Assignment Validation")
-  RunMacro("Transit Summary")
+Macro "Summaries" (Args)
+  // RunMacro("Write Skim CSVs", Args)
+  // RunMacro("Summarize Distribution", Args)
+  // RunMacro("Summarize Mode", Args)
+  RunMacro("Create Loaded Network", Args)
+  RunMacro("Calculate Daily Fields", Args)
+  RunMacro("VOC Maps", Args)
+  RunMacro("Create Count Difference Map", Args)
+  RunMacro("Summarize by FT and AT", Args)
+  RunMacro("Run Outviz Assignment Validation", Args)
+  RunMacro("Transit Summary", Args)
+  return(1)
 EndMacro
 
 /*
@@ -22,11 +23,11 @@ This is done here instead of during skimming to reduce the
 number of times it must be done. Only the final skims are written out.
 */
 
-Macro "Write Skim CSVs"
+Macro "Write Skim CSVs" (Args)
   UpdateProgressBar("Write Skim CSVs", 0)
 
-  a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  a_periods = Args.Periods
+  scen_dir = Args.[Scenario Folder]
   output_dir = scen_dir + "/outputs/summary/skim_csvs"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
 
@@ -61,11 +62,11 @@ Creates a table of statistics and writes out
 final tables to CSV.
 */
 
-Macro "Summarize Distribution"
+Macro "Summarize Distribution" (Args)
   UpdateProgressBar("Summarize Distribution", 0)
 
-  a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  a_periods = Args.Periods
+  scen_dir = Args.[Scenario Folder]
   dist_dir = scen_dir + "/outputs/distribution"
   output_dir = scen_dir + "/outputs/summary/distribution_csvs"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
@@ -109,11 +110,11 @@ EndMacro
 
 */
 
-Macro "Summarize Mode"
+Macro "Summarize Mode" (Args)
   UpdateProgressBar("Summarize Mode", 0)
 
-  a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  a_periods = Args.Periods
+  scen_dir = Args.[Scenario Folder]
   mode_dir = scen_dir + "/outputs/mode"
   output_dir = scen_dir + "/outputs/summary/mode"
   RunMacro("Create Directory", output_dir)
@@ -138,12 +139,12 @@ Depends
   gplyr
 */
 
-Macro "Create Loaded Network"
+Macro "Create Loaded Network" (Args)
   UpdateProgressBar("Create Loaded Network", 0)
 
-  a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
-  hwy_dbd = MODELARGS.hwy_dbd
+  a_periods = Args.Periods
+  scen_dir = Args.[Scenario Folder]
+  hwy_dbd = Args.hwy_dbd
   output_dir = scen_dir + "/outputs/summary/loaded_network"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
 
@@ -155,7 +156,7 @@ Macro "Create Loaded Network"
   for p = 1 to a_periods.length do
     period = a_periods[p]
 
-    fin_cycle = RunMacro("Get Final Cycle Number", period)
+    fin_cycle = RunMacro("Get Final Cycle Number", period, Args)
     asn_file = scen_dir + "/outputs/assignment/cycle_" + String(fin_cycle) +
       "/LinkFlow_" + period + ".bin"
 
@@ -248,11 +249,11 @@ will be looped over. Create an array of the rest of the field names to
 summarize. e.g. {"Flow_auto", "Flow", "VMT"}.
 */
 
-Macro "Calculate Daily Fields"
+Macro "Calculate Daily Fields" (Args)
   UpdateProgressBar("Calculate Daily Fields", 0)
 
-  a_periods = MODELARGS.periods
-  scen_dir = MODELARGS.scen_dir
+  a_periods = Args.Periods
+  scen_dir = Args.[Scenario Folder]
   output_dir = scen_dir + "/outputs/summary/loaded_network"
   loaded_dbd = output_dir + "/LoadedNetwork.dbd"
   a_dir = {"AB", "BA"}
@@ -404,9 +405,9 @@ Depends
   gplyr
 */
 
-Macro "Get Final Cycle Number" (period)
+Macro "Get Final Cycle Number" (period, Args)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   rmse_file = scen_dir + "/outputs/assignment/cycle_rmse_" + period + ".csv"
   df = CreateObject("df")
   df.read_csv(rmse_file)
@@ -419,11 +420,11 @@ EndMacro
 Creates V/C maps for each time period.
 */
 
-Macro "VOC Maps"
+Macro "VOC Maps" (Args)
   UpdateProgressBar("VOC Maps", 0)
 
-  a_periods = MODELARGS.periods + {"Daily"}
-  scen_dir = MODELARGS.scen_dir
+  a_periods = Args.Periods + {"Daily"}
+  scen_dir = Args.[Scenario Folder]
   hwy_dbd = scen_dir + "/outputs/summary/loaded_network/LoadedNetwork.dbd"
   output_dir = scen_dir + "/outputs/summary/maps"
   if GetDirectoryInfo(output_dir, "All") = null then CreateDirectory(output_dir)
@@ -557,11 +558,11 @@ EndMacro
 
 */
 
-Macro "Create Count Difference Map"
+Macro "Create Count Difference Map" (Args)
   UpdateProgressBar("Count Difference Map", 0)
 
   // Create total count diff map
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   macro_opts = null
   macro_opts.output_file = scen_dir +
     "/outputs/summary/maps/Count Difference - Total.map"
@@ -575,7 +576,7 @@ Macro "Create Count Difference Map"
   RunMacro("Count Difference Map", macro_opts)
 
   // Create SUT count diff map
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   macro_opts = null
   macro_opts.output_file = scen_dir +
     "/outputs/summary/maps/Count Difference - SUT.map"
@@ -589,7 +590,7 @@ Macro "Create Count Difference Map"
   RunMacro("Count Difference Map", macro_opts)
 
   // Create MUT count diff map
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   macro_opts = null
   macro_opts.output_file = scen_dir +
     "/outputs/summary/maps/Count Difference - MUT.map"
@@ -610,10 +611,10 @@ Uses a gisdk_tools library function to summarize highway stats like
 VMT and VHT.
 */
 
-Macro "Summarize by FT and AT"
+Macro "Summarize by FT and AT" (Args)
   UpdateProgressBar("Summarize by FT and AT", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   opts.hwy_dbd = scen_dir + "/outputs/summary/loaded_network/LoadedNetwork.dbd"
   opts.output_dir = scen_dir + "/outputs/summary"
   RunMacro("Link Summary by FT and AT", opts)
@@ -623,13 +624,13 @@ EndMacro
 
 /*
 Sets up project-specific options before calling the gisdk_tools
-macro "Outviz Assignment Validation"
+macro "Outviz Assignment Validation" (Args)
 */
 
-Macro "Run Outviz Assignment Validation"
+Macro "Run Outviz Assignment Validation" (Args)
   UpdateProgressBar("Outviz Assignment Validation", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   model_dir = RunMacro("Normalize Path", scen_dir + "/../..")
   opts = null
   opts.rscriptexe = model_dir + "/src/R/R-3.5.0/bin/Rscript.exe"
@@ -644,10 +645,10 @@ EndMacro
 Summarizes transit assignment.
 */
 
-Macro "Transit Summary"
+Macro "Transit Summary" (Args)
   UpdateProgressBar("Transit Summary", 0)
   
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   opts = null
   opts.transit_asn_dir = scen_dir + "/outputs/assignment/transit"
   opts.output_dir = scen_dir + "/outputs/summary/transit_tables"

@@ -1,0 +1,13 @@
+    
+    
+Scenario "Base_2016"
+EndScenario
+    
+    
+Scenario "LRTP_2045"
+    
+    [Scenario Folder] = "%Base Folder%\\scenarios\\LRTP_2045"
+    [Master SE] = "%Master Folder%\\sedata\\se_2045.bin"
+    ext_awdt_year = 2045
+EndScenario
+    
