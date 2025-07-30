@@ -4,12 +4,13 @@ This rsc file contains the external macros - both EE and IEEI.
 Macro "Externals" controls all other macros in this file.
 */
 
-Macro "Through Trips"
-  RunMacro("Convert EE CSV to MTX")
-  RunMacro("Calculate EE IPF Marginals")
-  RunMacro("IPF EE Seed Table")
-  RunMacro("EE Symmetry")
-  RunMacro("EE TOD")
+Macro "Through Trips" (Args)
+  RunMacro("Convert EE CSV to MTX", Args)
+  RunMacro("Calculate EE IPF Marginals", Args)
+  RunMacro("IPF EE Seed Table", Args)
+  RunMacro("EE Symmetry", Args)
+  RunMacro("EE TOD", Args)
+  return(1)
 EndMacro
 
 /*
@@ -19,18 +20,18 @@ This ensures accurate matrix dimensions.  This matrix is then udpated
 with the ee CSV file, which is created by ExternalDevelopment.rmd.
 */
 
-Macro "Convert EE CSV to MTX"
+Macro "Convert EE CSV to MTX" (Args)
   UpdateProgressBar("Convert EE CSV to MTX", 0)
 
   // Create EE table from node layer
-  {nlayer, llayer} = GetDBLayers(MODELARGS.hwy_dbd)
-  map = RunMacro("G30 new map", MODELARGS.hwy_dbd)
+  {nlayer, llayer} = GetDBLayers(Args.hwy_dbd)
+  map = RunMacro("G30 new map", Args.hwy_dbd)
   SetLayer(nlayer)
   qry = "Select * where External = 1"
   n = SelectByQuery("ext", "Several", qry)
   if n = 0 then Throw("No external stations found")
   opts = null
-  mtx_file = MODELARGS.scen_dir + "/inputs/external/base_ee_table.mtx"
+  mtx_file = Args.[Scenario Folder] + "/inputs/external/base_ee_table.mtx"
   opts.[File Name] = mtx_file
   opts.Label = "EE Matrix"
   opts.Tables = {"trips"}
@@ -42,7 +43,7 @@ Macro "Convert EE CSV to MTX"
   mtx = CreateMatrix(row_spec, , opts)
 
   // Update the EE matrix with the csv table
-  csv = MODELARGS.scen_dir + "/inputs/external/base_ee_table.csv"
+  csv = Args.[Scenario Folder] + "/inputs/external/base_ee_table.csv"
   view = OpenTable("csv", "CSV", {csv})
   opts = null
   opts.[Missing Is Zero] = "Yes"
@@ -72,11 +73,11 @@ Uses the external_awdt.csv table to create a formula field
 containing the EE trips at each external station.
 */
 
-Macro "Calculate EE IPF Marginals"
+Macro "Calculate EE IPF Marginals" (Args)
   UpdateProgressBar("Calculate EE IPF Marginals", 0)
   shared margTbl
 
-  margTbl = MODELARGS.scen_dir + "/inputs/external/external_awdt.csv"
+  margTbl = Args.[Scenario Folder] + "/inputs/external/external_awdt.csv"
   margTbl = OpenTable("margTbl", "CSV", {margTbl, })
 
   opts = null
@@ -84,7 +85,7 @@ Macro "Calculate EE IPF Marginals"
   CreateExpression(
     margTbl,
     "EEmarg",
-    "(EERatio * AWDT" + String(MODELARGS.ext_awdt_year) + ") / 2",
+    "(EERatio * AWDT" + String(Args.ext_awdt_year) + ") / 2",
   )
 
 EndMacro
@@ -93,12 +94,12 @@ EndMacro
 Use the marginals calculated to IPF the base-year seed table.
 */
 
-Macro "IPF EE Seed Table"
+Macro "IPF EE Seed Table" (Args)
   UpdateProgressBar("IPF EE Seed Table", 0)
   shared margTbl
 
   // Open the input EE mtx (it is not modified)
-  mtx_file = MODELARGS.scen_dir + "/inputs/external/base_ee_table.mtx"
+  mtx_file = Args.[Scenario Folder] + "/inputs/external/base_ee_table.mtx"
   mtx = OpenMatrix(mtx_file, )
   a_corenames = GetMatrixCoreNames(mtx)
   {ri, ci} = GetMatrixIndex(mtx)
@@ -108,7 +109,7 @@ Macro "IPF EE Seed Table"
   Opts = null
   Opts.Input.[Base Matrix Currency] = {mtx_file, a_corenames[1], ri, ci}
   Opts.Input.[PA View Set] = {
-    MODELARGS.scen_dir + "/inputs/external/external_awdt.csv", margTbl, ,
+    Args.[Scenario Folder] + "/inputs/external/external_awdt.csv", margTbl, ,
   }
   Opts.Global.[Constraint Type] = "Doubly"
   Opts.Global.Iterations = 300
@@ -117,7 +118,8 @@ Macro "IPF EE Seed Table"
   Opts.Field.[P Core Fields] = {margTbl + ".EEmarg"}
   Opts.Field.[A Core Fields] = {margTbl + ".EEmarg"}
   Opts.Output.[Output Matrix].Label = "EE Trips Matrix"
-  Opts.Output.[Output Matrix].[File Name] = MODELARGS.ee_mtx
+  Opts.Output.[Output Matrix].[File Name] = Args.ee_mtx
+  RunMacro("TCB Init")
   ok = RunMacro("TCB Run Procedure", "Growth Factor", Opts, &Ret)
   if !ok then Throw("EE IPF failed")
 
@@ -140,11 +142,11 @@ EndMacro
 This macro enforces symmetry on the EE matrix.
 */
 
-Macro "EE Symmetry"
+Macro "EE Symmetry" (Args)
   UpdateProgressBar("EE Symmetry", 0)
 
   // Open the IPFd EE mtx
-  mtx = OpenMatrix(MODELARGS.ee_mtx, )
+  mtx = OpenMatrix(Args.ee_mtx, )
   a_corenames = GetMatrixCoreNames(mtx)
   {ri, ci} = GetMatrixIndex(mtx)
   Cur = CreateMatrixCurrencies(mtx, ri, ci, )
@@ -177,10 +179,10 @@ Depends
   gplyr
 */
 
-Macro "EE TOD"
+Macro "EE TOD" (Args)
   UpdateProgressBar("EE TOD", 0)
 
-  scen_dir = MODELARGS.scen_dir
+  scen_dir = Args.[Scenario Folder]
   param_file = scen_dir + "/inputs/tod/time_of_day_factors.csv"
   ee_mtx = scen_dir + "/outputs/external/EETable.mtx"
 

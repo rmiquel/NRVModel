@@ -1,0 +1,112 @@
+	Section = "Parameters|Files and Folders"
+	
+        Args.[Base Folder] = {
+            "Type":"Folder",
+            "Value":"%Model Folder%"
+        }
+        Args.[Master Folder] = {
+            "Type":"Folder",
+            "Value":"%Base Folder%\\Master"
+        }
+        Args.[Scenario Folder] = {
+            "Type":"Folder",
+            "Value":"%Base Folder%\\scenarios\\Base_2016"
+        }
+        Args.[Input Folder] = {
+            "Type":"Folder",
+            "Value":"%Scenario Folder%\\inputs"
+        }
+        Args.[Output Folder] = {
+            "Type":"Folder",
+            "Value":"%Scenario Folder%\\outputs"
+        }
+        Args.[Disable Macros] = {
+            "Type":"array",
+            "Value":null
+        }
+        Args.FlowMapStyles = {
+            "Type":"hidden",
+            "Value":"%Common Folder%\\FlowMapStyle.stg"
+        }
+        Args.[Disable Steps] = {
+            "Type":"array",
+            "Value":null
+        }
+        Args.[Master SE] = {
+            "Type":"File",
+            "Description":"Master SED Demographics",
+            "Value":"%Master Folder%\\sedata\\se_2016.bin"
+        }
+        Args.[Master Links] = {
+            "Type":"File",
+            "Description":"Master highway database",
+            "Value":"%Master Folder%\\networks\\master_network.dbd"
+        }
+        Args.[Master Routes] = {
+            "Type":"File",
+            "Description":"Master transit routes",
+            "Value":"%Master Folder%\\networks\\master_transit.rts"
+        }
+        Args.rts_file = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\networks\\ScenarioRoutes.rts"
+        }
+        Args.hwy_dbd = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\networks\\ScenarioNetwork.dbd"
+        }
+        Args.taz_dbd = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\taz\\ScenarioTAZ.dbd"
+        }
+        Args.ee_mtx = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\external\\EETable.mtx"
+        }
+        Args.ext_awdt_year = {
+            "Type":"int",
+            "Description":"Year to use for external AWDT",
+            "Value":2016
+        }
+        Args.se_bin = {
+            "Type":"File",
+            "Description":"Input transit routes",
+            "Value":"%Output Folder%\\sedata\\ScenarioSE.bin"
+        }
+
+
+
+
+
+
+
+
+
+
+    
+	Section = "Parameters|Feedback"
+	
+        Args.Iteration = {
+            "Type":"int",
+            "Description":"Iteration number. Use it to run this model multiple times.",
+            "Value":1
+        }
+        Args.MaxIterations = {
+            "Type":"int",
+            "Description":"Maximum number of iterations that this model can run.",
+            "Value":3
+        }
+        
+	
+	Section = "Parameters|Periods"
+	
+        Args.Periods = {
+            "Type":"hidden",
+            "Value":
+            {"AM", "MD", "PM","NT"}
+        }
+	

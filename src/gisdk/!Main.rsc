@@ -7,7 +7,7 @@ the "src/lib" directory.
 Passing information between dialog boxes and macros is handled using the
 global MODELARGS variable. MODELARGS is established/modified entirely
 in this main script.  In all other scripts, it is simply referenced
-- not modified.  For example, many macros use MODELARGS.period to determine
+- not modified.  For example, many macros use Args.period to determine
 which time of day (e.g. "AM") they are operating in.
 */
 
@@ -37,48 +37,48 @@ Macro "Run Full Model" (start_cycle)
   
   // Start of model steps
   if start_cycle = 1 then do
-    RunMacro("Initial Processing")
-    RunMacro("Through Trips")
-    RunMacro("Generation")
-    RunMacro("Time of Day")
+    RunMacro("Initial Processing", Args)
+    RunMacro("Through Trips", Args)
+    RunMacro("Generation", Args)
+    RunMacro("Time of Day", Args)
   end
 
-  for p = 1 to MODELARGS.periods.length do
-    MODELARGS.period = MODELARGS.periods[p]
+  for p = 1 to Args.Periods.length do
+    Args.period = Args.Periods[p]
 
-    MODELARGS.cycle = start_cycle
+    Args.Iteration = start_cycle
     prmse_skim = null
     prmse_flow = null
     converged = "False"
-    while !converged and MODELARGS.cycle <= MODELARGS.max_cycles do
+    while !converged and Args.Iteration <= Args.MaxIterations do
       UpdateProgressBar(
-        "Period: " + MODELARGS.period + "     " +
-        "Cycle: " + String(MODELARGS.cycle) + "     " +
+        "Period: " + Args.period + "     " +
+        "Cycle: " + String(Args.Iteration) + "     " +
         "Skim RMSE: " + String(prmse_skim) + "%     " +
         "Flow RMSE: " + String(prmse_flow) + "%",
-        round(MODELARGS.cycle / MODELARGS.max_cycles * 100, 0)
+        round(Args.Iteration / Args.MaxIterations * 100, 0)
       )
       CreateProgressBar("", )
 
       prmse_skim = RunMacro("Skimming")
-      RunMacro("Calc Mode Shares")
-      RunMacro("Distribution")
-      RunMacro("Apply Mode Shares")
-      RunMacro("Directionality")
+      RunMacro("Calc Mode Shares", Args)
+      RunMacro("Distribution", Args)
+      RunMacro("Apply Mode Shares", Args)
+      RunMacro("Directionality", Args)
       prmse_flow = RunMacro("Highway Assignment")
 
-      if prmse_skim < .1 and prmse_flow < .1 and MODELARGS.cycle >= 4
+      if prmse_skim < .1 and prmse_flow < .1 and Args.Iteration >= 4
         then converged = "True"
-      MODELARGS.cycle = MODELARGS.cycle + 1
+      Args.Iteration = Args.Iteration + 1
       DestroyProgressBar()
     end
     
     CreateProgressBar("", )
-    RunMacro("Transit Assignment")
+    RunMacro("Transit Assignment", Args)
     DestroyProgressBar()
   end
 
-  RunMacro("Summaries")
+  RunMacro("Summaries", Args)
   DestroyProgressBar()
   RunMacro("Close All")
   return(converged)
@@ -144,17 +144,17 @@ dBox "Main" location: x, y
       "Model path includes spaces or other special characters.\n" +
       "Setup in a directory with only 'a-z' and '_' to avoid potential issues."
     )
-    MODELARGS.master_dir = RunMacro(
+    Args.[Master Folder] = RunMacro(
       "Normalize Path", ui_dir + "/../../master"
     )
-    MODELARGS.master_hwy = MODELARGS.master_dir + "/networks/master_network.dbd"
-    MODELARGS.master_rts = MODELARGS.master_dir + "/networks/master_transit.rts"
+    Args.[Master Links] = Args.[Master Folder] + "/networks/master_network.dbd"
+    Args.[Master Routes] = Args.[Master Folder] + "/networks/master_transit.rts"
 
     // Check to see if the UI needs to be recompiled
     RunMacro("Recompile UI Check", ui_dbd, ui_dir)
 
     // Initialize other dbox items
-    MODELARGS.max_cycles = 5
+    Args.MaxIterations = 5
     git_hub_image = ui_dir + "/../bmp/GitHub-Mark-32px.bmp"
   EndItem
 
@@ -226,7 +226,7 @@ dBox "Main" location: x, y
   button 1, 3, 20 Prompt:"Create Scenario" do
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
     CreateProgressBar("", )
-    RunMacro("Create Scenario")
+    RunMacro("Create Scenario", Args)
     DestroyProgressBar()
     ShowMessage("Done with 'Create Scenario'")
   EndItem
@@ -235,7 +235,7 @@ dBox "Main" location: x, y
   text 28, 5 variable: "Model with Feedback"
   button 26, 7, 20 Prompt:"Run Full Model" do
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
-    if MODELARGS.scen_dir = null then do
+    if Args.[Scenario Folder] = null then do
       ShowMessage("Select a scenario folder")
     end else do
       CreateStopwatch("run_time")
@@ -254,9 +254,9 @@ dBox "Main" location: x, y
   EndItem
   Popdown Menu 36, after, 6 Prompt: "Max Cycles"
     List:{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20}
-    Editable Variable: MODELARGS.max_cycles do
-      if TypeOf(MODELARGS.max_cycles) = "string" 
-        then MODELARGS.max_cycles = S2I(MODELARGS.max_cycles)
+    Editable Variable: Args.MaxIterations do
+      if TypeOf(Args.MaxIterations) = "string" 
+        then Args.MaxIterations = S2I(Args.MaxIterations)
     EndItem
 
   // Fixed OD run button
@@ -277,10 +277,10 @@ dBox "Main" location: x, y
   EndItem
   button 26, 12.5, 20 Prompt: "Fixed OD Run" do
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
-    if MODELARGS.scen_dir = null then do
+    if Args.[Scenario Folder] = null then do
       ShowMessage("Select a scenario folder")
     end else do
-      RunMacro("Fixed OD Run")
+      RunMacro("Fixed OD Run", Args)
       ShowMessage("Fixed OD Run Complete")
     end
   EndItem
@@ -388,7 +388,7 @@ dBox "Main" location: x, y
         scen_defined = RunDbox("Scenario Settings")
         if scen_defined then do
           CreateProgressBar("", )
-          RunMacro("Create Scenario")
+          RunMacro("Create Scenario", Args)
           DestroyProgressBar()
         end
       end
@@ -420,7 +420,7 @@ dBox "Main" location: x, y
   EndItem
   Popdown Menu 11, after, 6 Prompt: "Max Cycles"
     List:{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20}
-    Editable Variable: MODELARGS.max_cycles
+    Editable Variable: Args.MaxIterations
 
 
 
@@ -437,7 +437,7 @@ dBox "Main" location: x, y
   EndItem
   
   button same, after, 15 Prompt: "Calibrate MC" do
-    if MODELARGS.scen_dir = null 
+    if Args.[Scenario Folder] = null 
       then ShowMessage("Choose a model scenario to use for calibration.")
     else RunDbox("MC Calibration")
   EndItem
@@ -476,11 +476,11 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
     if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
 
     // Check to see if ScenarioSettings.csv and project list csvs are present
-    settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+    settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
     if GetFileInfo(settings_file) then settings = "True" else settings = "False"
-    hwy_list_file = MODELARGS.scen_dir + "/HighwayProjectList.csv"
+    hwy_list_file = Args.[Scenario Folder] + "/HighwayProjectList.csv"
     if GetFileInfo(hwy_list_file) then hwy_list = "True" else hwy_list = "False"
-    trn_list_file = MODELARGS.scen_dir + "/TransitProjectList.csv"
+    trn_list_file = Args.[Scenario Folder] + "/TransitProjectList.csv"
     if GetFileInfo(trn_list_file) then trn_list = "True" else trn_list = "False"
 
     // If the project lists exist, read IDs (for display only).
@@ -543,7 +543,7 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
     file = ChooseFile(
       {{"Binary File", "*.bin"}},
       "Choose the SE bin file",
-      {{"Initial Directory", MODELARGS.master_dir + "\\sedata"}}
+      {{"Initial Directory", Args.[Master Folder] + "\\sedata"}}
     )
 
     // Extract just the file name and extension from the full path and prefix it
@@ -606,7 +606,7 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
     if !ok then ShowMessage("Some values are missing")
 
     // Check that settings are valid
-    se_file = MODELARGS.master_dir + "/sedata/" + Settings.master_se
+    se_file = Args.[Master Folder] + "/sedata/" + Settings.master_se
     if GetFileInfo(se_file) = null then do
       ok = "False"
       ShowMessage(
@@ -622,7 +622,7 @@ dBox "Scenario Settings" location: x, y Title: "Scenario Settings"
 
     // Write out settings to ScenarioSettings.csv
     if ok and write_settings then do
-      settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+      settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
       col_names = {"Parameter", "Value", "Description"}
       v_description = A2V(a_description)
       RunMacro(
@@ -663,9 +663,9 @@ Macro "Wrapper" (a_scen_list)
     RunMacro("Init MODELARGS", a_scen_list[s])
 
     pct = round((s - 1) / a_scen_list.length * 100, 0)
-    UpdateProgressBar("Running Scenario: " + MODELARGS.scen_dir, pct)
+    UpdateProgressBar("Running Scenario: " + Args.[Scenario Folder], pct)
     CreateProgressBar("", )
-    RunMacro("Run Full Model")
+    RunMacro("Run Full Model", Args)
     DestroyProgressBar()
   end
 
@@ -692,44 +692,44 @@ Macro "Init MODELARGS" (scen_dir)
   // Reset MODELARGS, but Preserve important info from GUI
   // using a backup opts array
   Backup.debug = MODELARGS.debug
-  Backup.master_dir = MODELARGS.master_dir
-  Backup.master_hwy = MODELARGS.master_hwy
-  Backup.master_rts = MODELARGS.master_rts
-  Backup.max_cycles = MODELARGS.max_cycles
+  Backup.master_dir = Args.[Master Folder]
+  Backup.master_hwy = Args.[Master Links]
+  Backup.master_rts = Args.[Master Routes]
+  Backup.max_cycles = Args.MaxIterations
   Backup.wrapper = MODELARGS.wrapper
   Backup.gt_ui = MODELARGS.gt_ui
   MODELARGS = null
   for i = 1 to Backup.length do
     MODELARGS.(Backup[i][1]) = Backup[i][2]
   end
-  MODELARGS.cycle = 1
+  Args.Iteration = 1
 
   // Use the master period capacity factor file to establish TOD periods
-  param_file = MODELARGS.master_dir +
+  param_file = Args.[Master Folder] +
     "\\networks\\period_capacity_factors.csv"
   pf_factors = RunMacro("Read Parameter File", param_file)
-  MODELARGS.periods = null
+  Args.Periods = null
   for p = 1 to pf_factors.length do
-    MODELARGS.periods = MODELARGS.periods + {pf_factors[p][1]}
+    Args.Periods = Args.Periods + {pf_factors[p][1]}
   end
   pf_factors = null
 
   // Add scenario-specific info
-  MODELARGS.scen_dir = scen_dir
-  MODELARGS.hwy_dbd = scen_dir + "\\outputs\\networks\\ScenarioNetwork.dbd"
-  MODELARGS.rts_file = scen_dir + "\\outputs\\networks\\ScenarioRoutes.rts"
-  MODELARGS.taz_dbd = scen_dir + "\\outputs\\taz\\ScenarioTAZ.dbd"
-  MODELARGS.ee_mtx = scen_dir + "\\outputs\\external\\EETable.mtx"
-  MODELARGS.se_bin = scen_dir + "\\outputs\\sedata\\ScenarioSE.bin"
+  Args.[Scenario Folder] = scen_dir
+  Args.hwy_dbd = scen_dir + "\\outputs\\networks\\ScenarioNetwork.dbd"
+  Args.rts_file = scen_dir + "\\outputs\\networks\\ScenarioRoutes.rts"
+  Args.taz_dbd = scen_dir + "\\outputs\\taz\\ScenarioTAZ.dbd"
+  Args.ee_mtx = scen_dir + "\\outputs\\external\\EETable.mtx"
+  Args.se_bin = scen_dir + "\\outputs\\sedata\\ScenarioSE.bin"
 
   // Load MODELARGS with info from the settings file if it exists
   // and has data.
-  settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+  settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
 
   if GetFileInfo(settings_file) <> null then do
     // Check file to make sure it has field names and data
     ok = "True"
-    settings_file = MODELARGS.scen_dir + "/ScenarioSettings.csv"
+    settings_file = Args.[Scenario Folder] + "/ScenarioSettings.csv"
 
     df = CreateObject("df")
     df.read_csv(settings_file)
@@ -744,8 +744,8 @@ Macro "Init MODELARGS" (scen_dir)
     Settings = RunMacro("Read Parameter File", settings_file)
     MODELARGS = MODELARGS + Settings
     // Convert the se data file name to a full path
-    MODELARGS.master_se =  MODELARGS.master_dir + "/sedata/" +
-      MODELARGS.master_se
+    Args.[Master SE] =  Args.[Master Folder] + "/sedata/" +
+      Args.[Master SE]
   end
 
   RunMacro("Close All")
@@ -758,7 +758,7 @@ existing scenario and then run assignment using the same assignment trip tables.
 This macro automates running the steps after modifying the transport network.
 */
 
-Macro "Fixed OD Run"
+Macro "Fixed OD Run" (Args)
   if MODELARGS.gt_ui <> null then SetLibrary(MODELARGS.gt_ui)
 
   RunMacro("Destroy Progress Bars")
@@ -768,30 +768,30 @@ Macro "Fixed OD Run"
   CreateProgressBar("", )
 
   // From Initial Processing
-  RunMacro("Create Output Copies")
-  RunMacro("Determine Area Type")
-  RunMacro("Capacity")
-  RunMacro("Set CC Speeds")
-  RunMacro("Other Attributes")
+  RunMacro("Create Output Copies", Args)
+  RunMacro("Determine Area Type", Args)
+  RunMacro("Capacity", Args)
+  RunMacro("Set CC Speeds", Args)
+  RunMacro("Other Attributes", Args)
 
-  MODELARGS.cycle = 1
-  for p = 1 to MODELARGS.periods.length do
-    MODELARGS.period = MODELARGS.periods[p]
+  Args.Iteration = 1
+  for p = 1 to Args.Periods.length do
+    Args.period = Args.Periods[p]
 
     // From Skimming
-    RunMacro("Initial Congested Speed")
-    RunMacro("Create Highway Net Files")
+    RunMacro("Initial Congested Speed", Args)
+    RunMacro("Create Highway Net Files", Args)
     
-    RunMacro("Highway Assignment")
+    RunMacro("Highway Assignment", Args)
   end
 
   // From Summaries
-  RunMacro("Create Loaded Network")
-  RunMacro("Calculate Daily Fields")
-  RunMacro("VOC Maps")
-  RunMacro("Create Count Difference Map")
-  RunMacro("Summarize by FT and AT")
-  RunMacro("Run Outviz Assignment Validation")
+  RunMacro("Create Loaded Network", Args)
+  RunMacro("Calculate Daily Fields", Args)
+  RunMacro("VOC Maps", Args)
+  RunMacro("Create Count Difference Map", Args)
+  RunMacro("Summarize by FT and AT", Args)
+  RunMacro("Run Outviz Assignment Validation", Args)
   
   DestroyProgressBar()
   DestroyProgressBar()
@@ -825,12 +825,12 @@ Macro "Run Single Step" (MacroOpts)
   period_loop = MacroOpts.period_loop
   
   if step_name = null then ShowMessage("'step_name' not provided")
-  else if MODELARGS.scen_dir = null then ShowMessage("Select a scenario folder.")
+  else if Args.[Scenario Folder] = null then ShowMessage("Select a scenario folder.")
   else do
-    MODELARGS.cycle = 1
+    Args.Iteration = 1
     if period_loop then do
-      for period in MODELARGS.periods do
-        MODELARGS.period = period
+      for period in Args.Periods do
+        Args.period = period
         CreateProgressBar(period, )
         CreateProgressBar("", )
         RunMacro(step_name)
@@ -871,7 +871,7 @@ Macro "Create Release" (remove_gt_source)
   CreateProgressBar("", )
   UpdateProgressBar("Creating a Release", 0)
 
-  master_dir = MODELARGS.master_dir
+  master_dir = Args.[Master Folder]
   model_dir = RunMacro("Normalize Path", master_dir + "/..")
   release_dir = RunMacro("Normalize Path", model_dir + "/../client_release")
   from_gisdk_dir = model_dir + "/src/gisdk"

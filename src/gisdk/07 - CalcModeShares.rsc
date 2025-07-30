@@ -11,9 +11,13 @@ Apply Mode Shares (different script file)
   by the distribution model.
 */
 
-Macro "Calc Mode Shares"
-  RunMacro("Update MC Variables File")
-  RunMacro("Run NLM MC")
+Macro "Calc Mode Shares" (Args)
+  for period in Args.Periods do
+    Args.period = period
+    RunMacro("Update MC Variables File", Args)
+    RunMacro("Run NLM MC", Args)
+  end
+  return(1)
 EndMacro
 
 /*
@@ -23,11 +27,11 @@ the .net and .tnw files to determine which are present. Bike and walk modes
 are included by default (no networks created separately for them).
 */
 
-Macro "Update MC Variables File"
-  UpdateProgressBar("Update MC Variables File", 0)
+Macro "Update MC Variables File" (Args)
+  UpdateProgressBar(Args.period + ": Update MC Variables File", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
   net_dir = scen_dir + "/outputs/networks"
   var_tbl = scen_dir + "/inputs/mode/mc_variables.csv"
   out_tbl = scen_dir + "/outputs/mode/mc_variables_updated.csv"
@@ -56,12 +60,12 @@ see all the methods available, but there is no help for them.  Caliper has
 been willing to help explain some of them and how to use them.
 */
 
-Macro "Run NLM MC"
-  UpdateProgressBar("Run NLM MC", 0)
+Macro "Run NLM MC" (Args)
+  UpdateProgressBar(Args.period + ": Run NLM MC", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  se_bin = MODELARGS.se_bin
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  se_bin = Args.se_bin
+  period = Args.period
   skim_dir = scen_dir + "/outputs/skims"
   mc_dir = scen_dir + "/inputs/mode"
   template_mdl = mc_dir + "/template_mc.mdl"

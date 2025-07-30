@@ -1,0 +1,149 @@
+
+Macro "NRV" (Args)
+Body:
+    // model = FlowChart( { StartNodes } , { EndNodes } , Description)
+    model = FlowChart({"Initial Processing"},{"Summaries"},)
+    //
+    // Nodes
+    //
+    // FlowChartNode(model,NodeName,MacroName,UI,Description)
+    //
+    FlowChartNode(model,"Initial Processing",,,)
+    FlowChartNode(model,"Through Trips",,,)
+    FlowChartNode(model,"Generation",,,)
+    FlowChartNode(model,"Time of Day",,,)
+    FlowChartNode(model,"Skimming",,,)
+    FlowChartNode(model,"Calc Mode Shares",,,)
+    FlowChartNode(model,"Distribution",,,)
+    FlowChartNode(model,"Apply Mode Shares",,,)
+    FlowChartNode(model,"Directionality",,,)
+    FlowChartNode(model,"Highway Assignment",,,)
+    FlowChartNode(model,"Feedback",,,)
+    FlowChartNode(model,"Transit Assignment",,,)
+    FlowChartNode(model,"Summaries",,,)
+    //
+    // Links
+    //
+    // FlowChartLink(model , FromNode , ToNode , Condition , Description , IsFeedbackLoop)
+    //
+    FlowChartLink(model,"Initial Processing","Through Trips",False,,)
+    FlowChartLink(model,"Through Trips","Generation",False,,)
+    FlowChartLink(model,"Generation","Time of Day",False,,)
+    FlowChartLink(model,"Time of Day","Skimming",False,,)
+    FlowChartLink(model,"Skimming","Calc Mode Shares",False,,)
+    FlowChartLink(model,"Calc Mode Shares","Distribution",False,,)
+    FlowChartLink(model,"Distribution","Apply Mode Shares",False,,)
+    FlowChartLink(model,"Apply Mode Shares","Directionality",False,,)
+    FlowChartLink(model,"Directionality","Highway Assignment",False,,)
+    FlowChartLink(model,"Highway Assignment","Feedback",False,,)
+    FlowChartLink(model,"Feedback","Skimming",2,,1)
+    FlowChartLink(model,"Feedback","Transit Assignment",True,,)
+    FlowChartLink(model,"Transit Assignment","Summaries",False,,)
+    Return(model)
+EndMacro
+
+
+Macro "Initial Processing" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Initial Processing"}}
+    }
+EndMacro
+
+
+Macro "Through Trips" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Through Trips"}}
+    }
+EndMacro
+
+
+Macro "Generation" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Generation"}}
+    }
+EndMacro
+
+
+Macro "Time of Day" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Time of Day"}}
+    }
+EndMacro
+
+
+Macro "Skimming" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Skimming"}}
+    }
+EndMacro
+
+
+Macro "Calc Mode Shares" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Calc Mode Shares"}}
+    }
+EndMacro
+
+
+Macro "Distribution" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Distribution"}}
+    }
+EndMacro
+
+
+Macro "Apply Mode Shares" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Apply Mode Shares"}}
+    }
+EndMacro
+
+
+Macro "Directionality" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Directionality"}}
+    }
+EndMacro
+
+
+Macro "Highway Assignment" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Highway Assignment"}}
+    }
+EndMacro
+
+
+Macro "Feedback" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Feedback"}},
+        {"Shape", "Decision"}
+    }
+EndMacro
+
+
+Macro "Transit Assignment" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Transit Assignment"}}
+    }
+EndMacro
+
+
+Macro "Summaries" (Args,Result)
+    Attributes = {
+        {"Class", {"GISDK"}},
+        {"MacroNames", {"Summaries"}}
+    }
+EndMacro
+

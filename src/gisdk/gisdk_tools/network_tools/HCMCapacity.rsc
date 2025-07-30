@@ -104,7 +104,7 @@ Macro "Hourly Capacity" (rscriptexe, rscript, hwy_dbd, output_dir)
   v_test = v_test1 + v_test2 + v_test3
 
   if VectorStatistic(v_test,"Sum",) > 0 then do
-      file = MODELARGS.scen_dir + "/outputs/Highway Links with Errors.csv"
+      file = Args.[Scenario Folder] + "/outputs/Highway Links with Errors.csv"
       file = OpenFile(file,"w")
       WriteLine(file,"The following links have zero capacity in a direction they shouldn't")
       for i = 1 to v_test.length do

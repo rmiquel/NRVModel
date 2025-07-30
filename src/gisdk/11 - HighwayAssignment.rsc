@@ -7,26 +7,30 @@ for the model cycle.  These are returned and used to determine
 if another feedback cycle is necessary.
 */
 
-Macro "Highway Assignment"
-  RunMacro("Assignment Matrix Creation")
-  {rmse, prmse} = RunMacro("Run Highway Assignment")
-  RunMacro("Log Cycle RMSE", rmse, prmse)
-  return(prmse)
+Macro "Highway Assignment" (Args)
+  for period in Args.Periods do
+    Args.period = period
+    RunMacro("Assignment Matrix Creation", Args)
+    {rmse, prmse} = RunMacro("Run Highway Assignment", Args)
+    RunMacro("Log Cycle RMSE", rmse, prmse, Args)
+    Args.hwy_prmse.(period) = prmse
+  end
+  return(1)
 EndMacro
 
 /*
 
 */
 
-Macro "Assignment Matrix Creation"
-  UpdateProgressBar("Assignment Matrix Creation", 0)
+Macro "Assignment Matrix Creation" (Args)
+  UpdateProgressBar(Args.period + ": Assignment Matrix Creation", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
+  cycle = Args.Iteration
 
   // Clear the assignment directory on the very first run
-  if cycle = 1 and period = MODELARGS.periods[1] then do
+  if cycle = 1 and period = Args.Periods[1] then do
     dir = scen_dir + "/outputs/assignment"
     RunMacro("Clear Directory", dir)
   end
@@ -46,17 +50,17 @@ Sets up options for TCs MMA assignment
 Includes options to support feedback/cycling
 */
 
-Macro "Run Highway Assignment"
-  UpdateProgressBar("Run Highway Assignment", 0)
+Macro "Run Highway Assignment" (Args)
+  UpdateProgressBar(Args.period + ": Run Highway Assignment", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
 
   // Set options for the OUE macro call
   opts = null
   opts.period = period
-  opts.hwy_dbd = MODELARGS.hwy_dbd
-  opts.cycle = MODELARGS.cycle
+  opts.hwy_dbd = Args.hwy_dbd
+  opts.cycle = Args.Iteration
   opts.asn_dir = scen_dir + "/outputs/assignment"
   opts.trip_mtx = opts.asn_dir + "/assignment_" + period + ".mtx"
   opts.toll_mtx = null
@@ -77,12 +81,12 @@ Depends
   gplyr
 */
 
-Macro "Log Cycle RMSE" (rmse, prmse)
-  UpdateProgressBar("Log Cycle RMSE", 0)
+Macro "Log Cycle RMSE" (rmse, prmse, Args)
+  UpdateProgressBar(Args.period + ": Log Cycle RMSE", 0)
 
-  scen_dir = MODELARGS.scen_dir
-  period = MODELARGS.period
-  cycle = MODELARGS.cycle
+  scen_dir = Args.[Scenario Folder]
+  period = Args.period
+  cycle = Args.Iteration
   log_file = scen_dir + "/outputs/assignment/cycle_rmse_" + period + ".csv"
 
   // Create data frame of current cycle and rmse
@@ -100,4 +104,19 @@ Macro "Log Cycle RMSE" (rmse, prmse)
   end
 
   new_df.write_csv(log_file)
+EndMacro
+
+/*
+
+*/
+
+Macro  "Feedback" (Args)
+  // Simple check based on a set number of iterations
+  // if you want to check skim/flow %RMSE, use Args.hwy_prmse and Args.skim_prmse by period
+  if Args.Iteration >= Args.MaxIterations 
+    then return(1) // converged
+    else do
+      Args.Iteration = Args.Iteration + 1
+      return(2) // not converged
+    end
 EndMacro
